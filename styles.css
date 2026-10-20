@@ -276,3 +276,36 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
 .soon-page { display: grid; place-content: center; text-align: center; min-height: calc(100vh - 200px); }
 .soon-page p { margin: 12px 0 0; font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .tm { margin-left: 2px; font: 400 .38em/1 var(--serif); vertical-align: 1.35em; letter-spacing: 0; opacity: .75; }
+
+/* Collection page (reusable) */
+.breadcrumb { display: flex; align-items: center; gap: 8px; margin: -18px 0 26px; font-size: 14px; color: var(--muted); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb svg { width: 13px; height: 13px; color: #b3a998; }
+.breadcrumb [aria-current] { color: var(--ink-2); }
+.col-title { font-size: 46px; }
+.works-head { margin: 34px 0 12px; }
+.works-head .sample { margin-left: 12px; padding: 2px 8px; border: 1px solid #d9c9a8; border-radius: 99px; font-style: normal; font-size: 10.5px; letter-spacing: .12em; color: #9a7d48; vertical-align: 1px; }
+.sorter { display: flex; align-items: center; gap: 4px; letter-spacing: 0; text-transform: none; font-size: 13.5px; }
+.sorter span { margin-right: 6px; color: var(--muted); }
+.sorter button { padding: 4px 10px; border-radius: 6px; color: var(--muted); }
+.sorter button:hover { color: var(--ink); }
+.sorter button.on { background: var(--tile); color: var(--ink); }
+.card.work { min-height: 104px; padding-top: 18px; padding-bottom: 18px; }
+.card.work::before { top: 24px; bottom: 24px; }
+.card.work h3 .avail, .card h3 .avail { margin-left: 8px; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); vertical-align: 2px; }
+.wmeta { margin: 0 0 6px; font-size: 14px; color: var(--ink-2); }
+.wmeta .unsure { font-style: italic; color: var(--muted); }
+.wmeta .m-date { display: none; }
+.wdate { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.wdate small { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #a38a5c; }
+.legend { margin: 22px 0 0; font-size: 13px; color: var(--muted); }
+.legend b { font-weight: 500; color: var(--ink-2); }
+@media (max-width: 820px) {
+  .breadcrumb { display: none; }
+  .col-title { font-size: 32px; line-height: 1.12; }
+  .works-head { flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .card.work { min-height: 0; }
+  .wmeta .m-date { display: inline; white-space: nowrap; }
+  .wmeta .m-date:not(:empty)::before { content: "·"; margin: 0 7px; color: #b3a998; font-style: normal; }
+  .legend { font-size: 12.5px; line-height: 1.6; }
+}

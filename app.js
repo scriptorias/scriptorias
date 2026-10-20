@@ -163,32 +163,58 @@ function viewPath(id) {
   </div>`;
 }
 
-const COL_TABS = [["works", "Works"], ["about", "About"], ["themes", "Themes"], ["related", "Related"]];
+// Reusable collection page. Works may carry optional `author` and `date` metadata:
+//   author: { name, basis: "known" | "attributed" | "traditional" | "anonymous", note? }
+//   date:   { label, sort, debated? }   (label is shown as written, e.g. "c. 96 CE")
+const AUTHOR_LABEL = {
+  known: (a) => esc(a.name),
+  attributed: (a) => `Attributed to ${esc(a.name)}`,
+  traditional: (a) => `Traditionally attributed to ${esc(a.name)}`,
+  anonymous: (a) => (a.name ? `Anonymous, ${esc(a.name)}` : "Anonymous"),
+};
+const SORTS = [["date", "Date"], ["title", "A–Z"]];
+const sortTitle = (t) => t.replace(/^the\s+/i, "").toLowerCase();
 
-function viewCollection(id, tab = "works") {
+function workMeta(w) {
+  const parts = [];
+  if (w.author) {
+    const uncertain = w.author.basis !== "known";
+    parts.push(`<span class="${uncertain ? "unsure" : ""}">${AUTHOR_LABEL[w.author.basis](w.author)}</span>`);
+  }
+  return parts.join("");
+}
+function workDate(w) {
+  if (!w.date) return "";
+  return `<span class="wdate">${esc(w.date.label)}${w.date.debated ? '<small>debated</small>' : ""}</span>`;
+}
+
+function viewCollection(id) {
   const c = findCol(id);
   if (!c) return viewMissing();
-  const n = trad.collections.indexOf(c) + 1;
+  const hasDates = c.works.some((w) => w.date);
+  const sort = hasDates ? store.get("sort", "date") : "title";
+  const works = [...c.works];
+  if (sort === "date" && hasDates) works.sort((a, b) => (a.date?.sort ?? 1e9) - (b.date?.sort ?? 1e9) || sortTitle(a.title).localeCompare(sortTitle(b.title)));
+  else if (hasDates) works.sort((a, b) => sortTitle(a.title).localeCompare(sortTitle(b.title)));
   const back = { href: "#/library/christianity", label: "Christianity" };
-  let body;
-  if (tab === "works") {
-    body = `<div class="list-head"><span>${c.works.length} works</span><span class="sort">Sort: Traditional Order</span></div>
-      <div class="rows">${c.works.map((w, i) => `
-        <a class="row" href="#/w/${w.id}"><span class="n">${i + 1}</span>
-          <div><h4>${esc(w.title)}${w.text ? '<span class="avail">Read</span>' : ""}</h4><p>${esc(w.blurb)}</p></div>
-          <span class="chev">${icon("right")}</span></a>`).join("")}</div>`;
-  } else if (tab === "about") {
-    body = `<div class="prose"><p>${esc(c.about)}</p></div>`;
-  } else if (tab === "themes" && c.themes) {
-    body = `<div class="pills">${c.themes.map((t) => `<span class="pill">${esc(t)}</span>`).join("")}</div>`;
-  } else {
-    body = `<div class="empty"><b>Coming soon.</b>Connections between this collection and the rest of the library will appear here.</div>`;
-  }
-  return `${topbar(back)}<div class="page">${crumb(back)}
-    <div class="col-head"><span class="num">${n}</span><h1>${esc(c.title)}</h1></div>
-    <p class="lede">${esc(c.blurb)}</p>
-    <div class="seg">${COL_TABS.map(([k, name]) => `<a href="#/c/${id}/${k}" class="${tab === k ? "on" : ""}">${name}</a>`).join("")}</div>
-    ${body}
+  const sorter = hasDates
+    ? `<div class="sorter" role="group" aria-label="Sort works"><span>Sort by</span>${SORTS.map(([k, n]) => `<button data-sort="${k}" class="${sort === k ? "on" : ""}" aria-pressed="${sort === k}">${n}</button>`).join("")}</div>`
+    : "";
+  return `${topbar(back)}<div class="page">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${back.href}">Christianity</a>${icon("right")}<span aria-current="page">${esc(c.title)}</span></nav>
+    <h1 class="col-title">${esc(c.title)}</h1>
+    <p class="lede">${esc(c.intro || c.blurb)}</p>
+    <div class="list-head works-head"><span>${c.works.length} works${c.sample ? '<em class="sample">Sample metadata</em>' : ""}</span>${sorter}</div>
+    <div class="cards">${works.map((w) => `
+      <a class="card plain work" href="#/w/${w.id}">
+        <div>
+          <h3>${esc(w.title)}${w.text ? '<span class="avail">Read</span>' : ""}</h3>
+          ${w.author ? `<div class="wmeta">${workMeta(w)}<span class="m-date">${w.date ? esc(w.date.label) : ""}</span></div>` : ""}
+          <p>${esc(w.blurb)}</p>
+        </div>
+        <span class="count">${workDate(w)}</span><span class="chev">${icon("right")}</span>
+      </a>`).join("")}</div>
+    ${hasDates ? `<p class="legend"><b>c.</b> circa, approximate date&ensp;·&ensp;<i>Italic</i> authorship is attributed, traditional, or anonymous&ensp;·&ensp;<b>debated</b> scholarly estimates vary widely</p>` : ""}
   </div>`;
 }
 
@@ -200,7 +226,7 @@ function viewWork(id, tab, ch, v) {
   const { work, col, ci } = f;
   const text = work.text && TEXTS[work.text];
   tab = tab || (text ? "read" : "about");
-  const back = { href: `#/c/${col.id}`, label: `${ci + 1}. ${col.title}` };
+  const back = { href: `#/c/${col.id}`, label: col.title };
   const tabs = `<div class="utabs">${WORK_TABS.map(([k, n]) => `<a href="#/w/${id}/${k}" class="${tab === k ? "on" : ""}">${n}</a>`).join("")}</div>`;
   const head = `<div class="work-head"><div class="head-row"><h1>${esc(work.title)}</h1></div>
     ${work.tags ? `<div class="tags">${work.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>`;
@@ -326,7 +352,7 @@ function route() {
   if (!r) html = viewLibrary("christianity");
   else if (r === "home") { html = viewHome(); active = "home"; }
   else if (r === "library") { html = viewLibrary(a, b); active = "lib:" + a; }
-  else if (r === "c") html = viewCollection(a, b);
+  else if (r === "c") html = viewCollection(a);
   else if (r === "w") html = viewWork(a, b, c, d);
   else if (r === "path" || r === "paths") { html = a ? viewPath(a) : viewPaths(); active = "paths"; }
   else if (r === "search") { html = viewSearch(a || ""); active = "search"; }
@@ -357,6 +383,8 @@ document.addEventListener("change", (e) => {
   if (sel) location.hash = readHref(location.hash.split("/")[2], sel.value);
 });
 document.addEventListener("click", (e) => {
+  const so = e.target.closest("[data-sort]");
+  if (so) { store.set("sort", so.dataset.sort); route(); return; }
   if (e.target.closest("[data-size]")) {
     store.set("size", (store.get("size", 1) + 1) % SIZES.length);
     applySize();
