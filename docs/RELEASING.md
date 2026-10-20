@@ -37,8 +37,9 @@ Releases are cut **only for approved milestones**, not for every commit or merge
    ```
 7. **Publish the GitHub Release.** GitHub → Releases → *Draft a new release* → choose the tag,
    title `vX.Y.Z`, and paste that version's `CHANGELOG.md` section. Mark it as a pre-release while
-   in 0.x. (Creating a Release needs a GitHub account with write access; the deploy key can push
-   tags but cannot use the Releases API.)
+   in 0.x. (Creating a Release needs a GitHub account or a fine-grained token with Contents
+   read/write; the deploy key can push tags but cannot use the Releases API. The release token
+   is kept in the release machine's macOS Keychain, never in the repository.)
 
 ## Rollback
 
