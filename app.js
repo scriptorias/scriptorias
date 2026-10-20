@@ -69,7 +69,7 @@ function renderShell(active) {
   document.getElementById("nav-main").innerHTML = NAV.map(link).join("");
   document.getElementById("nav-foot").innerHTML = FOOT.map(link).join("");
   document.getElementById("nav-libraries").innerHTML = L.traditions
-    .map((t) => `<a href="#/library/${t.id}" class="${active === "lib:" + t.id ? "on" : ""}">${icon(t.icon)}${t.name}</a>`)
+    .map((t) => `<a href="#/library/${t.id}" class="${active === "lib:" + t.id ? "on" : ""}${t.live ? "" : " off"}">${icon(t.icon)}${t.name}</a>`)
     .join("");
   const tabActive = active.startsWith("lib:") ? "library" : active;
   document.getElementById("tabbar").innerHTML = TABBAR
