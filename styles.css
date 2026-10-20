@@ -103,6 +103,10 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
   transition: background .15s;
 }
 .card:hover { background: var(--card-hover); }
+/* Unnumbered cards (collections are categories, not steps). Same height as numbered cards. */
+.card.plain { position: relative; grid-template-columns: 1fr auto 18px; min-height: 92px; padding-left: 28px; }
+.card.plain::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 2px; border-radius: 2px; background: var(--line); transition: background .15s; }
+.card.plain:hover::before { background: var(--gold); }
 .num { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 8px; background: var(--tile); font-size: 26px; color: var(--ink-2); }
 .card h3 { margin: 0 0 3px; font-size: 19px; font-weight: 500; }
 .card p { margin: 0; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
@@ -244,6 +248,7 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
   .card { grid-template-columns: 48px 1fr 14px; gap: 0 14px; padding: 13px 12px; }
   .card .num { width: 48px; height: 48px; font-size: 21px; }
   .card .count { display: none; }
+  .card.plain { grid-template-columns: 1fr 14px; min-height: 74px; padding-left: 20px; }
   .card h3 { font-size: 17px; }
   .card p { font-size: 13.5px; }
   .facts { grid-template-columns: 110px 1fr; font-size: 14.5px; }

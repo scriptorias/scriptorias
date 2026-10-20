@@ -120,8 +120,7 @@ function viewLibrary(id, tab = "collections") {
   const body =
     tab === "collections"
       ? `<div class="cards">${trad.collections.map((c, i) => `
-          <a class="card" href="#/c/${c.id}">
-            <span class="num">${i + 1}</span>
+          <a class="card plain" href="#/c/${c.id}">
             <div><h3>${esc(c.title)}</h3><p>${esc(c.blurb)}</p></div>
             <span class="count">${esc(c.count)}</span><span class="chev">${icon("right")}</span>
           </a>`).join("")}</div>`
