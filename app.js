@@ -81,7 +81,7 @@ document.addEventListener("click", (e) => {
 function topbar(back) {
   const left = back
     ? `<a class="back" href="${back.href}">${icon("left")}${esc(back.label)}</a>`
-    : `<a class="mark" href="#/">Scriptorias</a>`;
+    : `<a class="mark" href="#/">Scriptorias<sup class="tm">™</sup></a>`;
   return `<div class="topbar">${left}<button class="icon-btn" data-menu aria-label="Menu">${icon("more")}</button></div>`;
 }
 const crumb = (back) => (back ? `<a class="crumb" href="${back.href}">${icon("left")}${esc(back.label)}</a>` : "");

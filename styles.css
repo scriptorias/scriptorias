@@ -267,3 +267,4 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
 @media (max-width: 820px) { .head-row > .icon-btn { display: none; } }
 .soon-page { display: grid; place-content: center; text-align: center; min-height: calc(100vh - 200px); }
 .soon-page p { margin: 12px 0 0; font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.tm { margin-left: 2px; font: 400 .38em/1 var(--serif); vertical-align: 1.35em; letter-spacing: 0; opacity: .75; }
