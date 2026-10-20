@@ -202,8 +202,10 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
 .lib { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: var(--radius); background: var(--card); font-size: 16px; }
 .lib:hover { background: var(--card-hover); }
 .lib svg { color: var(--gold); }
-.lib.off { color: var(--muted); }
-.lib.off svg { color: #b5ab9a; }
+.lib.off { color: color-mix(in srgb, var(--muted) 50%, var(--card)); }
+.lib.off svg { color: color-mix(in srgb, #b5ab9a 50%, var(--card)); }
+.lib.off:hover { color: var(--muted); }
+.lib.off:hover svg { color: #b5ab9a; }
 .lib .soon { margin-left: auto; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 
 /* Search */
