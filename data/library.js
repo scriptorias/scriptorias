@@ -1,0 +1,188 @@
+// Library catalog. Each tradition holds ordered collections; each collection holds works.
+// A work with `text` set has a readable text in window.TEXTS; others are catalog-only for now.
+window.LIBRARY = {
+  traditions: [
+    { id: "christianity", name: "Christianity", icon: "cross", live: true },
+    { id: "judaism", name: "Judaism", icon: "star" },
+    { id: "islam", name: "Islam", icon: "moon" },
+    { id: "norse", name: "Norse Tradition", icon: "rune" },
+    { id: "greek", name: "Greek Tradition", icon: "temple" },
+    { id: "egyptian", name: "Egyptian Tradition", icon: "ankh" },
+    { id: "other", name: "Other Traditions", icon: "globe" },
+  ],
+
+  christianity: {
+    name: "Christianity",
+    facets: ["Texts", "History", "People", "Beliefs", "Traditions"],
+    collections: [
+      {
+        id: "biblical-canon",
+        title: "Biblical Canon",
+        blurb: "Explore the major biblical canons and compare different traditions.",
+        count: "66+ books",
+        about: "The books accepted as Scripture across Christian traditions. Protestant Bibles contain 66 books; Catholic and Orthodox canons are larger, and the Ethiopian Orthodox canon is the broadest of all.",
+        works: [
+          { id: "torah", title: "The Torah", blurb: "Genesis through Deuteronomy", tags: ["Hebrew Bible", "5 books"] },
+          { id: "historical-books", title: "Historical Books", blurb: "Joshua through Esther", tags: ["Hebrew Bible", "12 books"] },
+          { id: "wisdom-poetry", title: "Wisdom & Poetry", blurb: "Job, Psalms, Proverbs, Ecclesiastes, Song of Songs", tags: ["Hebrew Bible", "5 books"] },
+          { id: "prophets", title: "The Prophets", blurb: "Isaiah through Malachi", tags: ["Hebrew Bible", "17 books"] },
+          { id: "gospels-acts", title: "Gospels & Acts", blurb: "The life of Jesus and the early church", tags: ["New Testament", "5 books"] },
+          { id: "epistles", title: "The Epistles", blurb: "Letters of Paul and the apostles", tags: ["New Testament", "21 books"] },
+          { id: "revelation", title: "Revelation", blurb: "The apocalypse of John", tags: ["New Testament", "1 book"] },
+        ],
+      },
+      {
+        id: "deuterocanonical",
+        title: "Deuterocanonical Books",
+        blurb: "Texts regarded as Scripture in Catholic and Orthodox traditions.",
+        count: "10 works",
+        about: "Jewish writings from the Second Temple period that were preserved in the Greek Septuagint. Catholic and Orthodox churches count them as Scripture. Protestant Bibles either leave them out or print them separately as the Apocrypha.",
+        works: [
+          { id: "tobit", title: "Tobit", blurb: "A family's piety, exile, and an angelic guide" },
+          { id: "judith", title: "Judith", blurb: "A widow who saves her people" },
+          { id: "additions-esther", title: "Additions to Esther", blurb: "Prayers and edicts added to the Greek Esther" },
+          { id: "wisdom-solomon", title: "Wisdom of Solomon", blurb: "Personified Wisdom and the fate of the righteous" },
+          { id: "sirach", title: "Sirach", blurb: "Proverbs of Jesus ben Sira" },
+          { id: "baruch", title: "Baruch", blurb: "Confession and hope in exile" },
+          { id: "1-maccabees", title: "1 Maccabees", blurb: "The Hasmonean revolt against Seleucid rule" },
+          { id: "2-maccabees", title: "2 Maccabees", blurb: "Martyrdom and the rededication of the Temple" },
+          { id: "additions-daniel", title: "Additions to Daniel", blurb: "Susanna, Bel and the Dragon, the Song of the Three" },
+          { id: "prayer-manasseh", title: "Prayer of Manasseh", blurb: "A king's prayer of repentance" },
+        ],
+      },
+      {
+        id: "early-jewish",
+        title: "Related Early Jewish Writings",
+        blurb: "Ancient Jewish literature that provides historical and theological context for early Christianity.",
+        count: "6 works",
+        about: "Ancient Jewish literature that shows the historical and theological world early Christianity grew out of. Most of these works are not in the biblical canon of mainstream Christian traditions, but several shaped early Christian thought deeply, and some are Scripture in particular churches.",
+        themes: ["Angels and demons", "Apocalyptic vision", "Final judgment", "Rewritten Scripture", "Messianic hope"],
+        works: [
+          { id: "1-enoch", title: "1 Enoch", blurb: "Watchers, angels, and final judgment", tags: ["Ancient Jewish", "Ethiopian Scripture", "Early Christian Influence"], text: "1-enoch" },
+          { id: "jubilees", title: "Book of Jubilees", blurb: "Retelling of Genesis and early Exodus", tags: ["Ancient Jewish", "Ethiopian Scripture"] },
+          { id: "2-baruch", title: "2 Baruch", blurb: "Visions of judgment and restoration", tags: ["Ancient Jewish", "Syriac"] },
+          { id: "4-ezra", title: "4 Ezra (2 Esdras 3–14)", blurb: "Visions on evil, suffering, and restoration", tags: ["Ancient Jewish", "Apocalypse"] },
+          { id: "testaments-twelve", title: "Testaments of the Twelve Patriarchs", blurb: "Ethical teachings attributed to Jacob's sons", tags: ["Ancient Jewish", "Christian redaction"] },
+          { id: "adam-eve", title: "Life of Adam and Eve", blurb: "Expands the story of Adam, Eve, and Satan", tags: ["Ancient Jewish"] },
+        ],
+      },
+      {
+        id: "early-christian",
+        title: "Early Christian Writings",
+        blurb: "The generations after the apostles, including the Apostolic Fathers and early church writings.",
+        count: "8 works",
+        about: "Writings from the late first and second centuries, produced by the generations right after the apostles. They include letters, church manuals, and visions that show how the earliest churches worshipped, organized themselves, and defined their faith.",
+        works: [
+          { id: "didache", title: "The Didache", blurb: "The earliest surviving church manual", tags: ["c. 50–120 CE"] },
+          { id: "1-clement", title: "1 Clement", blurb: "A letter from Rome to Corinth", tags: ["c. 96 CE"] },
+          { id: "ignatius", title: "Letters of Ignatius", blurb: "Seven letters written on the road to martyrdom", tags: ["c. 110 CE"] },
+          { id: "polycarp-philippians", title: "Polycarp to the Philippians", blurb: "Counsel from the bishop of Smyrna", tags: ["c. 110–140 CE"] },
+          { id: "martyrdom-polycarp", title: "Martyrdom of Polycarp", blurb: "The oldest account of a Christian martyrdom", tags: ["c. 155 CE"] },
+          { id: "barnabas", title: "Epistle of Barnabas", blurb: "Reading the Law as Christian allegory", tags: ["c. 70–135 CE"] },
+          { id: "hermas", title: "Shepherd of Hermas", blurb: "Visions, mandates, and parables on repentance", tags: ["c. 100–150 CE"] },
+          { id: "diognetus", title: "Epistle to Diognetus", blurb: "Christians as \"the soul of the world\"", tags: ["2nd century"] },
+        ],
+      },
+      {
+        id: "christian-apocrypha",
+        title: "Christian Apocrypha",
+        blurb: "Alternative and noncanonical writings, including gospels, acts, and revelations.",
+        count: "6 works",
+        about: "Gospels, acts, and apocalypses that circulated in early Christianity but were left out of the New Testament. They show how varied early Christian belief was and how stories about Jesus and the apostles kept growing.",
+        works: [
+          { id: "thomas", title: "Gospel of Thomas", blurb: "114 sayings attributed to Jesus", tags: ["Nag Hammadi"] },
+          { id: "peter-gospel", title: "Gospel of Peter", blurb: "A fragmentary passion narrative" },
+          { id: "protoevangelium", title: "Protoevangelium of James", blurb: "The birth and childhood of Mary" },
+          { id: "paul-thecla", title: "Acts of Paul and Thecla", blurb: "A young woman follows Paul's preaching" },
+          { id: "mary-gospel", title: "Gospel of Mary", blurb: "Mary Magdalene's vision and teaching" },
+          { id: "apocalypse-peter", title: "Apocalypse of Peter", blurb: "An early tour of heaven and hell" },
+        ],
+      },
+      {
+        id: "church-fathers",
+        title: "Church Fathers & Theology",
+        blurb: "Foundational works of Christian doctrine, apologetics, and theology.",
+        count: "6 works",
+        about: "The theologians of the second to fifth centuries. They defended the faith before Rome, argued against rival teachings, and laid the foundations of Christian doctrine.",
+        works: [
+          { id: "justin-apology", title: "First Apology", blurb: "Justin Martyr's defense of Christianity to Rome", tags: ["Justin Martyr"] },
+          { id: "against-heresies", title: "Against Heresies", blurb: "Irenaeus refutes the Gnostic systems", tags: ["Irenaeus"] },
+          { id: "tertullian-apology", title: "Apology", blurb: "Tertullian's appeal to the governors of Rome", tags: ["Tertullian"] },
+          { id: "first-principles", title: "On First Principles", blurb: "Origen's systematic theology", tags: ["Origen"] },
+          { id: "incarnation", title: "On the Incarnation", blurb: "Why the Word became flesh", tags: ["Athanasius"] },
+          { id: "confessions", title: "Confessions", blurb: "Augustine's restless heart", tags: ["Augustine"] },
+        ],
+      },
+      {
+        id: "medieval",
+        title: "Medieval Christian Literature",
+        blurb: "Spiritual writings, saints' lives, and theological works from the medieval Christian world.",
+        count: "4 works",
+        about: "Monastic rules, histories, and mystical writings from the medieval Christian world.",
+        works: [
+          { id: "rule-benedict", title: "Rule of Saint Benedict", blurb: "The foundation of Western monastic life", tags: ["c. 530"] },
+          { id: "bede-history", title: "Ecclesiastical History of the English People", blurb: "Bede's history of Christianity in Britain", tags: ["731"] },
+          { id: "proslogion", title: "Proslogion", blurb: "Anselm's \"faith seeking understanding\"", tags: ["1078"] },
+          { id: "julian-revelations", title: "Revelations of Divine Love", blurb: "Julian of Norwich's visions", tags: ["c. 1395"] },
+        ],
+      },
+    ],
+  },
+
+  // Paths: curated reading journeys across works. A step with `work` + `ch` links into the reader.
+  paths: [
+    {
+      id: "the-watchers",
+      title: "The Watchers",
+      blurb: "Follow one strange story of fallen angels from Genesis through Enoch to the New Testament.",
+      length: "5 steps",
+      steps: [
+        { title: "Genesis 6:1–4", note: "The \"sons of God\" take human wives and the Nephilim appear. Four verses that later writers could not leave alone." },
+        { title: "1 Enoch 6–8", note: "The Book of the Watchers expands Genesis into a full narrative: two hundred angels, an oath on Mount Hermon, forbidden knowledge.", work: "1-enoch", ch: 6 },
+        { title: "1 Enoch 9–10", note: "The archangels intercede and judgment is pronounced. Azâzêl is bound in the darkness.", work: "1-enoch", ch: 9 },
+        { title: "Book of Jubilees 5", note: "A second-century BCE retelling that folds the Watchers into the flood story.", work: "jubilees" },
+        { title: "Jude 6, 14–15", note: "A New Testament letter quotes 1 Enoch 1:9 directly: \"Behold, the Lord cometh with ten thousands of his saints.\"", work: "1-enoch", ch: 1, v: "9" },
+      ],
+    },
+  ],
+
+  // Rich detail for works with full pages.
+  works: {
+    "1-enoch": {
+      title: "1 Enoch",
+      tags: ["Ancient Jewish", "Ethiopian Scripture", "Early Christian Influence"],
+      facts: [
+        ["Composed", "c. 300 BCE – 1st century CE"],
+        ["Language", "Aramaic (original); preserved complete in Ge'ez"],
+        ["Manuscripts", "Aramaic fragments at Qumran; Greek and Ethiopic copies"],
+        ["Canon", "Scripture in the Ethiopian Orthodox Tewahedo Church"],
+        ["Translation", "R. H. Charles, 1912 (public domain)"],
+      ],
+      about: [
+        "1 Enoch is a collection of apocalyptic writings attributed to Enoch, the great-grandfather of Noah. Genesis says he \"walked with God; and he was not, for God took him.\" The book was composed in stages over several centuries and survives complete only in Ge'ez, the ancient language of Ethiopia.",
+        "Aramaic fragments of most sections were found among the Dead Sea Scrolls at Qumran, which shows how widely the book was read in Second Temple Judaism. Its picture of fallen angels, final judgment, and a heavenly \"Son of Man\" shaped early Christian thought, and the Epistle of Jude quotes it directly.",
+      ],
+      sections: [
+        ["1–36", "Book of the Watchers"],
+        ["37–71", "Book of Parables (Similitudes)"],
+        ["72–82", "Astronomical Book"],
+        ["83–90", "Book of Dream Visions"],
+        ["91–108", "Epistle of Enoch"],
+      ],
+      themes: [
+        ["The Watchers", "Angels who descend to Mount Hermon, take human wives, and teach forbidden arts."],
+        ["Final judgment", "God comes in judgment with \"ten thousands of His holy ones.\""],
+        ["Cosmic order", "Sun, moon, and stars keep their appointed courses, in contrast to human disobedience."],
+        ["The Son of Man", "A preexistent heavenly judge in the Book of Parables."],
+        ["The righteous and the wicked", "Blessing for the elect, curses for sinners."],
+      ],
+      related: [
+        { rel: "Expands", title: "Genesis 6:1–4", note: "The \"sons of God\" and the Nephilim" },
+        { rel: "Quoted in", title: "Jude 14–15", note: "Quotes 1 Enoch 1:9 almost word for word" },
+        { rel: "Echoed in", title: "2 Peter 2:4", note: "Angels cast into Tartarus, kept for judgment" },
+        { rel: "Shares tradition", title: "Book of Jubilees", note: "Retells the Watchers story", work: "jubilees" },
+        { rel: "Shares tradition", title: "Book of Giants", note: "Qumran companion text about the Watchers' sons" },
+      ],
+    },
+  },
+};
