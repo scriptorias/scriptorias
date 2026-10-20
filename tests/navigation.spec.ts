@@ -69,6 +69,13 @@ test.describe("navigation", () => {
     await expect(page.locator("#s-6\\.6")).toHaveClass(/sel/);
   });
 
+  test("the logo goes to the home page", async ({ page }) => {
+    await page.goto("/collections/early-christian");
+    await page.locator(".sidebar .brand").click();
+    await expect(page).toHaveURL("/home");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Welcome to Scriptorias");
+  });
+
   test("unreleased libraries show Coming Soon", async ({ page }) => {
     await page.goto("/library/judaism");
     await expect(page.locator(".soon-page")).toContainText("Coming soon");

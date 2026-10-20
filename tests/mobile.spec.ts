@@ -10,6 +10,9 @@ test.describe("mobile", () => {
     await expect(page).toHaveURL("/pathways");
     await expect(page.locator(".app")).not.toHaveClass(/drawer/);
 
+    await page.locator(".topbar .mark").click();
+    await expect(page).toHaveURL("/home");
+
     await page.goto("/works/didache/read/1");
     await expect(page.locator(".tabbar")).toBeHidden();
     await page.getByRole("button", { name: "Contents" }).click();

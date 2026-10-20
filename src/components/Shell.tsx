@@ -36,7 +36,7 @@ export function ShellFrame({ children }: { children: ReactNode }) {
     <DrawerContext.Provider value={{ toggle: () => setDrawer((d) => !d) }}>
       <div className={`app${drawer ? " drawer" : ""}`}>
         <aside className="sidebar" id="sidebar" aria-label="Site">
-          <Link className="brand" to="/">
+          <Link className="brand" to="/home">
             <span className="brand-name">Scriptorias<sup className="tm">™</sup></span>
             <span className="brand-sub">Discover Your Path</span>
           </Link>
@@ -85,7 +85,7 @@ export function Topbar({ back }: { back?: Back }) {
       {back ? (
         <Link className="back" to={back.to}><Icon name="left" />{back.label}</Link>
       ) : (
-        <Link className="mark" to="/">Scriptorias<sup className="tm">™</sup></Link>
+        <Link className="mark" to="/home">Scriptorias<sup className="tm">™</sup></Link>
       )}
       <button className="icon-btn" aria-label="Menu" onClick={toggle}><Icon name="more" /></button>
     </div>

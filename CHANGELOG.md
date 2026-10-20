@@ -9,6 +9,10 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+### Fixed
+- The Scriptorias logo (sidebar and mobile header) now opens the home page (`/home`) instead of
+  the Christianity library.
+
 ## [0.1.1] - 2026-10-20
 
 Maintenance release: accessibility, robustness, and release documentation. No new features,
