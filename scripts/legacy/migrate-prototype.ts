@@ -1,8 +1,10 @@
 /**
  * One-time migration of the prototype catalog (data/library.js) into /content.
- * Kept for the record; /content is the source of truth after this runs.
+ * Kept for the record; /content is the source of truth after this ran. The prototype files were
+ * removed afterwards; to re-run, extract them from the `prototype-v1` tag:
  *
- *   npx tsx scripts/legacy/migrate-prototype.ts
+ *   git show prototype-v1:data/library.js > /tmp/library.js
+ *   npx tsx scripts/legacy/migrate-prototype.ts /tmp/library.js
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -16,7 +18,7 @@ const out = (p: string, data: unknown) => {
 };
 
 const sandbox: any = { window: {} };
-vm.runInNewContext(fs.readFileSync(path.join(root, "data/library.js"), "utf8"), sandbox);
+vm.runInNewContext(fs.readFileSync(process.argv[2] ?? path.join(root, "data/library.js"), "utf8"), sandbox);
 const L = sandbox.window.LIBRARY;
 const SAMPLE = { status: "sample" as const, note: "Prototype sample content; not yet verified." };
 

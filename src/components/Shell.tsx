@@ -1,0 +1,117 @@
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { Link, Outlet, useLocation } from "react-router";
+import { traditions } from "../content/catalog";
+import { Icon } from "./Icon";
+
+const NAV: [string, string, string][] = [["home", "Home", "/home"], ["paths", "Pathways", "/pathways"], ["search", "Search", "/search"]];
+const FOOT: [string, string, string][] = [["settings", "Settings", "/settings"], ["about", "About", "/about"]];
+const TABBAR: [string, string, string | null][] = [["home", "Home", "/home"], ["library", "Library", "/"], ["paths", "Pathways", "/pathways"], ["search", "Search", "/search"], ["more", "More", null]];
+
+const DrawerContext = createContext<{ toggle: () => void }>({ toggle: () => {} });
+
+/** Which navigation item a path belongs to. */
+function activeFor(path: string): string {
+  const [first, second] = path.split("/").filter(Boolean);
+  if (!first) return "lib:christianity";
+  if (first === "library") return `lib:${second}`;
+  if (first === "collections" || first === "works") return "lib:christianity";
+  if (first === "pathways") return "paths";
+  return first;
+}
+
+export function Shell() {
+  const { pathname } = useLocation();
+  const [drawer, setDrawer] = useState(false);
+  const active = activeFor(pathname);
+  useEffect(() => setDrawer(false), [pathname]);
+
+  const tabActive = active.startsWith("lib:") ? "library" : active;
+  return (
+    <DrawerContext.Provider value={{ toggle: () => setDrawer((d) => !d) }}>
+      <div className={`app${drawer ? " drawer" : ""}`}>
+        <aside className="sidebar" id="sidebar">
+          <Link className="brand" to="/">
+            <span className="brand-name">Scriptorias<sup className="tm">™</sup></span>
+            <span className="brand-sub">Discover Your Path</span>
+          </Link>
+          <nav className="nav">
+            {NAV.map(([id, name, to]) => (
+              <Link key={id} to={to} className={active === id ? "on" : ""}><Icon name={id} />{name}</Link>
+            ))}
+          </nav>
+          <div className="nav-label">Libraries</div>
+          <nav className="nav">
+            {traditions().map((t) => (
+              <Link key={t.id} to={`/library/${t.id}`} className={`${active === "lib:" + t.id ? "on" : ""}${t.status === "live" ? "" : " off"}`}>
+                <Icon name={t.icon} />{t.name}
+              </Link>
+            ))}
+          </nav>
+          <nav className="nav nav-foot">
+            {FOOT.map(([id, name, to]) => (
+              <Link key={id} to={to} className={active === id ? "on" : ""}><Icon name={id} />{name}</Link>
+            ))}
+          </nav>
+        </aside>
+        <div className="scrim" id="scrim" onClick={() => setDrawer(false)} />
+        <main className="main" id="main"><Outlet /></main>
+        <nav className="tabbar">
+          {TABBAR.map(([icon, name, to]) =>
+            to ? (
+              <Link key={icon} to={to} className={tabActive === icon ? "on" : ""}><Icon name={icon} />{name}</Link>
+            ) : (
+              <a key={icon} href="#" onClick={(e) => { e.preventDefault(); setDrawer((d) => !d); }}><Icon name={icon} />{name}</a>
+            ),
+          )}
+        </nav>
+      </div>
+    </DrawerContext.Provider>
+  );
+}
+
+export interface Back { to: string; label: string }
+
+/** Mobile header: back link (or wordmark) and menu button. Hidden on desktop by CSS. */
+export function Topbar({ back }: { back?: Back }) {
+  const { toggle } = useContext(DrawerContext);
+  return (
+    <div className="topbar">
+      {back ? (
+        <Link className="back" to={back.to}><Icon name="left" />{back.label}</Link>
+      ) : (
+        <Link className="mark" to="/">Scriptorias<sup className="tm">™</sup></Link>
+      )}
+      <button className="icon-btn" aria-label="Menu" onClick={toggle}><Icon name="more" /></button>
+    </div>
+  );
+}
+
+/** Page wrapper with the mobile header. */
+export function Page({ back, className = "page", children }: { back?: Back; className?: string; children: ReactNode }) {
+  return (
+    <>
+      <Topbar back={back} />
+      <div className={className}>{children}</div>
+    </>
+  );
+}
+
+export function Hero({ title, tm = false }: { title: string; tm?: boolean }) {
+  return (
+    <div className="hero">
+      <h1>{title}{tm && <sup className="tm">™</sup>}</h1>
+      <hr className="hero-rule" />
+    </div>
+  );
+}
+
+export function Breadcrumb({ items, current }: { items: { to: string; label: string }[]; current: string }) {
+  return (
+    <nav className="breadcrumb" aria-label="Breadcrumb">
+      {items.map((i) => (
+        <span key={i.to} style={{ display: "contents" }}><Link to={i.to}>{i.label}</Link><Icon name="right" /></span>
+      ))}
+      <span aria-current="page">{current}</span>
+    </nav>
+  );
+}

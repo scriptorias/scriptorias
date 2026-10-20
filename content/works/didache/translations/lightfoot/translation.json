@@ -35,6 +35,7 @@
     "note": "Sample: chapters 1–3 of 16."
   },
   "italics": "Italic type follows Lightfoot, who set quotations of Scripture in italics.",
+  "numbering": "canonical",
   "verification": {
     "status": "sample",
     "note": "Sample text for interface review; not yet checked against the printed edition."

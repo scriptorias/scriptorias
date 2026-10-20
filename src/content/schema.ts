@@ -164,6 +164,8 @@ export const Translation = z.object({
   importer: z.object({ name: z.string(), raw: z.string(), sections: z.array(z.number().int()), options: z.record(z.unknown()).optional() }).optional(),
   coverage: z.object({ sections: z.array(z.number().int()), note: z.string().optional() }).optional(),
   italics: z.string().optional(),
+  /** Passage numbers shown in the reader: the source's own labels, or canonical verse numbers. */
+  numbering: z.enum(["source", "canonical"]).default("canonical"),
   verification: Verification,
 });
 export type Translation = z.infer<typeof Translation>;

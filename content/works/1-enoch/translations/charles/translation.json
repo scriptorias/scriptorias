@@ -79,6 +79,7 @@
     ],
     "note": "Sample: chapters 1–16 of 108."
   },
+  "numbering": "source",
   "verification": {
     "status": "sample",
     "note": "Sample text for interface review; not yet checked against the printed edition."
