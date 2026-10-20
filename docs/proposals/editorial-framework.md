@@ -1,11 +1,40 @@
 # Proposal: Editorial publishing framework (Phase 2)
 
-Status: **draft for review**. Nothing here is implemented yet.
+Status: **approved in principle (2026-10-20)**, revised with the publisher's decisions (§0). Nothing here is implemented yet.
 
 Goal: a rigorous, repeatable, lightweight way to publish historical texts that readers can trust.
 The Didache is the pilot. The process must scale to thousands of works across traditions without
 a separate editorial management system: content stays as JSON in git, review happens through
 pull requests, and the validator enforces the rules.
+
+---
+
+## 0. Decisions (publisher, 2026-10-20)
+
+- **Roles.** The project owner is the **publisher** and makes final publication decisions. I
+  (Consuelo) prepare research and verification evidence. Neither of us designates scholarly content
+  as fully verified without **qualified editorial review**. *Provisionally reviewed* material may be
+  published with transparent labelling.
+- **English translation:** Lightfoot & Harmer (1891) is preferred, subject to confirming the exact
+  edition and reproduction rights.
+- **Greek base text:** Bryennios (1883) is preferred and will be investigated, with Lake (1912) for
+  comparison. Availability, textual suitability, and rights to be confirmed before finalising.
+- **Transcription:** investigate transcribing public-domain page scans independently, to avoid
+  share-alike obligations from existing digitizations. Recommend a licence for our original
+  writing; rights decisions are not final without appropriate review.
+- **Verse divisions:** Holmes is an important modern reference where accessible. Disagreements
+  between editions are recorded, never silently resolved.
+- **Translations:** original wording and paragraphing are preserved. Where a sentence crosses a
+  verse boundary, alignment metadata handles it (one segment → several verses).
+- **Overviews:** concise, readable, and neutral. Established facts are presented prominently;
+  disputed interpretations go in clearly identified sections, with sources.
+- **Manuscript images:** link externally at first. Image permissions are not a prerequisite for the pilot.
+- **Didache 16:** clearly explain the textual ending and the manuscript evidence, without implying
+  more survives than does.
+- **Proportionate review** (§5): major textual verification and scholarly approval need qualified
+  human review; minor metadata or formatting corrections do not need two independent scholars.
+- **Separate dimensions** (§5): transcription fidelity, attribution and provenance, and scholarly
+  certainty of claims are tracked separately, not as one blanket status.
 
 ---
 
@@ -111,26 +140,46 @@ Rule: **a text can't be published with `rights.status` other than `cleared` or `
 
 ---
 
-## 5. Editorial status (replaces the current four values)
+## 5. Editorial status: separate dimensions, proportionate review
 
-| Status | Meaning | Label shown to readers | Exit criteria |
+One blanket status would mix up different questions. Each record answers only the ones that
+apply to it.
+
+| Dimension | Question | Values | Applies to |
 |---|---|---|---|
-| `placeholder` | Written for interface design; not research | "Placeholder" | must be replaced, never promoted |
-| `unverified` | Authentic material from a named source, not yet checked by us | "Unverified" | checks begun |
-| `reviewed` | Checked by one editor against cited evidence; open questions listed | "Provisionally reviewed" | second, independent review |
-| `verified` | Checked by two people (one an approving editor), evidence recorded, no open questions | (no badge; this is the default for published material) | — |
+| **Content kind** | Is this real material or a design placeholder? | `placeholder` / `authentic` | everything |
+| **Transcription** | Does our text match the named printed edition exactly? | `unchecked` → `proofread` (one documented pass against page scans) → `editor-reviewed` (qualified reviewer) | texts, alignments, verse tables |
+| **Provenance** | Are the edition, pages, translator/editor attribution, and rights correctly identified? | `recorded` → `confirmed` (checked against scans and catalogue records; rights decided by the publisher after any required review) | translations, editions, sources, manuscript records |
+| **Claim review** | Has a historical statement been checked against its cited sources? | `draft` → `reviewed` → `approved` (qualified reviewer) | facts, background paragraphs, notes, connections |
 
-- The status applies to each record: a text, an alignment, a fact, a paragraph, a note, a
-  manuscript record. A work's displayed status is the *lowest* status of its required parts.
-- Mapping from today: the overviews and notes I wrote (`sample`) → `placeholder`; the Lightfoot
-  and Charles texts → `unverified`; the Didache ch. 1 alignment (`proposed`) → `reviewed` only after
-  you or an editor confirm the Lake/Greek cross-check, otherwise `unverified`.
-- Review entries record who reviewed, when, against what, and the result. The merged pull request
-  is the approval record; the JSON keeps a summary so it survives outside GitHub.
+Separately from review status, each claim keeps its existing `basis` (`established` / `disputed`
+/ `unknown`) for *scholarly certainty*. A claim can be fully approved and still be marked
+disputed, because that's what the scholarship says.
 
-Validator rules: `verified` requires ≥2 reviews by different people with evidence; a published
-work may not contain `placeholder` records; every published fact and paragraph needs at least one
-citation with a locator.
+**Reader-facing labels (no redesign; existing badge style):**
+- `placeholder` → "Placeholder" (never published as content).
+- Published, not yet editor-reviewed or approved → "Provisionally reviewed".
+- Fully reviewed → no badge. The colophon and overview still show the evidence.
+- Disputed claims stay in their labelled *Disputed* sections regardless of review status.
+
+**Proportionate review tiers:**
+
+| Tier | Examples | Who must approve |
+|---|---|---|
+| **A: Scholarly and textual** | transcription and verse divisions, alignment, dates, authorship, origin, interpretations, manuscript descriptions | qualified editorial reviewer for `editor-reviewed` / `approved`; the publisher decides whether provisionally reviewed material is published |
+| **B: Editorial / metadata** | typos in our own prose, links, catalogue numbers already evidenced, formatting, blurbs | one review (publisher or maintainer) via pull request |
+| **C: Mechanical** | validator-checked changes, regenerated outputs, renames with aliases | CI plus the usual merge approval |
+
+Review entries record who, when, which tier, against what evidence, and the result. The merged
+pull request is the approval record; the JSON keeps a summary.
+
+Validator rules: no `placeholder` in published works; published texts need provenance
+`confirmed` with rights cleared; published claims need at least one citation with a locator;
+`editor-reviewed` / `approved` need a review entry from someone listed as a qualified reviewer.
+
+Mapping from today: the overviews and notes I wrote → `placeholder`; Lightfoot and Charles texts →
+`authentic`, transcription `unchecked`, provenance `recorded`; Didache ch. 1 alignment →
+`proofread` (the Lake/Greek cross-check), awaiting editor review.
 
 ---
 
@@ -186,30 +235,16 @@ pages), and an optional `copyright` note. Citations become `{ source, locator }`
 
 ## 9. Questions that need human judgment
 
-1. **Editors and approval.** Who can sign off as editor or reviewer, and what qualifies someone
-   (credentials or demonstrated competence)? I can do automated checks and first-pass review, but I
-   shouldn't be the approving editor for `verified`.
-2. **Base translation(s).** Lightfoot & Harmer (1891) as the reading text? Also Roberts–Donaldson
-   (ANF) or Hoole for comparison?
-3. **Greek base text.** Which public-domain Greek edition do we publish: Bryennios 1883 (editio
-   princeps), Hitchcock & Brown 1884, Schaff 1885, or Lake 1912? Lake is the most convenient (and
-   matches our chapter 1 cross-check); Bryennios is the most historically primary.
-4. **Licensing of our own work.** What license do we give our overviews, notes, and alignments
-   (e.g. CC BY 4.0, CC BY-SA 4.0, or all rights reserved)? And is CC BY-SA *share-alike* acceptable
-   for texts derived from Wikisource, or should we transcribe from page scans ourselves to avoid
-   it? **I recommend a short review by someone qualified in copyright,** especially for
-   non-US jurisdictions.
-5. **Verse-scheme authority.** Which modern edition is the arbiter when editions disagree
-   (Holmes is the most widely cited in English)? It must be consulted directly; I couldn't access it.
-6. **Segmenting translations by verse.** Lightfoot's sentences sometimes cross verse boundaries.
-   May we split segments at verse breaks (a documented editorial intervention), or must we keep the
-   translator's paragraphing and map one segment to several verses?
-7. **Presentation of disputes.** How much scholarly debate belongs on an overview page, and how to
-   treat minority positions.
-8. **Manuscript images.** Image rights belong to the holding institutions (e.g. the Greek Orthodox
-   Patriarchate of Jerusalem for H54). Seek permission, link out, or neither for now?
-9. **The Didache's ending.** H54 breaks off at 16.8; some scholars reconstruct a lost ending from
-   the Apostolic Constitutions and the Georgian version. We should note this, but how prominently?
+Answered by the publisher (§0): roles and sign-off; base translation (Lightfoot & Harmer 1891);
+Greek base text (investigate Bryennios 1883, compare Lake 1912); Holmes as the modern reference;
+preserving translators' paragraphing; overview style; linking to manuscript images; explaining
+the Didache's ending.
+
+Still open:
+1. **Qualified reviewer.** Who will do Tier A review for the Didache (an academic in early
+   Christian literature or Greek, or another named reviewer)?
+2. **Licences** for our own writing and data (recommendation in the source report; needs review).
+3. The specific source and rights questions in `docs/proposals/didache-sources.md`.
 
 ---
 
@@ -217,7 +252,7 @@ pages), and an optional `copyright` note. Citations become `{ source, locator }`
 
 | Step | Work | Output | Who |
 |---|---|---|---|
-| 0 | Decide §9 Q1–Q6 | decisions recorded in `docs/decisions` | you / editor |
+| 0 | Approve sources (see didache-sources.md); name a qualified reviewer | decisions recorded | publisher |
 | 1 | Locate page scans for the chosen translation and Greek edition; record exact editions and pages | `sources.json` entries with editions and locators; raw snapshots + checksums | me |
 | 2 | Clear rights for each layer | `rights` blocks; review note | me draft → you/legal decide |
 | 3 | Import all 16 chapters (translation + Greek) from snapshots | `text.json` for both, still `unverified` | me |
@@ -228,11 +263,11 @@ pages), and an optional `copyright` note. Citations become `{ source, locator }`
 | 8 | Replace placeholder overview with cited research | `overview.json` with citations and locators; disputes as positions | me draft → editor |
 | 9 | Manuscript records with catalog ids, dates, sources, image status | `manuscripts.json` | me → editor |
 | 10 | Notes and connections with sources (parallels, Two Ways, Barnabas, Apostolic Constitutions) | `notes.json`, `connections.json` | me → editor |
-| 11 | Second review, then verified sign-off | review entries; status `verified` where earned | reviewer + editor |
-| 12 | Release (dev → preview → approval → v0.2.0) | Didache published; anything not verified stays labelled | you approve |
+| 11 | Qualified editorial review (Tier A) | review entries; `editor-reviewed` / `approved` where earned | qualified reviewer |
+| 12 | Release (dev → preview → approval → v0.2.0) | Didache published; anything not fully reviewed is labelled *Provisionally reviewed* | publisher |
 
-Readers see progress honestly throughout: chapters can ship as `reviewed` ("Provisionally
-reviewed") before everything is `verified`, if you choose.
+Readers see progress honestly throughout: chapters can ship as *Provisionally reviewed* before
+Tier A review is complete, if the publisher chooses.
 
 Effort: steps 1–4 and 6–7 are mostly automatable (a few sessions of my time). Steps 5, 8, and 11
 need human scholarly time, roughly a few hours of proofreading for a text this short, plus
@@ -242,12 +277,12 @@ review of the overview research.
 
 ## 11. Implementation sequence (after approval)
 
-1. **Schema (small, backward-compatible):** new status vocabulary + migration of existing records;
-   `checks`/`reviews` on verification; `{source, locator}` citations; source `role` and `edition`
+1. **Schema (small, backward-compatible):** the three status dimensions (§5) + migration of existing
+   records; `checks`/`reviews` with review tier; `{source, locator}` citations; source `role` and `edition`
    fields; `rights` block; translation `version` + `revisions.json`; `refAliases`; `genre` and
    canonical status per tradition.
-2. **Validator rules:** publish gates (rights cleared, no placeholders, citations with locators,
-   `verified` needs two reviews).
+2. **Validator rules:** publish gates (provenance confirmed with rights cleared, no placeholders,
+   citations with locators, Tier A statuses need a qualified reviewer's entry).
 3. **Reports:** a script that generates the transcription-difference and divisions reports as
    Markdown for proofreading. No editing UI.
 4. **Interface (labels only):** map the four statuses to the existing badge styles; link the
