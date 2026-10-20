@@ -147,9 +147,8 @@ function pathCards() {
 }
 
 function viewPaths() {
-  return `${topbar()}<div class="page"><h1>Pathways</h1>
-    <p class="lede full-lede">Curated reading journeys that follow one idea, figure, or story across texts and centuries.</p>
-    <div style="margin-top:28px">${pathCards()}</div></div>`;
+  return `${topbar()}<div class="page"><div class="hero"><h1>Explore Pathways</h1><hr class="hero-rule" /></div>
+    <div style="margin-top:44px">${pathCards()}</div></div>`;
 }
 
 function viewPath(id) {
