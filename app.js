@@ -27,6 +27,10 @@ const ICONS = {
   left: '<path d="m15 6-6 6 6 6"/>',
   down: '<path d="m6 9 6 6 6-6"/>',
   more: '<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
+  close: '<path d="M6 6l12 12M18 6 6 18"/>',
+  contents: '<path d="M4 6h16M4 12h16M4 18h10"/>',
+  type: '<path d="M4 19 9 5l5 14M5.8 14h6.4"/><path d="M15 19l3-8 3 8M15.9 16.5h4.2"/>',
+  quote: '<path d="M7 17c-2 0-3-1.5-3-3.5C4 10 6 7.5 9 7M17 17c-2 0-3-1.5-3-3.5 0-3.5 2-6 5-6.5"/>',
   library: '<path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6v14"/>',
 };
 const icon = (n) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
@@ -37,9 +41,6 @@ const store = {
   get: (k, d) => { try { return JSON.parse(localStorage.getItem("sc." + k)) ?? d; } catch { return d; } },
   set: (k, v) => localStorage.setItem("sc." + k, JSON.stringify(v)),
 };
-const SIZES = [16, 18, 20, 23];
-const applySize = () => document.documentElement.style.setProperty("--read-size", SIZES[store.get("size", 1)] + "px");
-applySize();
 
 // ---------- Catalog lookup ----------
 const trad = L.christianity;
@@ -274,7 +275,7 @@ function viewWork(id) {
   if (!f) return viewMissing();
   const w = f.work;
   const facts = w.facts || derivedFacts(w);
-  const hasText = Boolean(w.text && TEXTS[w.text]);
+  const hasText = Boolean(TEXTS[w.text || id]);
   const readTarget = w.parts ? null : `#/w/${id}/read`;
 
   const factList = facts.length
@@ -293,12 +294,22 @@ function viewWork(id) {
   const structure = w.structure
     ? `<div class="ov-list">${w.structure.map(([r, t]) => `<div class="ov-item"><span class="ov-range">${esc(r)}</span><b>${esc(t)}</b></div>`).join("")}</div>`
     : "";
+  // Manuscripts open a record page (placeholder until records exist); editions with a text open the reader.
   const manuscripts = w.manuscripts
-    ? `<div class="ov-list">${w.manuscripts.map((m) => `<div class="ov-item"><div><b>${esc(m.name)}</b><span>${esc(m.note)}</span></div><span class="ov-date">${esc(m.date)}</span></div>`).join("")}</div>`
+    ? `<div class="ov-list">${w.manuscripts.map((m) => `<a class="ov-item link" href="#/w/${id}/ms/${esc(m.id)}"><div><b>${esc(m.name)}</b><span>${esc(m.note)}</span></div><span class="ov-date">${esc(m.date)}</span>${icon("right")}</a>`).join("")}</div>`
     : "";
   const editions = w.editions
-    ? `<div class="ov-list">${w.editions.map((e) => `<div class="ov-item"><div><b>${esc(e.title)}</b><span>${esc(e.detail)}</span></div><span class="ov-status ${e.status}">${e.status === "available" ? "Available" : "Planned"}</span></div>`).join("")}</div>`
+    ? `<div class="ov-list">${w.editions.map((e) => {
+        const inner = `<div><b>${esc(e.title)}</b><span>${esc(e.detail)}</span></div><span class="ov-status ${e.status}">${e.status === "available" ? "Read" : "Planned"}</span>`;
+        return e.text ? `<a class="ov-item link" href="#/w/${id}/read" data-tr="${esc(id)}:${esc(e.text)}">${inner}${icon("right")}</a>` : `<div class="ov-item">${inner}</div>`;
+      }).join("")}</div>`
     : "";
+  const sources = w.sources
+    ? `${w.sources.text ? `<div class="src-group"><h3>Text</h3><ul>${w.sources.text.map((t) => `<li>${t.href ? `<a href="${esc(t.href)}" target="_blank" rel="noopener">${esc(t.label)}</a>` : esc(t.label)}</li>`).join("")}</ul></div>` : ""}
+       ${(w.sources.groups || []).map((g) => `<div class="src-group"><h3>${esc(g.title)}</h3>${g.items.length
+         ? `<ul>${g.items.map((i) => `<li>${esc(i.citation)}</li>`).join("")}</ul>`
+         : `<p class="src-placeholder">Placeholder · awaiting verified sources</p>`}</div>`).join("")}`
+    : `<p class="src-placeholder">Placeholder · sources for this work have not yet been compiled</p>`;
   const connections = w.connections
     ? `<div class="ov-list">${w.connections.map((c) => {
         const inner = `<div><span class="ov-rel">${esc(c.rel)}${c.disputed ? " · disputed" : ""}</span><b>${esc(c.title)}</b><span>${esc(c.note)}</span></div>${c.work ? icon("right") : ""}`;
@@ -324,61 +335,34 @@ function viewWork(id) {
         ${section("Manuscripts &amp; preservation", manuscripts)}
         ${section("Translations &amp; editions", editions)}
         ${section("Connections", connections)}
+        <section class="ov-section ov-sources"><h2>Sources &amp; further reading</h2>${sources}</section>
         <p class="legend"><b>Disputed</b> scholars disagree&ensp;·&ensp;<b>Scholarly interpretation</b> a reading of the evidence, not settled fact${w.sample ? "&ensp;·&ensp;Sample content is placeholder research awaiting verification." : ""}</p>
       </div>
     </div>
   </div>`;
 }
 
-// Reader: kept for works that already have text (1 Enoch). Other works show a placeholder until the reading interface is designed.
-function viewReader(id, ch, v) {
+function viewManuscript(id, msId) {
   const f = findWork(id);
-  if (!f) return viewMissing();
-  const w = f.work;
-  const text = w.text && TEXTS[w.text];
-  const back = { href: `#/w/${id}`, label: w.title };
-  if (!text) {
-    return `${topbar(back)}<div class="soon-page"><h1>${esc(w.title)}</h1><p>Reading view coming soon</p><a class="crumb-link" href="#/w/${id}">${icon("left")}Back to overview</a></div>`;
-  }
-  const chapters = text.chapters;
-  const chn = Math.min(Math.max(1, Number(ch) || store.get("pos." + id, 1)), chapters.length);
-  const chap = chapters[chn - 1];
-  store.set("pos." + id, chn);
-  store.set("last", { work: id, ch: chn });
-  const marked = store.get("bookmarks", []).some((b) => b.work === id && b.ch === chn);
-  return `${topbar(back)}<div class="page reading">${crumb(back)}
-    <div class="work-head"><h1>${esc(w.title)}</h1></div>
-    <div class="reader">
-      <div class="toolbar">
-        <label class="select"><select data-chapter aria-label="Chapter">${chapters.map((c) => `<option value="${c.n}" ${c.n === chn ? "selected" : ""}>Chapter ${c.n}</option>`).join("")}</select>${icon("down")}</label>
-        <button class="icon-btn aa" data-size aria-label="Text size">A<small>A</small></button>
-        <button class="icon-btn ${marked ? "on" : ""}" data-bookmark="${chn}" aria-label="Bookmark">${icon("bookmark")}</button>
-        <button class="icon-btn" data-share aria-label="Copy link">${icon("more")}</button>
-      </div>
-      <article class="chapter">
-        <h2>Chapter ${chn}</h2>
-        <p class="sub">${esc(chap.title)}</p>
-        ${chap.verses.map((vs) => `<div class="verse${vs.stanza ? " stanza" : ""}${String(vs.n) === String(v) ? " hl" : ""}" id="v${esc(vs.n)}"><span class="vn">${esc(vs.n)}</span><div>${vs.lines
-          .map((l) => (typeof l === "string" ? `<span class="ln">${esc(l)}</span>` : `<span class="ln stanza">${esc(l.t)}</span>`))
-          .join("")}</div></div>`).join("")}
-      </article>
-      <div class="pager">
-        ${chn > 1 ? `<a href="${readHref(id, chn - 1)}">${icon("left")}Chapter ${chn - 1}</a>` : ""}
-        ${chn < chapters.length ? `<a class="next" href="${readHref(id, chn + 1)}">Chapter ${chn + 1}${icon("right")}</a>` : ""}
-      </div>
-      <p class="attrib">Translation: ${esc(text.translation)}. Public domain. Chapters 1–${chapters.length} of 108 are available in this preview.</p>
-    </div>
+  const m = f?.work.manuscripts?.find((x) => x.id === msId);
+  if (!m) return viewMissing();
+  const back = { href: `#/w/${id}`, label: f.work.title };
+  return `${topbar(back)}<div class="page overview">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="#/c/${f.col.id}">${esc(f.col.title)}</a>${icon("right")}<a href="#/w/${id}">${esc(f.work.title)}</a>${icon("right")}<span aria-current="page">Manuscripts</span></nav>
+    <header class="ov-head"><span class="sample">Placeholder record</span><h1>${esc(m.name)}</h1><p class="ov-aka">${esc(m.date)}</p><p class="lede wide-lede">${esc(m.note)}</p></header>
+    <div class="empty" style="margin-top:36px"><b>Detailed record in preparation.</b>Provenance, contents, and images (where legally usable) will appear here. No images or catalog links have been sourced yet.</div>
   </div>`;
 }
 
 function searchIndex() {
   const out = [];
   trad.collections.forEach((c) => c.works.forEach((w) => out.push({ kind: "work", title: w.title, sub: `${c.title} · ${w.blurb}`, href: `#/w/${w.id}` })));
-  for (const [id, t] of Object.entries(TEXTS)) {
-    const w = findWork(id);
-    t.chapters.forEach((ch) => ch.verses.forEach((v) => {
-      const s = v.lines.map((l) => (typeof l === "string" ? l : l.t)).join(" ");
-      out.push({ kind: "verse", title: `${w.work.title} ${ch.n}:${v.n}`, sub: s, href: readHref(id, ch.n, v.n) });
+  for (const id of Object.keys(TEXTS)) {
+    const t = readerText(id), w = findWork(id);
+    const tr = t.translations[t.default];
+    tr.sections.forEach((sec) => sec.passages.forEach((p) => {
+      const text = p.runs ? p.runs.map((r) => r.t).join("") : p.lines.map((l) => (typeof l === "string" ? l : l.t)).join(" ");
+      out.push({ kind: "verse", title: `${w.work.title} ${sec.n}.${p.n}`, sub: text, href: readHref(id, sec.n, p.n) });
     }));
   }
   return out;
@@ -404,12 +388,12 @@ function viewSearch(q = "") {
 }
 
 function viewBookmarks() {
-  const bs = store.get("bookmarks", []);
+  const bs = rdBookmarks();
   return `${topbar()}<div class="page"><h1>Bookmarks</h1>
     ${bs.length ? `<div class="rows" style="margin-top:24px">${bs.map((b, i) => {
       const w = findWork(b.work);
-      return `<a class="row" href="${readHref(b.work, b.ch)}"><span class="n">${i + 1}</span><div><h4>${esc(w.work.title)} · Chapter ${b.ch}</h4><p>${esc(TEXTS[b.work].chapters[b.ch - 1].title)}</p></div><span class="chev">${icon("right")}</span></a>`;
-    }).join("")}</div>` : `<div class="empty"><b>No bookmarks yet.</b>Tap the bookmark icon while reading to save your place.</div>`}</div>`;
+      return `<a class="row" href="${readHref(b.work, b.ch, b.n)}"><span class="n">${i + 1}</span><div><h4>${esc(w.work.title)} ${b.ch}${b.n ? "." + esc(b.n) : ""}</h4><p>${b.n ? "Passage" : "Chapter"} bookmark</p></div><span class="chev">${icon("right")}</span></a>`;
+    }).join("")}</div>` : `<div class="empty"><b>No bookmarks yet.</b>Bookmark a chapter or passage while reading to save your place.</div>`}</div>`;
 }
 
 const SOON = {
@@ -442,7 +426,7 @@ function route() {
   else if (r === "home") { html = viewHome(); active = "home"; }
   else if (r === "library") { html = viewLibrary(a, b); active = "lib:" + a; }
   else if (r === "c") html = viewCollection(a);
-  else if (r === "w") html = b === "read" ? viewReader(a, c, d) : viewWork(a);
+  else if (r === "w") html = b === "read" ? viewReader(a, c, d) : b === "ms" ? viewManuscript(a, c) : viewWork(a);
   else if (r === "path" || r === "paths") { html = a ? viewPath(a) : viewPaths(); active = "paths"; }
   else if (r === "search") { html = viewSearch(a || ""); active = "search"; }
   else if (r === "bookmarks") { html = viewBookmarks(); active = "bookmarks"; }
@@ -450,12 +434,14 @@ function route() {
   else if (SOON[r]) { html = viewSoon(r); active = r; }
   else html = viewMissing();
 
+  const reading = r === "w" && b === "read" && html.startsWith('<div class="rd"');
+  document.body.classList.toggle("reading", reading);
+  if (!reading) document.body.classList.remove("reading-dark");
   renderShell(active);
   const main = document.getElementById("main");
   main.innerHTML = html;
-  const hl = main.querySelector(".verse.hl");
-  if (hl) hl.scrollIntoView({ block: "center" });
-  else window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
+  if (reading) mountReader();
   const q = document.getElementById("q");
   if (q && !("ontouchstart" in window)) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
   document.title = (main.querySelector("h1")?.textContent || "Scriptorias") + " — Scriptorias";
@@ -467,10 +453,6 @@ document.addEventListener("input", (e) => {
     history.replaceState(null, "", "#/search/" + encodeURIComponent(e.target.value));
   }
 });
-document.addEventListener("change", (e) => {
-  const sel = e.target.closest("[data-chapter]");
-  if (sel) location.hash = readHref(location.hash.split("/")[2], sel.value);
-});
 document.addEventListener("click", (e) => {
   const db = e.target.closest("[data-debated]");
   if (db) {
@@ -480,20 +462,6 @@ document.addEventListener("click", (e) => {
   }
   const so = e.target.closest("[data-sort]");
   if (so) { store.set("sort", so.dataset.sort); route(); return; }
-  if (e.target.closest("[data-size]")) {
-    store.set("size", (store.get("size", 1) + 1) % SIZES.length);
-    applySize();
-  }
-  const bm = e.target.closest("[data-bookmark]");
-  if (bm) {
-    const work = location.hash.split("/")[2], ch = Number(bm.dataset.bookmark);
-    let bs = store.get("bookmarks", []);
-    const had = bs.some((b) => b.work === work && b.ch === ch);
-    bs = had ? bs.filter((b) => !(b.work === work && b.ch === ch)) : [...bs, { work, ch }];
-    store.set("bookmarks", bs);
-    bm.classList.toggle("on", !had);
-    toast(had ? "Bookmark removed" : "Bookmarked");
-  }
   if (e.target.closest("[data-share]")) {
     navigator.clipboard?.writeText(location.href).then(() => toast("Link copied"), () => toast(location.href));
   }
@@ -501,12 +469,8 @@ document.addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   if (e.key === "/" && !typing) { e.preventDefault(); location.hash = "#/search"; }
-  const pager = document.querySelector(".pager");
-  if (pager && !typing && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
-    const a = e.key === "ArrowRight" ? pager.querySelector(".next") : pager.querySelector("a:not(.next)");
-    if (a) location.hash = a.getAttribute("href");
-  }
 });
 
 window.addEventListener("hashchange", route);
-route();
+// reader.js loads after this file, so the first render waits for all scripts.
+document.addEventListener("DOMContentLoaded", route);

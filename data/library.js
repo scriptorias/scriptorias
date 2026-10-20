@@ -72,7 +72,7 @@ window.LIBRARY = {
         count: "8 works",
         sample: true,
         works: [
-          { id: "didache", title: "The Didache", author: { basis: "anonymous" }, date: { label: "c. 50–120 CE", sort: 85, debated: true },
+          { id: "didache", title: "The Didache", text: "didache", author: { basis: "anonymous" }, date: { label: "c. 50–120 CE", sort: 85, debated: true },
             blurb: "A short church manual on ethics, baptism, fasting, and the Eucharist." },
           { id: "1-clement", title: "1 Clement", author: { name: "Clement of Rome", basis: "traditional" }, date: { label: "c. 96 CE", sort: 96 },
             blurb: "A letter from the church in Rome urging the Corinthians to restore their deposed leaders." },
@@ -189,16 +189,18 @@ window.LIBRARY = {
         ["11–15", "Teachers, prophets, and community leadership"],
         ["16", "Watchfulness and the last days"],
       ],
+      // Manuscripts and editions are interactive: `record` will hold a detailed manuscript record
+      // (images only where legally usable); `text` names a translation in TEXTS.didache.
       manuscripts: [
-        { name: "Codex Hierosolymitanus 54", date: "1056 CE", note: "The only complete Greek text, rediscovered in 1873." },
-        { name: "Oxyrhynchus Papyrus 1782", date: "4th century", note: "Greek fragments of the opening chapters." },
-        { name: "Coptic fragment, British Library Or. 9271", date: "c. 5th century", note: "A Coptic version of part of the later chapters." },
-        { name: "Apostolic Constitutions, Book 7", date: "4th century", note: "A later church order that reworks much of the Didache." },
+        { id: "hierosolymitanus-54", name: "Codex Hierosolymitanus 54", date: "1056 CE", note: "The only complete Greek text, rediscovered in 1873.", record: null },
+        { id: "p-oxy-1782", name: "Oxyrhynchus Papyrus 1782", date: "4th century", note: "Greek fragments of the opening chapters.", record: null },
+        { id: "bl-or-9271", name: "Coptic fragment, British Library Or. 9271", date: "c. 5th century", note: "A Coptic version of part of the later chapters.", record: null },
+        { id: "apostolic-constitutions-7", name: "Apostolic Constitutions, Book 7", date: "4th century", note: "A later church order that reworks much of the Didache.", record: null },
       ],
       editions: [
-        { title: "Philotheos Bryennios", detail: "First printed edition of the Greek text, 1883", status: "planned" },
-        { title: "J. B. Lightfoot & J. R. Harmer", detail: "The Apostolic Fathers, English translation, 1891 · public domain", status: "planned" },
-        { title: "Kirsopp Lake", detail: "The Apostolic Fathers (Loeb), Greek and English, 1912 · public domain", status: "planned" },
+        { id: "lightfoot", title: "J. B. Lightfoot", detail: "The Apostolic Fathers, English translation, 1891 · public domain · chapters 1–3 in this sample", status: "available", text: "lightfoot" },
+        { id: "bryennios", title: "Philotheos Bryennios", detail: "First printed edition of the Greek text, 1883", status: "planned" },
+        { id: "lake", title: "Kirsopp Lake", detail: "The Apostolic Fathers (Loeb), Greek and English, 1912 · public domain", status: "planned" },
       ],
       connections: [
         { rel: "Parallels", title: "Gospel of Matthew", note: "Shares the Lord's Prayer and several sayings of Jesus.", disputed: true },
@@ -206,9 +208,28 @@ window.LIBRARY = {
         { rel: "Shared tradition", title: "Doctrina Apostolorum", note: "A Latin version of the Two Ways teaching." },
         { rel: "Reworked in", title: "Apostolic Constitutions", note: "Book 7 adapts much of the Didache into a later church order." },
       ],
+      // Sources & further reading. Each group lists the claims it supports; `items` stay empty until verified.
+      sources: {
+        text: [{ label: "J. B. Lightfoot, The Apostolic Fathers (1891), Didache translation, via Wikisource", href: "https://en.wikisource.org/wiki/Didache_(Lightfoot_translation)" }],
+        groups: [
+          { title: "Composition date", items: [] },
+          { title: "Authorship and place of origin", items: [] },
+          { title: "Manuscripts and rediscovery", items: [] },
+          { title: "Scholarly interpretations", items: [] },
+        ],
+      },
+      // Reader notes keyed by passage reference ("didache.1" applies to the whole chapter).
+      notes: {
+        "didache.1": [{ kind: "Connection", title: "Epistle of Barnabas 18–20", note: "Another form of the Two Ways teaching.", work: "barnabas" }],
+        "didache.1.3": [{ kind: "Parallel", title: "Matthew 22:37–39", note: "Love of God and of neighbor." }],
+        "didache.1.5": [{ kind: "Parallel", title: "Matthew 7:12; Luke 6:31", note: "Compare the Golden Rule, here in negative form." }],
+        "didache.1.7": [{ kind: "Parallel", title: "Matthew 5:44; Luke 6:27–28", note: "Blessing those who curse and praying for enemies." }],
+        "didache.1.10": [{ kind: "Parallel", title: "Matthew 5:39–41; Luke 6:29", note: "The other cheek and the second mile." }],
+      },
     },
 
     "1-enoch": {
+      totalSections: 108,
       intro: "A collection of apocalyptic writings attributed to Enoch, the great-grandfather of Noah, composed in stages over several centuries and preserved complete only in Ge'ez.",
       facts: [
         { label: "Composed", value: "c. 300 BCE – 1st century CE, in stages", basis: "established" },
@@ -230,7 +251,7 @@ window.LIBRARY = {
         ["91–108", "Epistle of Enoch"],
       ],
       editions: [
-        { title: "R. H. Charles", detail: "The Book of Enoch, English translation, 1912 · public domain · chapters 1–16 in this preview", status: "available" },
+        { id: "charles", title: "R. H. Charles", detail: "The Book of Enoch, English translation, 1912 · public domain · chapters 1–16 in this preview", status: "available", text: "main" },
       ],
       connections: [
         { rel: "Expands", title: "Genesis 6:1–4", note: "The \"sons of God\" and the Nephilim." },

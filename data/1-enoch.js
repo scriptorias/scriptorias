@@ -2,6 +2,8 @@ window.TEXTS = window.TEXTS || {};
 // R. H. Charles, The Book of Enoch (Oxford, 1912). Public domain. Source: Wikisource.
 window.TEXTS["1-enoch"] = {
  "translation": "R. H. Charles (1912)",
+ "label": "R. H. Charles",
+ "detail": "The Book of Enoch (1912)",
  "chapters": [
   {
    "n": 1,
