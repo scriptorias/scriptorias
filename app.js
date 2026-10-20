@@ -237,68 +237,138 @@ function viewCollection(id) {
   </div>`;
 }
 
-const WORK_TABS = [["read", "Read"], ["about", "About"], ["themes", "Themes"], ["related", "Related"]];
+// ---------- Work overview (reusable for every work) ----------
+// Overview data lives in L.works[id]; every field is optional:
+//   sample        true → shows a "Sample content" label (unverified research)
+//   aka           alternate title, e.g. "The Teaching of the Twelve Apostles"
+//   intro         one or two sentences under the title
+//   facts         [{ label, value, basis: "established" | "disputed" | "unknown" }]
+//   background    [{ text, kind: "fact" | "interpretation" }]
+//   structure     [[range, title]]
+//   manuscripts   [{ name, date, note }]
+//   editions      [{ title, detail, status: "available" | "planned" }]
+//   connections   [{ rel, title, note, work?, disputed? }]
+// Works without overview data fall back to their collection metadata.
+const BASIS = { disputed: "Disputed", unknown: "Unknown" };
 
-function viewWork(id, tab, ch, v) {
+function workCrumbs(f) {
+  const items = [["#/library/christianity", "Christianity"], [`#/c/${f.col.id}`, f.col.title]];
+  if (f.parent) items.push([`#/w/${f.parent.id}`, f.parent.title]);
+  return `<nav class="breadcrumb" aria-label="Breadcrumb">${items.map(([h, t]) => `<a href="${h}">${esc(t)}</a>${icon("right")}`).join("")}<span aria-current="page">${esc(f.work.title)}</span></nav>`;
+}
+const workBack = (f) => (f.parent ? { href: `#/w/${f.parent.id}`, label: f.parent.title } : { href: `#/c/${f.col.id}`, label: f.col.title });
+
+function derivedFacts(w) {
+  const out = [];
+  if (w.date) out.push({ label: "Composed", value: w.date.label, basis: w.date.debated ? "disputed" : "established" });
+  if (w.author) out.push({ label: "Authorship", value: AUTHOR_LABEL[w.author.basis](w.author), basis: w.author.basis === "known" ? "established" : "disputed", html: true });
+  return out;
+}
+
+function section(title, body) {
+  return body ? `<section class="ov-section"><h2>${title}</h2>${body}</section>` : "";
+}
+
+function viewWork(id) {
   const f = findWork(id);
   if (!f) return viewMissing();
-  const { work, col, ci } = f;
-  const text = work.text && TEXTS[work.text];
-  tab = tab || (text ? "read" : "about");
-  const back = { href: `#/c/${col.id}`, label: col.title };
-  const tabs = `<div class="utabs">${WORK_TABS.map(([k, n]) => `<a href="#/w/${id}/${k}" class="${tab === k ? "on" : ""}">${n}</a>`).join("")}</div>`;
-  const head = `<div class="work-head"><div class="head-row"><h1>${esc(work.title)}</h1></div>
-    ${work.tags ? `<div class="tags">${work.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>`;
+  const w = f.work;
+  const facts = w.facts || derivedFacts(w);
+  const hasText = Boolean(w.text && TEXTS[w.text]);
+  const readTarget = w.parts ? null : `#/w/${id}/read`;
 
-  let body = "";
-  if (tab === "read") {
-    if (!text) {
-      body = `<div class="empty"><b>The text is on its way.</b>${esc(work.blurb)}. We're preparing a public-domain edition of this work.</div>`;
-    } else {
-      const chapters = text.chapters;
-      const chn = Math.min(Math.max(1, Number(ch) || store.get("pos." + id, 1)), chapters.length);
-      const chap = chapters[chn - 1];
-      store.set("pos." + id, chn);
-      store.set("last", { work: id, ch: chn });
-      const marked = store.get("bookmarks", []).some((b) => b.work === id && b.ch === chn);
-      body = `<div class="reader">
-        <div class="toolbar">
-          <label class="select"><select data-chapter aria-label="Chapter">${chapters.map((c) => `<option value="${c.n}" ${c.n === chn ? "selected" : ""}>Chapter ${c.n}</option>`).join("")}</select>${icon("down")}</label>
-          <button class="icon-btn aa" data-size aria-label="Text size">A<small>A</small></button>
-          <button class="icon-btn ${marked ? "on" : ""}" data-bookmark="${chn}" aria-label="Bookmark">${icon("bookmark")}</button>
-          <button class="icon-btn" data-share aria-label="Copy link">${icon("more")}</button>
-        </div>
-        <article class="chapter">
-          <h2>Chapter ${chn}</h2>
-          <p class="sub">${esc(chap.title)}</p>
-          ${chap.verses.map((vs) => `<div class="verse${vs.stanza ? " stanza" : ""}${String(vs.n) === String(v) ? " hl" : ""}" id="v${esc(vs.n)}"><span class="vn">${esc(vs.n)}</span><div>${vs.lines
-            .map((l) => (typeof l === "string" ? `<span class="ln">${esc(l)}</span>` : `<span class="ln stanza">${esc(l.t)}</span>`))
-            .join("")}</div></div>`).join("")}
-        </article>
-        <div class="pager">
-          ${chn > 1 ? `<a href="${readHref(id, chn - 1)}">${icon("left")}Chapter ${chn - 1}</a>` : ""}
-          ${chn < chapters.length ? `<a class="next" href="${readHref(id, chn + 1)}">Chapter ${chn + 1}${icon("right")}</a>` : ""}
-        </div>
-        <p class="attrib">Translation: ${esc(text.translation)}. Public domain. Chapters 1–${chapters.length} of 108 are available in this preview.</p>
-      </div>`;
-    }
-  } else if (tab === "about") {
-    body = `<div class="prose">
-      ${work.facts ? `<dl class="facts">${work.facts.map(([k, val]) => `<dt>${esc(k)}</dt><dd>${esc(val)}</dd>`).join("")}</dl>` : ""}
-      ${(work.about || [work.blurb + "."]).map((p) => `<p>${esc(p)}</p>`).join("")}
-      ${work.sections ? `<h2>Structure</h2>${work.sections.map(([r, n]) => `<div class="def"><b>${esc(n)}</b><span>Chapters ${esc(r)}</span></div>`).join("")}` : ""}
-    </div>`;
-  } else if (tab === "themes" && work.themes) {
-    body = `<div class="prose" style="margin-top:8px">${work.themes.map(([n, d]) => `<div class="def"><b>${esc(n)}</b><span>${esc(d)}</span></div>`).join("")}</div>`;
-  } else if (tab === "related" && work.related) {
-    body = `<div class="prose" style="margin-top:8px">${work.related.map((r) => {
-      const inner = `<span class="rel">${esc(r.rel)}</span><b>${esc(r.title)}</b><span>${esc(r.note)}</span>`;
-      return r.work ? `<a class="def" style="display:block" href="#/w/${r.work}">${inner}</a>` : `<div class="def">${inner}</div>`;
-    }).join("")}</div>`;
-  } else {
-    body = `<div class="empty"><b>Coming soon.</b>Themes and connections for this work are still being written.</div>`;
+  const factList = facts.length
+    ? `<dl class="ov-facts">${facts.map((x) => `<div class="${x.basis !== "established" ? "is-" + x.basis : ""}"><dt>${esc(x.label)}${BASIS[x.basis] ? `<small>${BASIS[x.basis]}</small>` : ""}</dt><dd>${x.html ? x.value : esc(x.value)}</dd></div>`).join("")}</dl>`
+    : `<p class="ov-muted">Historical details for this work are being prepared.</p>`;
+
+  const background = w.background
+    ? w.background.map((p) => p.kind === "interpretation"
+        ? `<div class="ov-interp"><span class="ov-tag">Scholarly interpretation</span><p>${esc(p.text)}</p></div>`
+        : `<p>${esc(p.text)}</p>`).join("")
+    : `<p class="ov-muted">A fuller historical background is in preparation.</p>`;
+
+  const parts = w.parts
+    ? `<div class="ov-list">${w.parts.map((p) => `<a class="ov-item link" href="#/w/${p.id}"><b>${esc(p.title)}</b>${icon("right")}</a>`).join("")}</div>`
+    : "";
+  const structure = w.structure
+    ? `<div class="ov-list">${w.structure.map(([r, t]) => `<div class="ov-item"><span class="ov-range">${esc(r)}</span><b>${esc(t)}</b></div>`).join("")}</div>`
+    : "";
+  const manuscripts = w.manuscripts
+    ? `<div class="ov-list">${w.manuscripts.map((m) => `<div class="ov-item"><div><b>${esc(m.name)}</b><span>${esc(m.note)}</span></div><span class="ov-date">${esc(m.date)}</span></div>`).join("")}</div>`
+    : "";
+  const editions = w.editions
+    ? `<div class="ov-list">${w.editions.map((e) => `<div class="ov-item"><div><b>${esc(e.title)}</b><span>${esc(e.detail)}</span></div><span class="ov-status ${e.status}">${e.status === "available" ? "Available" : "Planned"}</span></div>`).join("")}</div>`
+    : "";
+  const connections = w.connections
+    ? `<div class="ov-list">${w.connections.map((c) => {
+        const inner = `<div><span class="ov-rel">${esc(c.rel)}${c.disputed ? " · disputed" : ""}</span><b>${esc(c.title)}</b><span>${esc(c.note)}</span></div>${c.work ? icon("right") : ""}`;
+        return c.work ? `<a class="ov-item link" href="#/w/${c.work}">${inner}</a>` : `<div class="ov-item">${inner}</div>`;
+      }).join("")}</div>`
+    : "";
+
+  return `${topbar(workBack(f))}<div class="page overview">
+    ${workCrumbs(f)}
+    <header class="ov-head">
+      ${w.sample ? '<span class="sample">Sample content · not yet verified</span>' : ""}
+      <h1>${esc(w.title)}</h1>
+      ${w.aka ? `<p class="ov-aka">${esc(w.aka)}</p>` : ""}
+      <p class="lede wide-lede">${esc(w.intro || w.blurb.replace(/\.?$/, "."))}</p>
+      ${readTarget ? `<a class="btn-read" href="${readTarget}">Read This Work${icon("right")}</a>${hasText ? "" : '<span class="ov-muted ov-note">Reading view in design</span>'}` : ""}
+    </header>
+    <div class="ov-grid">
+      <aside class="ov-aside"><h2>At a glance</h2>${factList}</aside>
+      <div class="ov-main">
+        ${section("Historical background", background)}
+        ${section(w.partLabel ? w.partLabel[0].toUpperCase() + w.partLabel.slice(1) : "Parts", parts)}
+        ${section("Structure", structure)}
+        ${section("Manuscripts &amp; preservation", manuscripts)}
+        ${section("Translations &amp; editions", editions)}
+        ${section("Connections", connections)}
+        <p class="legend"><b>Disputed</b> scholars disagree&ensp;·&ensp;<b>Scholarly interpretation</b> a reading of the evidence, not settled fact${w.sample ? "&ensp;·&ensp;Sample content is placeholder research awaiting verification." : ""}</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Reader: kept for works that already have text (1 Enoch). Other works show a placeholder until the reading interface is designed.
+function viewReader(id, ch, v) {
+  const f = findWork(id);
+  if (!f) return viewMissing();
+  const w = f.work;
+  const text = w.text && TEXTS[w.text];
+  const back = { href: `#/w/${id}`, label: w.title };
+  if (!text) {
+    return `${topbar(back)}<div class="soon-page"><h1>${esc(w.title)}</h1><p>Reading view coming soon</p><a class="crumb-link" href="#/w/${id}">${icon("left")}Back to overview</a></div>`;
   }
-  return `${topbar(back)}<div class="page reading">${crumb(back)}${head}${tabs}<div style="padding-top:${tab === "read" ? 0 : 24}px">${body}</div></div>`;
+  const chapters = text.chapters;
+  const chn = Math.min(Math.max(1, Number(ch) || store.get("pos." + id, 1)), chapters.length);
+  const chap = chapters[chn - 1];
+  store.set("pos." + id, chn);
+  store.set("last", { work: id, ch: chn });
+  const marked = store.get("bookmarks", []).some((b) => b.work === id && b.ch === chn);
+  return `${topbar(back)}<div class="page reading">${crumb(back)}
+    <div class="work-head"><h1>${esc(w.title)}</h1></div>
+    <div class="reader">
+      <div class="toolbar">
+        <label class="select"><select data-chapter aria-label="Chapter">${chapters.map((c) => `<option value="${c.n}" ${c.n === chn ? "selected" : ""}>Chapter ${c.n}</option>`).join("")}</select>${icon("down")}</label>
+        <button class="icon-btn aa" data-size aria-label="Text size">A<small>A</small></button>
+        <button class="icon-btn ${marked ? "on" : ""}" data-bookmark="${chn}" aria-label="Bookmark">${icon("bookmark")}</button>
+        <button class="icon-btn" data-share aria-label="Copy link">${icon("more")}</button>
+      </div>
+      <article class="chapter">
+        <h2>Chapter ${chn}</h2>
+        <p class="sub">${esc(chap.title)}</p>
+        ${chap.verses.map((vs) => `<div class="verse${vs.stanza ? " stanza" : ""}${String(vs.n) === String(v) ? " hl" : ""}" id="v${esc(vs.n)}"><span class="vn">${esc(vs.n)}</span><div>${vs.lines
+          .map((l) => (typeof l === "string" ? `<span class="ln">${esc(l)}</span>` : `<span class="ln stanza">${esc(l.t)}</span>`))
+          .join("")}</div></div>`).join("")}
+      </article>
+      <div class="pager">
+        ${chn > 1 ? `<a href="${readHref(id, chn - 1)}">${icon("left")}Chapter ${chn - 1}</a>` : ""}
+        ${chn < chapters.length ? `<a class="next" href="${readHref(id, chn + 1)}">Chapter ${chn + 1}${icon("right")}</a>` : ""}
+      </div>
+      <p class="attrib">Translation: ${esc(text.translation)}. Public domain. Chapters 1–${chapters.length} of 108 are available in this preview.</p>
+    </div>
+  </div>`;
 }
 
 function searchIndex() {
@@ -372,7 +442,7 @@ function route() {
   else if (r === "home") { html = viewHome(); active = "home"; }
   else if (r === "library") { html = viewLibrary(a, b); active = "lib:" + a; }
   else if (r === "c") html = viewCollection(a);
-  else if (r === "w") html = viewWork(a, b, c, d);
+  else if (r === "w") html = b === "read" ? viewReader(a, c, d) : viewWork(a);
   else if (r === "path" || r === "paths") { html = a ? viewPath(a) : viewPaths(); active = "paths"; }
   else if (r === "search") { html = viewSearch(a || ""); active = "search"; }
   else if (r === "bookmarks") { html = viewBookmarks(); active = "bookmarks"; }

@@ -164,42 +164,78 @@ window.LIBRARY = {
     },
   ],
 
-  // Rich detail for works with full pages.
+  // Work overviews (see the schema comment above viewWork in app.js).
   works: {
-    "1-enoch": {
-      title: "1 Enoch",
-      tags: ["Ancient Jewish", "Ethiopian Scripture", "Early Christian Influence"],
+    didache: {
+      sample: true,
+      aka: "The Teaching of the Twelve Apostles",
+      intro: "A brief manual of early Christian instruction covering moral teaching, baptism, prayer, the Eucharist, and the leadership of local communities. It is one of the oldest surviving Christian writings outside the New Testament.",
       facts: [
-        ["Composed", "c. 300 BCE – 1st century CE"],
-        ["Language", "Aramaic (original); preserved complete in Ge'ez"],
-        ["Manuscripts", "Aramaic fragments at Qumran; Greek and Ethiopic copies"],
-        ["Canon", "Scripture in the Ethiopian Orthodox Tewahedo Church"],
-        ["Translation", "R. H. Charles, 1912 (public domain)"],
+        { label: "Composed", value: "c. 50–120 CE", basis: "disputed" },
+        { label: "Authorship", value: "Anonymous; presented as the teaching of the Twelve Apostles", basis: "established" },
+        { label: "Original language", value: "Koine Greek", basis: "established" },
+        { label: "Place of origin", value: "Uncertain; Syria or Palestine are often proposed", basis: "disputed" },
+        { label: "Canonical status", value: "Not part of the New Testament canon; valued by some early writers for instruction", basis: "established" },
       ],
-      about: [
-        "1 Enoch is a collection of apocalyptic writings attributed to Enoch, the great-grandfather of Noah. Genesis says he \"walked with God; and he was not, for God took him.\" The book was composed in stages over several centuries and survives complete only in Ge'ez, the ancient language of Ethiopia.",
-        "Aramaic fragments of most sections were found among the Dead Sea Scrolls at Qumran, which shows how widely the book was read in Second Temple Judaism. Its picture of fallen angels, final judgment, and a heavenly \"Son of Man\" shaped early Christian thought, and the Epistle of Jude quotes it directly.",
+      background: [
+        { kind: "fact", text: "The Didache is a short work of sixteen chapters. It opens with moral instruction framed as a choice between two ways, one of life and one of death, then gives directions for baptism, fasting, prayer, and the Eucharist, and closes with guidance on traveling teachers, local leaders, and watchfulness for the last days." },
+        { kind: "fact", text: "For centuries the work was known only from mentions by other writers. A complete Greek text was rediscovered in 1873 by Philotheos Bryennios in a manuscript held in Constantinople and published in 1883." },
+        { kind: "interpretation", text: "Many scholars regard the Didache as a composite work assembled from earlier traditions, including a \"Two Ways\" teaching that also appears in the Epistle of Barnabas." },
+        { kind: "interpretation", text: "Its relationship to the Gospel of Matthew, with which it shares the Lord's Prayer and several sayings, remains debated. It may draw on Matthew, on shared oral tradition, or on both." },
       ],
-      sections: [
+      structure: [
+        ["1–6", "The Two Ways"],
+        ["7–10", "Baptism, fasting, prayer, and the Eucharist"],
+        ["11–15", "Teachers, prophets, and community leadership"],
+        ["16", "Watchfulness and the last days"],
+      ],
+      manuscripts: [
+        { name: "Codex Hierosolymitanus 54", date: "1056 CE", note: "The only complete Greek text, rediscovered in 1873." },
+        { name: "Oxyrhynchus Papyrus 1782", date: "4th century", note: "Greek fragments of the opening chapters." },
+        { name: "Coptic fragment, British Library Or. 9271", date: "c. 5th century", note: "A Coptic version of part of the later chapters." },
+        { name: "Apostolic Constitutions, Book 7", date: "4th century", note: "A later church order that reworks much of the Didache." },
+      ],
+      editions: [
+        { title: "Philotheos Bryennios", detail: "First printed edition of the Greek text, 1883", status: "planned" },
+        { title: "J. B. Lightfoot & J. R. Harmer", detail: "The Apostolic Fathers, English translation, 1891 · public domain", status: "planned" },
+        { title: "Kirsopp Lake", detail: "The Apostolic Fathers (Loeb), Greek and English, 1912 · public domain", status: "planned" },
+      ],
+      connections: [
+        { rel: "Parallels", title: "Gospel of Matthew", note: "Shares the Lord's Prayer and several sayings of Jesus.", disputed: true },
+        { rel: "Shared tradition", title: "Epistle of Barnabas", note: "Contains a closely related form of the Two Ways teaching.", work: "barnabas" },
+        { rel: "Shared tradition", title: "Doctrina Apostolorum", note: "A Latin version of the Two Ways teaching." },
+        { rel: "Reworked in", title: "Apostolic Constitutions", note: "Book 7 adapts much of the Didache into a later church order." },
+      ],
+    },
+
+    "1-enoch": {
+      intro: "A collection of apocalyptic writings attributed to Enoch, the great-grandfather of Noah, composed in stages over several centuries and preserved complete only in Ge'ez.",
+      facts: [
+        { label: "Composed", value: "c. 300 BCE – 1st century CE, in stages", basis: "established" },
+        { label: "Authorship", value: "Pseudonymous; attributed to Enoch", basis: "established" },
+        { label: "Original language", value: "Aramaic for most sections; preserved complete in Ge'ez", basis: "established" },
+        { label: "Place of origin", value: "Judea", basis: "disputed" },
+        { label: "Canonical status", value: "Scripture in the Ethiopian Orthodox Tewahedo Church", basis: "established" },
+      ],
+      background: [
+        { kind: "fact", text: "Genesis says Enoch \"walked with God; and he was not, for God took him.\" Later Jewish writers credited him with visions of heaven, the angels, and the end of history. Aramaic fragments of most sections were found among the Dead Sea Scrolls at Qumran." },
+        { kind: "fact", text: "The Epistle of Jude quotes 1 Enoch 1:9 almost word for word." },
+        { kind: "interpretation", text: "Its picture of fallen angels, final judgment, and a heavenly \"Son of Man\" is widely seen as shaping early Christian thought." },
+      ],
+      structure: [
         ["1–36", "Book of the Watchers"],
         ["37–71", "Book of Parables (Similitudes)"],
         ["72–82", "Astronomical Book"],
         ["83–90", "Book of Dream Visions"],
         ["91–108", "Epistle of Enoch"],
       ],
-      themes: [
-        ["The Watchers", "Angels who descend to Mount Hermon, take human wives, and teach forbidden arts."],
-        ["Final judgment", "God comes in judgment with \"ten thousands of His holy ones.\""],
-        ["Cosmic order", "Sun, moon, and stars keep their appointed courses, in contrast to human disobedience."],
-        ["The Son of Man", "A preexistent heavenly judge in the Book of Parables."],
-        ["The righteous and the wicked", "Blessing for the elect, curses for sinners."],
+      editions: [
+        { title: "R. H. Charles", detail: "The Book of Enoch, English translation, 1912 · public domain · chapters 1–16 in this preview", status: "available" },
       ],
-      related: [
-        { rel: "Expands", title: "Genesis 6:1–4", note: "The \"sons of God\" and the Nephilim" },
-        { rel: "Quoted in", title: "Jude 14–15", note: "Quotes 1 Enoch 1:9 almost word for word" },
-        { rel: "Echoed in", title: "2 Peter 2:4", note: "Angels cast into Tartarus, kept for judgment" },
-        { rel: "Shares tradition", title: "Book of Jubilees", note: "Retells the Watchers story", work: "jubilees" },
-        { rel: "Shares tradition", title: "Book of Giants", note: "Qumran companion text about the Watchers' sons" },
+      connections: [
+        { rel: "Expands", title: "Genesis 6:1–4", note: "The \"sons of God\" and the Nephilim." },
+        { rel: "Quoted in", title: "Jude 14–15", note: "Quotes 1 Enoch 1:9." },
+        { rel: "Shares tradition", title: "Book of Jubilees", note: "Retells the Watchers story.", work: "jubilees" },
       ],
     },
   },
