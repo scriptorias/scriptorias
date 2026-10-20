@@ -60,9 +60,12 @@ svg.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-widt
 .scrim { display: none; }
 
 /* Main */
-.main { min-width: 0; padding: 52px 56px 96px; }
-.page { max-width: 880px; }
-.page.wide { max-width: 1040px; }
+.main { min-width: 0; padding: 52px clamp(32px, 4vw, 72px) 96px; }
+/* Content widths: library pages center at ~1300px; reading pages stay at a
+   comfortable measure; .wide is for timelines, maps, and research views. */
+.page { max-width: 1300px; margin: 0 auto; }
+.page.reading { max-width: 780px; }
+.page.wide { max-width: 1760px; }
 
 .topbar { display: none; }
 .crumb { display: inline-flex; align-items: center; gap: 4px; margin: -18px 0 22px -4px; font-size: 14px; color: var(--muted); }
@@ -148,7 +151,7 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
 .tags span + span::before { content: "•"; margin: 0 8px; color: #b3a998; }
 
 /* Reader */
-.reader { max-width: 700px; }
+.reader { max-width: none; }
 .toolbar { display: flex; align-items: center; gap: 6px; margin: 20px 0 8px; }
 .select {
   position: relative; display: inline-flex; align-items: center;

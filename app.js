@@ -255,7 +255,7 @@ function viewWork(id, tab, ch, v) {
   } else {
     body = `<div class="empty"><b>Coming soon.</b>Themes and connections for this work are still being written.</div>`;
   }
-  return `${topbar(back)}<div class="page">${crumb(back)}${head}${tabs}<div style="padding-top:${tab === "read" ? 0 : 24}px">${body}</div></div>`;
+  return `${topbar(back)}<div class="page reading">${crumb(back)}${head}${tabs}<div style="padding-top:${tab === "read" ? 0 : 24}px">${body}</div></div>`;
 }
 
 function searchIndex() {
