@@ -1,0 +1,46 @@
+{
+  "id": "the-watchers",
+  "title": "The Watchers",
+  "blurb": "Follow one strange story of fallen angels from Genesis through Enoch to the New Testament.",
+  "sample": true,
+  "steps": [
+    {
+      "title": "Genesis 6:1–4",
+      "note": "The \"sons of God\" take human wives and the Nephilim appear. Four verses that later writers could not leave alone.",
+      "target": {
+        "label": "Genesis 6:1–4"
+      }
+    },
+    {
+      "title": "1 Enoch 6–8",
+      "note": "The Book of the Watchers expands Genesis into a full narrative: two hundred angels, an oath on Mount Hermon, forbidden knowledge.",
+      "target": {
+        "work": "1-enoch",
+        "ref": "1-enoch.6"
+      }
+    },
+    {
+      "title": "1 Enoch 9–10",
+      "note": "The archangels intercede and judgment is pronounced. Azâzêl is bound in the darkness.",
+      "target": {
+        "work": "1-enoch",
+        "ref": "1-enoch.9"
+      }
+    },
+    {
+      "title": "Book of Jubilees 5",
+      "note": "A second-century BCE retelling that folds the Watchers into the flood story.",
+      "target": {
+        "work": "jubilees"
+      }
+    },
+    {
+      "title": "Jude 6, 14–15",
+      "note": "A New Testament letter quotes 1 Enoch 1:9 directly: \"Behold, the Lord cometh with ten thousands of his saints.\"",
+      "target": {
+        "work": "1-enoch",
+        "ref": "1-enoch.1.9"
+      }
+    }
+  ]
+}

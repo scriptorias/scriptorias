@@ -1,0 +1,15 @@
+{
+  "id": "barnabas",
+  "title": "Epistle of Barnabas",
+  "tradition": "christianity",
+  "blurb": "Reads the Jewish Scriptures as Christian allegory and argues against keeping the Law.",
+  "author": {
+    "name": "Barnabas",
+    "basis": "traditional"
+  },
+  "date": {
+    "label": "c. 70–135 CE",
+    "sort": 105,
+    "debated": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "polycarp-philippians",
+  "title": "Letter of Polycarp to the Philippians",
+  "tradition": "christianity",
+  "blurb": "Pastoral counsel to the church at Philippi, woven with early quotations of apostolic writings.",
+  "author": {
+    "name": "Polycarp of Smyrna",
+    "basis": "known"
+  },
+  "date": {
+    "label": "c. 110–140 CE",
+    "sort": 125
+  }
+}

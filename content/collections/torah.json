@@ -1,0 +1,10 @@
+{
+  "id": "torah",
+  "tradition": "christianity",
+  "kind": "group",
+  "title": "The Torah",
+  "blurb": "Genesis through Deuteronomy",
+  "countLabel": "5 books",
+  "listed": false,
+  "members": []
+}

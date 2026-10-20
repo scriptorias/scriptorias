@@ -1,0 +1,103 @@
+{
+  "work": "didache",
+  "verification": {
+    "status": "sample",
+    "note": "Prototype sample content; not yet verified."
+  },
+  "aka": "The Teaching of the Twelve Apostles",
+  "intro": "A brief manual of early Christian instruction covering moral teaching, baptism, prayer, the Eucharist, and the leadership of local communities. It is one of the oldest surviving Christian writings outside the New Testament.",
+  "facts": [
+    {
+      "label": "Composed",
+      "value": "c. 50–120 CE",
+      "basis": "disputed",
+      "sources": []
+    },
+    {
+      "label": "Authorship",
+      "value": "Anonymous; presented as the teaching of the Twelve Apostles",
+      "basis": "established",
+      "sources": []
+    },
+    {
+      "label": "Original language",
+      "value": "Koine Greek",
+      "basis": "established",
+      "sources": []
+    },
+    {
+      "label": "Place of origin",
+      "value": "Uncertain; Syria or Palestine are often proposed",
+      "basis": "disputed",
+      "sources": []
+    },
+    {
+      "label": "Canonical status",
+      "value": "Not part of the New Testament canon; valued by some early writers for instruction",
+      "basis": "established",
+      "sources": []
+    }
+  ],
+  "background": [
+    {
+      "kind": "fact",
+      "text": "The Didache is a short work of sixteen chapters. It opens with moral instruction framed as a choice between two ways, one of life and one of death, then gives directions for baptism, fasting, prayer, and the Eucharist, and closes with guidance on traveling teachers, local leaders, and watchfulness for the last days.",
+      "sources": []
+    },
+    {
+      "kind": "fact",
+      "text": "For centuries the work was known only from mentions by other writers. A complete Greek text was rediscovered in 1873 by Philotheos Bryennios in a manuscript held in Constantinople and published in 1883.",
+      "sources": []
+    },
+    {
+      "kind": "interpretation",
+      "text": "Many scholars regard the Didache as a composite work assembled from earlier traditions, including a \"Two Ways\" teaching that also appears in the Epistle of Barnabas.",
+      "sources": []
+    },
+    {
+      "kind": "interpretation",
+      "text": "Its relationship to the Gospel of Matthew, with which it shares the Lord's Prayer and several sayings, remains debated. It may draw on Matthew, on shared oral tradition, or on both.",
+      "sources": []
+    }
+  ],
+  "structure": [
+    {
+      "from": 1,
+      "to": 6,
+      "title": "The Two Ways"
+    },
+    {
+      "from": 7,
+      "to": 10,
+      "title": "Baptism, fasting, prayer, and the Eucharist"
+    },
+    {
+      "from": 11,
+      "to": 15,
+      "title": "Teachers, prophets, and community leadership"
+    },
+    {
+      "from": 16,
+      "to": 16,
+      "title": "Watchfulness and the last days"
+    }
+  ],
+  "sourceGroups": [
+    {
+      "title": "Composition date",
+      "sources": []
+    },
+    {
+      "title": "Authorship and place of origin",
+      "sources": []
+    },
+    {
+      "title": "Manuscripts and rediscovery",
+      "sources": []
+    },
+    {
+      "title": "Scholarly interpretations",
+      "sources": []
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "id": "charles",
+  "work": "1-enoch",
+  "label": "R. H. Charles",
+  "detail": "The Book of Enoch (1912)",
+  "language": "en",
+  "year": 1912,
+  "kind": "translation",
+  "status": "available",
+  "default": true,
+  "license": {
+    "name": "Public domain"
+  },
+  "attribution": "Transcription from Wikisource, available under CC BY-SA 4.0; the underlying 1912 translation is in the public domain.",
+  "source": {
+    "label": "Wikisource: The Book of Enoch (Charles)",
+    "href": "https://en.wikisource.org/wiki/The_Book_of_Enoch_(Charles)",
+    "retrieved": "2026-10-20"
+  },
+  "importer": {
+    "name": "wikisource-charles-enoch",
+    "raw": "_raw/wikisource/enoch-charles",
+    "sections": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "options": {
+      "sectionTitles": [
+        {
+          "from": 1,
+          "to": 5,
+          "title": "Parable of Enoch on the Future Lot of the Wicked and the Righteous"
+        },
+        {
+          "from": 6,
+          "to": 11,
+          "title": "The Fall of the Angels"
+        },
+        {
+          "from": 12,
+          "to": 16,
+          "title": "Dream-Vision of Enoch"
+        }
+      ]
+    }
+  },
+  "coverage": {
+    "sections": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "note": "Sample: chapters 1–16 of 108."
+  },
+  "verification": {
+    "status": "sample",
+    "note": "Sample text for interface review; not yet checked against the printed edition."
+  }
+}

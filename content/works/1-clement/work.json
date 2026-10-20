@@ -1,0 +1,14 @@
+{
+  "id": "1-clement",
+  "title": "1 Clement",
+  "tradition": "christianity",
+  "blurb": "A letter from the church in Rome urging the Corinthians to restore their deposed leaders.",
+  "author": {
+    "name": "Clement of Rome",
+    "basis": "traditional"
+  },
+  "date": {
+    "label": "c. 96 CE",
+    "sort": 96
+  }
+}

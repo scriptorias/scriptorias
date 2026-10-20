@@ -1,0 +1,48 @@
+[
+  {
+    "id": "christianity",
+    "name": "Christianity",
+    "icon": "cross",
+    "status": "live",
+    "order": 1,
+    "facets": [
+      "Texts",
+      "History",
+      "People",
+      "Beliefs",
+      "Traditions"
+    ]
+  },
+  {
+    "id": "judaism",
+    "name": "Judaism",
+    "icon": "star",
+    "status": "planned",
+    "order": 2,
+    "facets": []
+  },
+  {
+    "id": "islam",
+    "name": "Islam",
+    "icon": "moon",
+    "status": "planned",
+    "order": 3,
+    "facets": []
+  },
+  {
+    "id": "norse",
+    "name": "Norse",
+    "icon": "rune",
+    "status": "planned",
+    "order": 4,
+    "facets": []
+  },
+  {
+    "id": "greek",
+    "name": "Greek",
+    "icon": "temple",
+    "status": "planned",
+    "order": 5,
+    "facets": []
+  }
+]

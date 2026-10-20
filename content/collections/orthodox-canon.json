@@ -1,0 +1,44 @@
+{
+  "id": "orthodox-canon",
+  "tradition": "christianity",
+  "kind": "canon",
+  "title": "Eastern Orthodox Canon",
+  "blurb": "The biblical canon of the Eastern Orthodox churches.",
+  "listed": false,
+  "verification": {
+    "status": "unverified",
+    "note": "Membership limited to works already in the catalog; full canon lists pending."
+  },
+  "members": [
+    {
+      "work": "tobit"
+    },
+    {
+      "work": "judith"
+    },
+    {
+      "work": "additions-esther"
+    },
+    {
+      "work": "wisdom-solomon"
+    },
+    {
+      "work": "sirach"
+    },
+    {
+      "work": "baruch"
+    },
+    {
+      "work": "1-maccabees"
+    },
+    {
+      "work": "2-maccabees"
+    },
+    {
+      "work": "additions-daniel"
+    },
+    {
+      "work": "prayer-manasseh"
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+{{header
+|previous=
+|next=
+|title=The Didache or Teaching of the Apostles
+|section=
+|author= | noauthor=
+|translator=Joseph Barber Lightfoot
+ | edition  = yes
+ | notes    =  For other translations, see [[Didache]]
+}}
+
+==Chapter 1==
+{{chapter|1}}
+
+{{verse|chapter=1|verse=1}}<section begin=1:1/>There are two ways, one of life and one of death, and there is a great difference between the two ways.<section end=1:1/>
+{{verse|chapter=1|verse=2}}<section begin=1:2/><em>The way of life</em> is this.<section end=1:2/>
+{{verse|chapter=1|verse=3}}<section begin=1:3/>First of all, <em>thou shalt love the God</em> that made thee;<section end=1:3/>
+{{verse|chapter=1|verse=4}}<section begin=1:4/>secondly, <em>thy neighbour as thyself.</em><section end=1:4/>
+{{verse|chapter=1|verse=5}}<section begin=1:5/><em>And all things whatsoever thou wouldest not have befal thyself neither do thou unto another.</em><section end=1:5/>
+{{verse|chapter=1|verse=6}}<section begin=1:6/>Now of these words the doctrine is this.<section end=1:6/>
+{{verse|chapter=1|verse=7}}<section begin=1:7/><em>Bless them that curse you, and pray for</em> your enemies and fast for <em>them that persecute you;<section end=1:7/>
+{{verse|chapter=1|verse=8}}<section begin=1:8/>for what thank is it, if ye love them that love you? Do not even the Gentiles the same? But do ye love them that hate you,</em> and ye shall not have an enemy.<section end=1:8/>
+{{verse|chapter=1|verse=9}}<section begin=1:9/>Abstain thou from fleshly and bodily lusts.<section end=1:9/>
+{{verse|chapter=1|verse=10}}<section begin=1:10/><em>If any man give thee a blow on thy right cheek, turn to him the other also,</em> and thou shalt be perfect;<section end=1:10/>
+{{verse|chapter=1|verse=11}}<section begin=1:11/><em>if a man impress thee to go with him, one mile, go with him twain;<section end=1:11/>
+{{verse|chapter=1|verse=12}}<section begin=1:12/>if a man take away thy cloak, give him thy coat also;<section end=1:12/>
+{{verse|chapter=1|verse=13}}<section begin=1:13/>if a man take away from thee that which is thine own, ask it not back,</em> for neither art thou able.<section end=1:13/>
+{{verse|chapter=1|verse=14}}<section begin=1:14/><em>To every man that asketh of thee give, and ask not back;</em><section end=1:14/>
+{{verse|chapter=1|verse=15}}<section begin=1:15/>for the Father desireth that gifts be given to all from His own bounties.<section end=1:15/>
+{{verse|chapter=1|verse=16}}<section begin=1:16/>Blessed is he that giveth according to the commandment;<section end=1:16/>
+{{verse|chapter=1|verse=17}}<section begin=1:17/>for he is guiltless.<section end=1:17/>
+{{verse|chapter=1|verse=18}}<section begin=1:18/>Woe to him that receiveth;<section end=1:18/>
+{{verse|chapter=1|verse=19}}<section begin=1:19/>for, if a man receiveth having need, he is guiltless;<section end=1:19/>
+{{verse|chapter=1|verse=20}}<section begin=1:20/>but he that hath no need shall give satisfaction why and wherefore he received;<section end=1:20/>
+{{verse|chapter=1|verse=21}}<section begin=1:21/>and being put in confinement he shall be examined concerning the deeds that he hath done, and <em>he shall not come out thence until he hath given back the last farthing.</em><section end=1:21/>
+{{verse|chapter=1|verse=22}}<section begin=1:22/>Yea, as touching this also it is said;<section end=1:22/>
+{{verse|chapter=1|verse=23}}<section begin=1:23/><em>Let thine alms sweat into thine hands, until thou shalt have learnt to whom to give.</em><section end=1:23/>
+
+==Chapter 2==
+{{chapter|2}}
+
+{{verse|chapter=2|verse=1}}<section begin=2:1/>And this is the second commandment of the teaching.<section end=2:1/>
+{{verse|chapter=2|verse=2}}<section begin=2:2/><em>Thou shalt do no murder, thou shalt not commit adultery,</em> thou shalt not corrupt boys, thou shalt not commit fornication, <em>thou shalt not steal,</em> thou shalt not deal in magic, thou shalt do no sorcery, thou shalt not murder a child by abortion nor kill them when born, <em>thou shalt not covet thy neighbour's goods, thou shalt not perjure thyself, thou shalt not bear false witness,</em> thou shalt not speak evil, thou shalt not cherish a grudge, thou shalt not be double-minded nor double-tongued;<section end=2:2/>
+{{verse|chapter=2|verse=3}}<section begin=2:3/>for the double tongue is a snare of death.<section end=2:3/>
+{{verse|chapter=2|verse=4}}<section begin=2:4/>Thy word shall not be false or empty, but fulfilled by action.<section end=2:4/>
+{{verse|chapter=2|verse=5}}<section begin=2:5/>Thou shalt not be avaricious nor a plunderer nor a hypocrite nor ill-tempered nor proud.<section end=2:5/>
+{{verse|chapter=2|verse=6}}<section begin=2:6/>Thou shalt not entertain an evil design against thy neighbour.<section end=2:6/>
+{{verse|chapter=2|verse=7}}<section begin=2:7/><em>Thou shalt not hate</em> any man, <em>but some thou shalt reprove,</em> and for others thou shalt pray, <em>and others thou shalt love</em> more than thy life.<section end=2:7/>
+
+==Chapter 3==
+{{chapter|3}}
+
+{{verse|chapter=3|verse=1}}<section begin=3:1/>My child, flee from every evil and everything that resembleth it.<section end=3:1/>
+{{verse|chapter=3|verse=2}}<section begin=3:2/>Be not angry, for anger leadeth to murder, nor jealous nor contentious nor wrathful;<section end=3:2/>
+{{verse|chapter=3|verse=3}}<section begin=3:3/>for of all these things murders are engendered.<section end=3:3/>
+{{verse|chapter=3|verse=4}}<section begin=3:4/>My child, be not lustful, for lust leadeth to fornication, neither foul-speaking neither with uplifted eyes;<section end=3:4/>
+{{verse|chapter=3|verse=5}}<section begin=3:5/>for of all these things adulteries are engendered.<section end=3:5/>
+{{verse|chapter=3|verse=6}}<section begin=3:6/>My child, <em>be no dealer in omens,</em> since it leads to idolatry, nor an enchanter nor an astrologer nor a magician, neither be willing to look at them;<section end=3:6/>
+{{verse|chapter=3|verse=7}}<section begin=3:7/>for from all these things idolatry is engendered.<section end=3:7/>
+{{verse|chapter=3|verse=8}}<section begin=3:8/>My child, be not a liar, since lying leads to theft, neither avaricious neither vainglorious;<section end=3:8/>
+{{verse|chapter=3|verse=9}}<section begin=3:9/>for from all these things thefts are engendered.<section end=3:9/>
+{{verse|chapter=3|verse=10}}<section begin=3:10/>My child, be not a murmurer, since it leadeth to blasphemy, neither self-willed neither a thinker of evil thoughts;<section end=3:10/>
+{{verse|chapter=3|verse=11}}<section begin=3:11/>for from all these things blasphemies are engendered.<section end=3:11/>
+{{verse|chapter=3|verse=12}}<section begin=3:12/>But be meek, since <em>the meek shall inherit the earth.</em><section end=3:12/>
+{{verse|chapter=3|verse=13}}<section begin=3:13/>Be long-suffering and pitiful and guileless and <em>quiet</em> and kindly <em>and</em> always <em>fearing the words</em> which thou hast heard.<section end=3:13/>
+{{verse|chapter=3|verse=14}}<section begin=3:14/>Thou shalt not exalt thyself, neither shalt thou admit boldness into thy soul.<section end=3:14/>
+{{verse|chapter=3|verse=15}}<section begin=3:15/>Thy soul shall not cleave together with the lofty, but with the righteous and humble shalt thou walk.<section end=3:15/>
+{{verse|chapter=3|verse=16}}<section begin=3:16/>The accidents that befal thee thou shalt receive as good, knowing that nothing is done without God.<section end=3:16/>
+
+==Chapter 4==
+{{chapter|4}}
+
+{{verse|chapter=4|verse=1}}<section begin=4:1/>My child, <em>thou shalt remember him that speaketh unto thee the word of God</em> night and day, and shalt honour him as the Lord;<section end=4:1/>
+{{verse|chapter=4|verse=2}}<section begin=4:2/>for whencesoever the Lordship speaketh, there is the Lord.<section end=4:2/>
+{{verse|chapter=4|verse=3}}<section begin=4:3/>Moreover thou shalt seek out day by day the persons of the saints, that thou mayest find rest in their words.<section end=4:3/>
+{{verse|chapter=4|verse=4}}<section begin=4:4/>Thou shalt not make a schism, but thou shalt pacify them that contend;<section end=4:4/>
+{{verse|chapter=4|verse=5}}<section begin=4:5/>thou shalt judge righteously, thou shalt not make a difference in a person to reprove him for transgressions.<section end=4:5/>
+{{verse|chapter=4|verse=6}}<section begin=4:6/>Thou shalt not doubt whether a thing shall be or not be.<section end=4:6/>
+{{verse|chapter=4|verse=7}}<section begin=4:7/><em>Be not thou found holding out thy hands to receive, but drawing them in as to giving.</em><section end=4:7/>
+{{verse|chapter=4|verse=8}}<section begin=4:8/>If thou hast ought passing through thy hands, thou shalt give a ransom for thy sins.<section end=4:8/>
+{{verse|chapter=4|verse=9}}<section begin=4:9/>Thou shalt not hesitate to give, neither shalt thou murmur when giving;<section end=4:9/>
+{{verse|chapter=4|verse=10}}<section begin=4:10/>for thou shalt know who is the good paymaster of thy reward.<section end=4:10/>
+{{verse|chapter=4|verse=11}}<section begin=4:11/>Thou shalt not turn away from him that is in want, but shalt make thy brother partaker in all things, and shalt not say <em>that anything is thine own.</em><section end=4:11/>
+{{verse|chapter=4|verse=12}}<section begin=4:12/>For if ye are fellow-partakers in that which is imperishable, how much rather in the things which are perishable? Thou shalt not withhold thy hand from thy son or from thy daughter, but from their youth thou shalt teach them the fear of God.<section end=4:12/>
+{{verse|chapter=4|verse=13}}<section begin=4:13/>Thou shalt not command thy bondservant or thine handmaid in thy bitterness, who trust in the same God as thyself, lest haply they should cease to fear the God who is over both of you;<section end=4:13/>
+{{verse|chapter=4|verse=14}}<section begin=4:14/>for He cometh, not to call men with respect of persons, but He cometh to those whom the Spirit hath prepared.<section end=4:14/>
+{{verse|chapter=4|verse=15}}<section begin=4:15/>But ye, servants, shall be subject unto your masters, as to a type of God, in shame and fear.<section end=4:15/>
+{{verse|chapter=4|verse=16}}<section begin=4:16/>Thou shalt hate all hypocrisy, and everything that is not pleasing to the Lord.<section end=4:16/>
+{{verse|chapter=4|verse=17}}<section begin=4:17/>Thou shalt never forsake the commandments of the Lord;<section end=4:17/>
+{{verse|chapter=4|verse=18}}<section begin=4:18/>but shalt keep those things which thou hast received, neither adding to them nor taking away from them.<section end=4:18/>
+{{verse|chapter=4|verse=19}}<section begin=4:19/>In church thou shalt confess thy transgressions, and shalt not betake thyself to prayer with an evil conscience.<section end=4:19/>
+{{verse|chapter=4|verse=20}}<section begin=4:20/>This is the way of life.<section end=4:20/>
+
+==Chapter 5==
+{{chapter|5}}
+
+{{verse|chapter=5|verse=1}}<section begin=5:1/>But the way of death is this.<section end=5:1/>
+{{verse|chapter=5|verse=2}}<section begin=5:2/>First of all, it is evil and full of a curse murders, adulteries, lusts, fornications, thefts, idolatries, magical arts, witchcrafts, plunderings, false witnessings, hypocrisies, doubleness of heart, treachery, pride, malice, stubbornness, covetousness, foul-speaking, jealousy, boldness, exaltation, boastfulness;<section end=5:2/>
+{{verse|chapter=5|verse=3}}<section begin=5:3/>persecutors of good men, hating truth, loving a lie, not perceiving the reward of righteousness, not <em>cleaving to the good</em> nor to righteous judgment, wakeful not for that which is good but for that which is evil;<section end=5:3/>
+{{verse|chapter=5|verse=4}}<section begin=5:4/>from whom gentleness and forbearance stand aloof;<section end=5:4/>
+{{verse|chapter=5|verse=5}}<section begin=5:5/>loving vain things, pursuing a recompense, not pitying the poor man, not toiling for him that is oppressed with toil, not recognizing Him that made them, murderers of children, corrupters of the creatures of God, turning away from him that is in want, oppressing him that is afflicted, advocates of the wealthy, unjust judges of the poor, altogether sinful.<section end=5:5/>
+{{verse|chapter=5|verse=6}}<section begin=5:6/>May ye be delivered, my children, from all these things.<section end=5:6/>
+
+==Chapter 6==
+{{chapter|6}}
+
+{{verse|chapter=6|verse=1}}<section begin=6:1/>See lest any man lead you astray from this way of righteousness, for he teacheth thee apart from God.<section end=6:1/>
+{{verse|chapter=6|verse=2}}<section begin=6:2/>For if thou art able to bear the whole yoke of the Lord, thou shalt be perfect;<section end=6:2/>
+{{verse|chapter=6|verse=3}}<section begin=6:3/>but if thou art not able, do that which thou art able.<section end=6:3/>
+{{verse|chapter=6|verse=4}}<section begin=6:4/>But concerning eating, bear that which thou art able;<section end=6:4/>
+{{verse|chapter=6|verse=5}}<section begin=6:5/>yet abstain by all means from meat sacrificed to idols;<section end=6:5/>
+{{verse|chapter=6|verse=6}}<section begin=6:6/>for it is the worship of dead gods.<section end=6:6/>
+
+==Chapter 7==
+{{chapter|7}}
+
+{{verse|chapter=7|verse=1}}<section begin=7:1/>But concerning baptism, thus shall ye baptize.<section end=7:1/>
+{{verse|chapter=7|verse=2}}<section begin=7:2/>Having first recited all these things, baptize <em>in the name of the Father and of the Son and of the Holy Spirit</em> in living (running) water.<section end=7:1/>
+{{verse|chapter=7|verse=3}}<section begin=7:3/>But if thou hast not living water, then baptize in other water;<section end=7:3/>
+{{verse|chapter=7|verse=4}}<section begin=7:4/>and if thou art not able in cold, then in warm.<section end=7:4/>
+{{verse|chapter=7|verse=5}}<section begin=7:5/>But if thou hast neither, then pour water on the head thrice in the name of the Father and of the Son and of the Holy Spirit.<section end=7:5/>
+{{verse|chapter=7|verse=6}}<section begin=7:6/>But before the baptism let him that baptizeth and him that is baptized fast, and any others also who are able;<section end=7:7/>
+{{verse|chapter=7|verse=7}}<section begin=7:7/>and thou shalt order him that is baptized to fast a day or two before.<section end=7:7/>
+
+==Chapter 8==
+{{chapter|8}}
+
+{{verse|chapter=8|verse=1}}<section begin=8:1/>And let not your fastings be with the hypocrites, for they fast on the second and the fifth day of the week;<section end=8:1/>
+{{verse|chapter=8|verse=2}}<section begin=8:2/>but do ye keep your fast on the fourth and on the preparation (the sixth) day.<section end=8:2/>
+{{verse|chapter=8|verse=3}}<section begin=8:3/>Neither pray ye <em>as the hypocrites,</em> but as the Lord commanded in His Gospel, <em>thus pray ye.<section end=8:3/>
+{{verse|chapter=8|verse=4}}<section begin=8:4/>Our Father, which art in heaven, hallowed be Thy name;<section end=8:4/>
+{{verse|chapter=8|verse=5}}<section begin=8:5/>Thy kingdom come;<section end=8:5/>
+{{verse|chapter=8|verse=6}}<section begin=8:6/>Thy will be done, as in heaven, so also on earth;<section end=8:6/>
+{{verse|chapter=8|verse=7}}<section begin=8:7/>give us this day our daily bread;<section end=8:7/>
+{{verse|chapter=8|verse=8}}<section begin=8:8/>and forgive us our debt, as we also forgive our debtors;<section end=8:8/>
+{{verse|chapter=8|verse=9}}<section begin=8:9/>and lead us not into temptation, but deliver us from the evil one;</em><section end=8:9/>
+{{verse|chapter=8|verse=10}}<section begin=8:10/>for Thine is the power and the glory for ever and ever.<section end=8:10/>
+{{verse|chapter=8|verse=11}}<section begin=8:11/>Three times in the day pray ye so.<section end=8:11/>
+
+==Chapter 9==
+{{chapter|9}}
+
+{{verse|chapter=9|verse=1}}<section begin=9:1/>But as touching the eucharistic thanksgiving give ye thanks thus.<section end=9:1/>
+{{verse|chapter=9|verse=2}}<section begin=9:2/>First, as regards the cup:<section end=9:2/>
+{{verse|chapter=9|verse=3}}<section begin=9:3/>We give Thee thanks, O our Father, for the holy vine of Thy son David, which Thou madest known unto us through Thy Son Jesus;<section end=9:3/>
+{{verse|chapter=9|verse=4}}<section begin=9:4/>Thine is the glory for ever and ever.<section end=9:4/>
+{{verse|chapter=9|verse=5}}<section begin=9:5/>Then as regards the broken bread:<section end=9:5/>
+{{verse|chapter=9|verse=6}}<section begin=9:6/>We give Thee thanks, O our Father, for the life and knowledge which Thou didst make known unto us through Thy Son Jesus;<section end=9:6/>
+{{verse|chapter=9|verse=7}}<section begin=9:7/>Thine is the glory for ever and ever.<section end=9:7/>
+{{verse|chapter=9|verse=8}}<section begin=9:8/>As this broken bread was scattered upon the mountains and being gathered together became one, so may Thy Church be gathered together from the ends of the earth into Thy kingdom;<section end=9:8/>
+{{verse|chapter=9|verse=9}}<section begin=9:9/>for Thine is the glory and the power through Jesus Christ for ever and ever.<section end=9:9/>
+{{verse|chapter=9|verse=10}}<section begin=9:10/>But let no one eat or drink of this eucharistic thanksgiving, but they that have been baptized into the name of the Lord;<section end=9:10/>
+{{verse|chapter=9|verse=11}}<section begin=9:11/>for concerning this also the Lord hath said:<section end=9:11/>
+{{verse|chapter=9|verse=12}}<section begin=9:12/><em>Give not that which is holy to the dogs.</em><section end=9:12/>
+
+==Chapter 10==
+{{chapter|10}}
+
+{{verse|chapter=10|verse=1}}<section begin=10:1/>And after ye are satisfied thus give ye thanks:<section end=10:1/>
+{{verse|chapter=10|verse=2}}<section begin=10:2/>We give Thee thanks, Holy Father, for Thy holy name, which Thou hast made to tabernacle in our hearts, and for the knowledge and faith and immortality, which Thou hast made known unto us through Thy Son Jesus;<section end=10:2/>
+{{verse|chapter=10|verse=3}}<section begin=10:3/>Thine is the glory for ever and ever.<section end=10:3/>
+{{verse|chapter=10|verse=4}}<section begin=10:4/>Thou, Almighty Master, didst create all things for Thy name's sake, and didst give food and drink unto men for enjoyment, that they might render thanks to Thee;<section end=10:4/>
+{{verse|chapter=10|verse=5}}<section begin=10:5/>but didst bestow upon us spiritual food and drink and eternal life through Thy Son.<section end=10:5/>
+{{verse|chapter=10|verse=6}}<section begin=10:6/>Before all things we give Thee thanks that Thou art powerful;<section end=10:6/>
+{{verse|chapter=10|verse=7}}<section begin=10:7/>Thine is the glory for ever and ever.<section end=10:7/>
+{{verse|chapter=10|verse=8}}<section begin=10:8/>Remember, Lord, Thy Church to deliver it from all evil and to perfect it in Thy love;<section end=10:8/>
+{{verse|chapter=10|verse=9}}<section begin=10:9/>and <em>gather it together from the four winds</em>&mdash;even the Church which has been sanctified&mdash;into Thy kingdom which Thou hast prepared for it;<section end=10:9/>
+{{verse|chapter=10|verse=10}}<section begin=10:10/>for Thine is the power and the glory for ever and ever.<section end=10:10/>
+{{verse|chapter=10|verse=11}}<section begin=10:11/>May grace come and may this world pass away.<section end=10:11/>
+{{verse|chapter=10|verse=12}}<section begin=10:12/>Hosanna to the God of David.<section end=10:12/>
+{{verse|chapter=10|verse=13}}<section begin=10:13/>If any man is holy, let him come;<section end=10:13/>
+{{verse|chapter=10|verse=14}}<section begin=10:14/>if any man is not, let him repent. Maran Atha. Amen.<section end=10:14/>
+{{verse|chapter=10|verse=15}}<section begin=10:15/>But permit the prophets to offer thanksgiving as much as they desire.<section end=10:15/>
+
+==Chapter 11==
+{{chapter|11}}
+
+{{verse|chapter=11|verse=1}}<section begin=11:1/>Whosoever therefore shall come and teach you all these things that have been said before, receive him;<section end=11:1/>
+{{verse|chapter=11|verse=2}}<section begin=11:2/>but if the teacher himself be perverted and teach a different doctrine to the destruction thereof, hear him not;<section end=11:2/>
+{{verse|chapter=11|verse=3}}<section begin=11:3/>but if to the increase of righteousness and the knowledge of the Lord, receive him as the Lord.<section end=11:3/>
+{{verse|chapter=11|verse=4}}<section begin=11:4/>But concerning the apostles and prophets, so do ye according to the ordinance of the Gospel.<section end=11:4/>
+{{verse|chapter=11|verse=5}}<section begin=11:5/>Let every apostle, when he cometh to you, be received as the Lord;<section end=11:5/>
+{{verse|chapter=11|verse=6}}<section begin=11:6/>but he shall not abide more than a single day, or if there be need, a second likewise;<section end=11:6/>
+{{verse|chapter=11|verse=7}}<section begin=11:7/>but if he abide three days, he is a false prophet.<section end=11:7/>
+{{verse|chapter=11|verse=8}}<section begin=11:8/>And when he departeth let the apostle receive nothing save bread, until he findeth shelter;<section end=11:8/>
+{{verse|chapter=11|verse=9}}<section begin=11:9/>but if he ask money, he is a false prophet.<section end=11:9/>
+{{verse|chapter=11|verse=10}}<section begin=11:10/>And any prophet speaking in the Spirit ye shall not try neither discern;<section end=11:10/>
+{{verse|chapter=11|verse=11}}<section begin=11:11/>for every sin shall be forgiven, but this sin shall not be forgiven.<section end=11:11/>
+{{verse|chapter=11|verse=12}}<section begin=11:12/>Yet not every one that speaketh in the Spirit is a prophet, but only if he have the ways of the Lord.<section end=11:12/>
+{{verse|chapter=11|verse=13}}<section begin=11:13/>From his ways therefore the false prophet and the prophet shall be recognized.<section end=11:13/>
+{{verse|chapter=11|verse=14}}<section begin=11:14/>And no prophet when he ordereth a table in the Spirit shall eat of it;<section end=11:14/>
+{{verse|chapter=11|verse=15}}<section begin=11:15/>otherwise he is a false prophet.<section end=11:15/>
+{{verse|chapter=11|verse=16}}<section begin=11:16/>And every prophet teaching the truth, if he doeth not what he teacheth, is a false prophet.<section end=11:16/>
+{{verse|chapter=11|verse=17}}<section begin=11:17/>And every prophet approved and found true, if he doeth ought as an outward mystery typical of the Church, and yet teacheth you not to do all that he himself doeth, shall not be judged before you;<section end=11:17/>
+{{verse|chapter=11|verse=18}}<section begin=11:18/>he hath his judgment in the presence of God;<section end=11:18/>
+{{verse|chapter=11|verse=19}}<section begin=11:19/>for in like manner also did the prophets of old time.<section end=11:19/>
+{{verse|chapter=11|verse=20}}<section begin=11:20/>And whosoever shall say in the Spirit, Give me silver or anything else, ye shall not listen to him;<section end=11:20/>
+{{verse|chapter=11|verse=21}}<section begin=11:21/>but if he tell you to give on behalf of others that are in want, let no man judge him.<section end=11:21/>
+
+==Chapter 12==
+{{chapter|12}}
+
+{{verse|chapter=12|verse=1}}<section begin=12:1/>But let every one <em>that cometh in the name of the Lord</em> be received;<section end=12:1/>
+{{verse|chapter=12|verse=2}}<section begin=12:2/>and then when ye have tested him ye shall know him, for ye shall have understanding on the right hand and on the left.<section end=12:2/>
+{{verse|chapter=12|verse=3}}<section begin=12:3/>If the comer is a traveller, assist him, so far as ye are able;<section end=12:3/>
+{{verse|chapter=12|verse=4}}<section begin=12:4/>but he shall not stay with you more than two or three days, if it be necessary.<section end=12:4/>
+{{verse|chapter=12|verse=5}}<section begin=12:5/>But if he wishes to settle with you, being a craftsman, let him work for and eat his bread.<section end=12:5/>
+{{verse|chapter=12|verse=6}}<section begin=12:6/>But if he has no craft, according to your wisdom provide how he shall live as a Christian among you, but not in idleness.<section end=12:6/>
+{{verse|chapter=12|verse=7}}<section begin=12:7/>If he will not do this, he is trafficking upon Christ.<section end=12:7/>
+{{verse|chapter=12|verse=8}}<section begin=12:8/>Beware of such men.<section end=12:8/>
+
+==Chapter 13==
+{{chapter|13}}
+
+{{verse|chapter=13|verse=1}}<section begin=13:1/>But every true prophet desiring to settle among you <em>is worthy of his food.</em><section end=13:1/>
+{{verse|chapter=13|verse=2}}<section begin=13:2/>In like manner a true teacher <em>is</em> also <em>worthy,</em> like <em>the workman, of his food.</em><section end=13:2/>
+{{verse|chapter=13|verse=3}}<section begin=13:3/>Every firstfruit then of the produce of the wine-vat and of the threshing-floor, of thy oxen and of thy sheep, thou shalt take and give as the firstfruit to the prophets;<section end=13:3/>
+{{verse|chapter=13|verse=4}}<section begin=13:4/>for they are your chief-priests.<section end=13:4/>
+{{verse|chapter=13|verse=5}}<section begin=13:5/>But if ye have not a prophet, give them to the poor.<section end=13:5/>
+{{verse|chapter=13|verse=6}}<section begin=13:6/>If thou makest bread, take the firstfruit and give according to the commandment.<section end=13:6/>
+{{verse|chapter=13|verse=7}}<section begin=13:7/>In like manner, when thou openest a jar of wine or of oil, take the firstfruit and give to the prophets;<section end=13:7/>
+{{verse|chapter=13|verse=8}}<section begin=13:8/>yea and of money and raiment and every possession take the firstfruit, as shall seem good to thee, and give according to the commandment.<section end=13:8/>
+
+==Chapter 14==
+{{chapter|14}}
+
+{{verse|chapter=14|verse=1}}<section begin=14:1/>And on the Lord's own day gather yourselves together and break bread and give thanks, first confessing your transgressions, that your sacrifice may be pure.<section end=14:1/>
+{{verse|chapter=14|verse=2}}<section begin=14:2/>And let no man, having his dispute with his fellow, join your assembly until they have been reconciled, that your sacrifice may not be defiled;<section end=14:2/>
+{{verse|chapter=14|verse=3}}<section begin=14:3/>for this sacrifice it is that was spoken of by the Lord;<section end=14:3/>
+{{verse|chapter=14|verse=4}}<section begin=14:4/><em>In every place and at every time offer Me a pure sacrifice;<section end=14:4/>
+{{verse|chapter=14|verse=5}}<section begin=14:5/>for I am a great king, saith the Lord and My name is wonderful among the nations.</em><section end=14:5/>
+
+==Chapter 15==
+{{chapter|15}}
+
+{{verse|chapter=15|verse=1}}<section begin=15:1/>Appoint for yourselves therefore bishops and deacons worthy of the Lord, men who are meek and not lovers of money, and true and approved;<section end=15:1/>
+{{verse|chapter=15|verse=2}}<section begin=15:2/>for unto you they also perform the service of the prophets and teachers.<section end=15:2/>
+{{verse|chapter=15|verse=3}}<section begin=15:3/>Therefore despise them not;<section end=15:3/>
+{{verse|chapter=15|verse=4}}<section begin=15:4/>for they are your honourable men along with the prophets and teachers.<section end=15:4/>
+{{verse|chapter=15|verse=5}}<section begin=15:5/>And reprove one another, not in anger but in peace, as ye find in the Gospel;<section end=15:5/>
+{{verse|chapter=15|verse=6}}<section begin=15:6/>and let no one speak to any that has gone wrong towards his neighbour, neither let him hear a word from you, until he repent.<section end=15:6/>
+{{verse|chapter=15|verse=7}}<section begin=15:7/>But your prayers and your almsgivings and all your deeds so do ye as ye find it in the Gospel of our Lord.<section end=15:7/>
+
+==Chapter 16==
+{{chapter|16}}
+
+{{verse|chapter=16|verse=1}}<section begin=16:1/><em>Be watchful</em> for your life;<section end=16:1/>
+{{verse|chapter=16|verse=2}}<section begin=16:2/><em>let your lamps not be quenched and your loins not ungirded, but be ye ready;<section end=16:2/>
+{{verse|chapter=16|verse=3}}<section begin=16:3/>for ye know not the hour in which our Lord cometh.</em><section end=16:3/>
+{{verse|chapter=16|verse=4}}<section begin=16:4/>And ye shall gather yourselves together frequently, seeking what is fitting for your souls;<section end=16:4/>
+{{verse|chapter=16|verse=5}}<section begin=16:5/>for the whole time of your faith shall not profit you, if ye be not perfected at the last season.<section end=16:5/>
+{{verse|chapter=16|verse=6}}<section begin=16:6/>For in the last days <em>the false prophets</em> and corrupters shall be multiplied, and the sheep shall be turned into wolves, and love shall be turned into hate.<section end=16:6/>
+{{verse|chapter=16|verse=7}}<section begin=16:7/>For as lawlessness increaseth, <em>they shall hate one another and shall persecute and betray.<section end=16:7/>
+{{verse|chapter=16|verse=8}}<section begin=16:8/>And then</em> the world-deceiver <em>shall appear</em> as a son of God;<section end=16:8/>
+{{verse|chapter=16|verse=9}}<section begin=16:9/><em>and shall work signs and wonders,</em> and the earth shall be delivered into his hands;<section end=16:9/>
+{{verse|chapter=16|verse=10}}<section begin=16:10/>and he shall do unholy things, which have never been since the world began.<section end=16:10/>
+{{verse|chapter=16|verse=11}}<section begin=16:11/>Then all created mankind shall come to the fire of testing, and many shall be offended and perish;<section end=16:11/>
+{{verse|chapter=16|verse=12}}<section begin=16:12/><em>but they that endure</em> in their faith <em>shall be saved</em> by the Curse Himself.<section end=16:12/>
+{{verse|chapter=16|verse=13}}<section begin=16:13/><em>And then shall the signs</em> of the truth <em>appear;</em><section end=16:13/>
+{{verse|chapter=16|verse=14}}<section begin=16:14/>first a sign of a rift in the heaven, then a sign of a voice of a trumpet, and thirdly a resurrection of the dead;<section end=16:14/>
+{{verse|chapter=16|verse=15}}<section begin=16:15/>yet not of all, but as it was said:<section end=16:15/>
+{{verse|chapter=16|verse=16}}<section begin=16:16/><em>The Lord shall come and all His saints with Him.<section end=16:16/>
+{{verse|chapter=16|verse=17}}<section begin=16:17/>Then shall</em> the world <em>see the Lord coming upon the clouds of heaven.</em><section end=16:17/>
+
+{{PD-old-100}}

@@ -1,0 +1,14 @@
+{
+  "id": "hermas",
+  "title": "Shepherd of Hermas",
+  "tradition": "christianity",
+  "blurb": "Visions, commandments, and parables on repentance, given by an angelic shepherd.",
+  "author": {
+    "name": "Hermas",
+    "basis": "attributed"
+  },
+  "date": {
+    "label": "c. 100–150 CE",
+    "sort": 125
+  }
+}

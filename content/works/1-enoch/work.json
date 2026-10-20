@@ -1,0 +1,15 @@
+{
+  "id": "1-enoch",
+  "title": "1 Enoch",
+  "tradition": "christianity",
+  "blurb": "Watchers, angels, and final judgment",
+  "refScheme": {
+    "type": "chapter.verse",
+    "sectionLabel": "Chapter",
+    "sections": 108,
+    "note": "Chapter and verse numbering following R. H. Charles, the conventional system for citing 1 Enoch.",
+    "verification": {
+      "status": "unverified"
+    }
+  }
+}

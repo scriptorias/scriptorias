@@ -1,0 +1,42 @@
+{
+  "id": "deuterocanonical",
+  "tradition": "christianity",
+  "kind": "collection",
+  "title": "Deuterocanonical Books",
+  "blurb": "Texts regarded as Scripture in Catholic and Orthodox traditions.",
+  "listed": true,
+  "order": 2,
+  "sample": false,
+  "members": [
+    {
+      "work": "tobit"
+    },
+    {
+      "work": "judith"
+    },
+    {
+      "work": "additions-esther"
+    },
+    {
+      "work": "wisdom-solomon"
+    },
+    {
+      "work": "sirach"
+    },
+    {
+      "work": "baruch"
+    },
+    {
+      "work": "1-maccabees"
+    },
+    {
+      "work": "2-maccabees"
+    },
+    {
+      "work": "additions-daniel"
+    },
+    {
+      "work": "prayer-manasseh"
+    }
+  ]
+}

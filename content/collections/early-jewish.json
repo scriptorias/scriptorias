@@ -1,0 +1,30 @@
+{
+  "id": "early-jewish",
+  "tradition": "christianity",
+  "kind": "collection",
+  "title": "Related Early Jewish Writings",
+  "blurb": "Ancient Jewish literature that provides historical and theological context for early Christianity.",
+  "listed": true,
+  "order": 3,
+  "sample": false,
+  "members": [
+    {
+      "work": "1-enoch"
+    },
+    {
+      "work": "jubilees"
+    },
+    {
+      "work": "2-baruch"
+    },
+    {
+      "work": "4-ezra"
+    },
+    {
+      "work": "testaments-twelve"
+    },
+    {
+      "work": "adam-eve"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "historical-books",
+  "tradition": "christianity",
+  "kind": "group",
+  "title": "Historical Books",
+  "blurb": "Joshua through Esther",
+  "countLabel": "12 books",
+  "listed": false,
+  "members": []
+}

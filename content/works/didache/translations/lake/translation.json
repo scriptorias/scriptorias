@@ -1,0 +1,16 @@
+{
+  "id": "lake",
+  "work": "didache",
+  "label": "Kirsopp Lake",
+  "detail": "The Apostolic Fathers (Loeb), Greek and English, 1912",
+  "language": "en",
+  "year": 1912,
+  "kind": "translation",
+  "status": "planned",
+  "license": {
+    "name": "Public domain"
+  },
+  "verification": {
+    "status": "unverified"
+  }
+}

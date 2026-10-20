@@ -1,0 +1,14 @@
+{
+  "id": "martyrdom-polycarp",
+  "title": "Martyrdom of Polycarp",
+  "tradition": "christianity",
+  "blurb": "The earliest surviving account of a Christian martyrdom outside the New Testament.",
+  "author": {
+    "name": "on behalf of the church at Smyrna",
+    "basis": "anonymous"
+  },
+  "date": {
+    "label": "c. 155–160 CE",
+    "sort": 157
+  }
+}

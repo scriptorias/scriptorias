@@ -1,0 +1,51 @@
+[
+  {
+    "from": {
+      "work": "1-enoch"
+    },
+    "to": {
+      "label": "Genesis 6:1–4"
+    },
+    "rel": "Expands",
+    "note": "The \"sons of God\" and the Nephilim.",
+    "disputed": false,
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  },
+  {
+    "from": {
+      "work": "1-enoch"
+    },
+    "to": {
+      "label": "Jude 14–15"
+    },
+    "rel": "Quoted in",
+    "note": "Quotes 1 Enoch 1:9.",
+    "disputed": false,
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  },
+  {
+    "from": {
+      "work": "1-enoch"
+    },
+    "to": {
+      "work": "jubilees"
+    },
+    "rel": "Shares tradition",
+    "inverse": "Shares tradition",
+    "note": "Retells the Watchers story.",
+    "disputed": false,
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  }
+]

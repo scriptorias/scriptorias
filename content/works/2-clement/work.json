@@ -1,0 +1,14 @@
+{
+  "id": "2-clement",
+  "title": "2 Clement",
+  "tradition": "christianity",
+  "blurb": "The oldest surviving Christian sermon outside the New Testament, a call to repentance.",
+  "author": {
+    "name": "Clement of Rome",
+    "basis": "traditional"
+  },
+  "date": {
+    "label": "c. 120–160 CE",
+    "sort": 140
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "bryennios",
+  "work": "didache",
+  "label": "Philotheos Bryennios",
+  "detail": "First printed edition of the Greek text, 1883",
+  "language": "grc",
+  "year": 1883,
+  "kind": "original",
+  "status": "planned",
+  "license": {
+    "name": "Public domain"
+  },
+  "verification": {
+    "status": "unverified"
+  }
+}

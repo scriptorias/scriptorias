@@ -1,0 +1,24 @@
+{
+  "id": "medieval",
+  "tradition": "christianity",
+  "kind": "collection",
+  "title": "Medieval Christian Literature",
+  "blurb": "Spiritual writings, saints' lives, and theological works from the medieval Christian world.",
+  "listed": true,
+  "order": 7,
+  "sample": false,
+  "members": [
+    {
+      "work": "rule-benedict"
+    },
+    {
+      "work": "bede-history"
+    },
+    {
+      "work": "proslogion"
+    },
+    {
+      "work": "julian-revelations"
+    }
+  ]
+}

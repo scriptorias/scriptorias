@@ -1,0 +1,79 @@
+{
+  "work": "didache",
+  "translation": "lightfoot",
+  "verification": {
+    "status": "proposed",
+    "note": "Chapter 1 aligned to conventional verse divisions; chapters 2–3 anchored at chapter level until verified."
+  },
+  "segments": {
+    "1.1": [
+      "didache.1.1"
+    ],
+    "1.2": [
+      "didache.1.2"
+    ],
+    "1.3": [
+      "didache.1.2"
+    ],
+    "1.4": [
+      "didache.1.2"
+    ],
+    "1.5": [
+      "didache.1.2"
+    ],
+    "1.6": [
+      "didache.1.3"
+    ],
+    "1.7": [
+      "didache.1.3"
+    ],
+    "1.8": [
+      "didache.1.3"
+    ],
+    "1.9": [
+      "didache.1.4"
+    ],
+    "1.10": [
+      "didache.1.4"
+    ],
+    "1.11": [
+      "didache.1.4"
+    ],
+    "1.12": [
+      "didache.1.4"
+    ],
+    "1.13": [
+      "didache.1.4"
+    ],
+    "1.14": [
+      "didache.1.5"
+    ],
+    "1.15": [
+      "didache.1.5"
+    ],
+    "1.16": [
+      "didache.1.5"
+    ],
+    "1.17": [
+      "didache.1.5"
+    ],
+    "1.18": [
+      "didache.1.5"
+    ],
+    "1.19": [
+      "didache.1.5"
+    ],
+    "1.20": [
+      "didache.1.5"
+    ],
+    "1.21": [
+      "didache.1.5"
+    ],
+    "1.22": [
+      "didache.1.6"
+    ],
+    "1.23": [
+      "didache.1.6"
+    ]
+  }
+}

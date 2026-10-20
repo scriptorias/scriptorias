@@ -1,0 +1,55 @@
+[
+  {
+    "ref": "didache.1",
+    "kind": "Connection",
+    "title": "Epistle of Barnabas 18–20",
+    "note": "Another form of the Two Ways teaching.",
+    "to": {
+      "work": "barnabas"
+    },
+    "sources": [],
+    "verification": {
+      "status": "sample"
+    }
+  },
+  {
+    "ref": "didache.1.2",
+    "kind": "Parallel",
+    "title": "Matthew 22:37–39",
+    "note": "Love of God and of neighbor.",
+    "sources": [],
+    "verification": {
+      "status": "sample"
+    }
+  },
+  {
+    "ref": "didache.1.2",
+    "kind": "Parallel",
+    "title": "Matthew 7:12; Luke 6:31",
+    "note": "Compare the Golden Rule, here in negative form.",
+    "sources": [],
+    "verification": {
+      "status": "sample"
+    }
+  },
+  {
+    "ref": "didache.1.3",
+    "kind": "Parallel",
+    "title": "Matthew 5:44; Luke 6:27–28",
+    "note": "Blessing those who curse and praying for enemies.",
+    "sources": [],
+    "verification": {
+      "status": "sample"
+    }
+  },
+  {
+    "ref": "didache.1.4",
+    "kind": "Parallel",
+    "title": "Matthew 5:39–41; Luke 6:29",
+    "note": "The other cheek and the second mile.",
+    "sources": [],
+    "verification": {
+      "status": "sample"
+    }
+  }
+]

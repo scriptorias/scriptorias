@@ -1,0 +1,25 @@
+{
+  "id": "ignatius",
+  "title": "Letters of Ignatius of Antioch",
+  "tradition": "christianity",
+  "blurb": "Seven letters written on the road to martyrdom in Rome, urging unity around the bishop.",
+  "author": {
+    "name": "Ignatius of Antioch",
+    "basis": "known"
+  },
+  "date": {
+    "label": "c. 107–115 CE",
+    "sort": 110,
+    "debated": true
+  },
+  "parts": [
+    "ignatius-ephesians",
+    "ignatius-magnesians",
+    "ignatius-trallians",
+    "ignatius-romans",
+    "ignatius-philadelphians",
+    "ignatius-smyrnaeans",
+    "ignatius-polycarp"
+  ],
+  "partLabel": "letters"
+}

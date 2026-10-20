@@ -1,0 +1,42 @@
+{
+  "id": "lightfoot",
+  "work": "didache",
+  "label": "J. B. Lightfoot",
+  "detail": "The Apostolic Fathers (1891)",
+  "language": "en",
+  "year": 1891,
+  "kind": "translation",
+  "status": "available",
+  "default": true,
+  "license": {
+    "name": "Public domain"
+  },
+  "attribution": "Transcription from Wikisource, available under CC BY-SA 4.0; the underlying 1891 translation is in the public domain.",
+  "source": {
+    "label": "Wikisource: Didache (Lightfoot translation)",
+    "href": "https://en.wikisource.org/wiki/Didache_(Lightfoot_translation)",
+    "retrieved": "2026-10-20"
+  },
+  "importer": {
+    "name": "wikisource-sections",
+    "raw": "_raw/wikisource/didache-lightfoot/didache-lightfoot.wikitext",
+    "sections": [
+      1,
+      2,
+      3
+    ]
+  },
+  "coverage": {
+    "sections": [
+      1,
+      2,
+      3
+    ],
+    "note": "Sample: chapters 1–3 of 16."
+  },
+  "italics": "Italic type follows Lightfoot, who set quotations of Scripture in italics.",
+  "verification": {
+    "status": "sample",
+    "note": "Sample text for interface review; not yet checked against the printed edition."
+  }
+}

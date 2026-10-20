@@ -1,0 +1,24 @@
+{
+  "id": "didache",
+  "title": "The Didache",
+  "tradition": "christianity",
+  "blurb": "A short church manual on ethics, baptism, fasting, and the Eucharist.",
+  "author": {
+    "basis": "anonymous"
+  },
+  "date": {
+    "label": "c. 50–120 CE",
+    "sort": 85,
+    "debated": true
+  },
+  "refScheme": {
+    "type": "chapter.verse",
+    "sectionLabel": "Chapter",
+    "sections": 16,
+    "note": "Chapter and verse divisions as conventionally used in citations of the Didache.",
+    "verification": {
+      "status": "unverified",
+      "note": "Verse boundaries to be confirmed against a standard critical edition before alignment is marked verified."
+    }
+  }
+}

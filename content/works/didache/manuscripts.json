@@ -1,0 +1,58 @@
+[
+  {
+    "id": "hierosolymitanus-54",
+    "work": "didache",
+    "name": "Codex Hierosolymitanus 54",
+    "date": "1056 CE",
+    "note": "The only complete Greek text, rediscovered in 1873.",
+    "contents": [],
+    "images": [],
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  },
+  {
+    "id": "p-oxy-1782",
+    "work": "didache",
+    "name": "Oxyrhynchus Papyrus 1782",
+    "date": "4th century",
+    "note": "Greek fragments of the opening chapters.",
+    "contents": [],
+    "images": [],
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  },
+  {
+    "id": "bl-or-9271",
+    "work": "didache",
+    "name": "Coptic fragment, British Library Or. 9271",
+    "date": "c. 5th century",
+    "note": "A Coptic version of part of the later chapters.",
+    "contents": [],
+    "images": [],
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  },
+  {
+    "id": "apostolic-constitutions-7",
+    "work": "didache",
+    "name": "Apostolic Constitutions, Book 7",
+    "date": "4th century",
+    "note": "A later church order that reworks much of the Didache.",
+    "contents": [],
+    "images": [],
+    "sources": [],
+    "verification": {
+      "status": "sample",
+      "note": "Prototype sample content; not yet verified."
+    }
+  }
+]

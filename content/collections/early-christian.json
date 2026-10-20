@@ -1,0 +1,37 @@
+{
+  "id": "early-christian",
+  "tradition": "christianity",
+  "kind": "collection",
+  "title": "Early Christian Writings",
+  "blurb": "The generations after the apostles, including the Apostolic Fathers and early church writings.",
+  "intro": "Letters, sermons, church manuals, and visions from the earliest generations of Christianity. These writings circulated alongside the emerging New Testament and illuminate the beliefs and practices of the early Church.",
+  "listed": true,
+  "order": 4,
+  "sample": true,
+  "members": [
+    {
+      "work": "didache"
+    },
+    {
+      "work": "1-clement"
+    },
+    {
+      "work": "2-clement"
+    },
+    {
+      "work": "ignatius"
+    },
+    {
+      "work": "polycarp-philippians"
+    },
+    {
+      "work": "martyrdom-polycarp"
+    },
+    {
+      "work": "hermas"
+    },
+    {
+      "work": "barnabas"
+    }
+  ]
+}

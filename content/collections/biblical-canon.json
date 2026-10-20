@@ -1,0 +1,34 @@
+{
+  "id": "biblical-canon",
+  "tradition": "christianity",
+  "kind": "collection",
+  "title": "Biblical Canon",
+  "blurb": "Explore the major biblical canons and compare different traditions.",
+  "countLabel": "Multiple Canons",
+  "listed": true,
+  "order": 1,
+  "sample": false,
+  "members": [
+    {
+      "collection": "torah"
+    },
+    {
+      "collection": "historical-books"
+    },
+    {
+      "collection": "wisdom-poetry"
+    },
+    {
+      "collection": "prophets"
+    },
+    {
+      "collection": "gospels-acts"
+    },
+    {
+      "collection": "epistles"
+    },
+    {
+      "collection": "revelation"
+    }
+  ]
+}
