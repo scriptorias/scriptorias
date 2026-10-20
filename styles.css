@@ -578,3 +578,4 @@ body.reading .toast { bottom: 92px; }
 /* Home hero divider: a hairline with a short muted-gold lead */
 .hero-rule { position: relative; height: 1px; margin: 32px 0 0; border: 0; background: var(--line); overflow: visible; }
 .hero-rule::before { content: ""; position: absolute; left: 0; top: -1px; width: 72px; height: 2px; background: #b89558; }
+.hero + .search-box { margin-top: 40px; }

@@ -380,7 +380,7 @@ function searchResults(q) {
   return group("work", "Works") + group("verse", "Passages") || `<p class="section-label">No results for "${esc(q)}"</p>`;
 }
 function viewSearch(q = "") {
-  return `${topbar()}<div class="page"><h1>Search</h1>
+  return `${topbar()}<div class="page"><div class="hero"><h1>Search</h1><hr class="hero-rule" /></div>
     <label class="search-box">${icon("search")}<input id="q" type="search" placeholder="Search works and passages" value="${esc(q)}" autocomplete="off" /></label>
     <div id="results">${searchResults(q)}</div></div>`;
 }
