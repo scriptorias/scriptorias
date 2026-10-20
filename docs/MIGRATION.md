@@ -20,7 +20,7 @@ Keys keep the `sc.` prefix. On first load the app runs a one-time migration and 
 `sc.schema = 2`:
 
 - `sc.bookmarks`: `[{work, ch}]` and `[{ref, work, ch, n?, tr}]` entries become
-  `{ref, work, ch, anchor?, tr?, at}` using the table above. Nothing is dropped; a bookmark whose
+  `{ref, work, ch, anchor?, tr?, at}` using the table above. No bookmarked passage is lost; a bookmark whose
   passage cannot be resolved falls back to its chapter. Verse-level results carry no anchor
   (the verse identifies the passage); several old bookmarks in the same verse merge into one,
   keeping the first.
