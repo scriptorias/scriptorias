@@ -17,7 +17,7 @@ window.LIBRARY = {
         id: "biblical-canon",
         title: "Biblical Canon",
         blurb: "Explore the major biblical canons and compare different traditions.",
-        count: "66+ books",
+        count: "Multiple Canons",
         about: "The books accepted as Scripture across Christian traditions. Protestant Bibles contain 66 books; Catholic and Orthodox canons are larger, and the Ethiopian Orthodox canon is the broadest of all.",
         works: [
           { id: "torah", title: "The Torah", blurb: "Genesis through Deuteronomy", tags: ["Hebrew Bible", "5 books"] },
