@@ -5,10 +5,8 @@ window.LIBRARY = {
     { id: "christianity", name: "Christianity", icon: "cross", live: true },
     { id: "judaism", name: "Judaism", icon: "star" },
     { id: "islam", name: "Islam", icon: "moon" },
-    { id: "norse", name: "Norse Tradition", icon: "rune" },
-    { id: "greek", name: "Greek Tradition", icon: "temple" },
-    { id: "egyptian", name: "Egyptian Tradition", icon: "ankh" },
-    { id: "other", name: "Other Traditions", icon: "globe" },
+    { id: "norse", name: "Norse", icon: "rune" },
+    { id: "greek", name: "Greek", icon: "temple" },
   ],
 
   christianity: {

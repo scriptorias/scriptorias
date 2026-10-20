@@ -54,21 +54,18 @@ const findCol = (id) => trad.collections.find((c) => c.id === id);
 const readHref = (work, ch, v) => `#/w/${work}/read/${ch}${v ? "/" + v : ""}`;
 
 // ---------- Shell ----------
-const NAV = [
-  ["home", "Home"], ["explore", "Explore"], ["paths", "Paths"], ["timeline", "Timeline"], ["maps", "Maps"],
-  ["people", "People"], ["bookmarks", "Bookmarks"], ["notes", "Notes"], ["downloads", "Downloads"], ["search", "Search"],
-];
+const NAV = [["home", "Home"], ["paths", "Pathways"], ["search", "Search"]];
 const FOOT = [["settings", "Settings"], ["about", "About"]];
-const TABBAR = [["library", "Library", "#/"], ["search", "Search", "#/search"], ["notes", "Notes", "#/notes"], ["bookmark", "Bookmarks", "#/bookmarks"], ["more", "More", "menu"]];
+const TABBAR = [["home", "Home", "#/home"], ["library", "Library", "#/"], ["paths", "Pathways", "#/paths"], ["search", "Search", "#/search"], ["more", "More", "menu"]];
 
 function renderShell(active) {
   const link = ([id, name]) => `<a href="#/${id}" class="${active === id ? "on" : ""}">${icon(id)}${name}</a>`;
   document.getElementById("nav-main").innerHTML = NAV.map(link).join("");
   document.getElementById("nav-foot").innerHTML = FOOT.map(link).join("");
   document.getElementById("nav-libraries").innerHTML = L.traditions
-    .map((t) => `<a href="#/library/${t.id}" class="${active === "lib:" + t.id ? "on" : ""} ${t.live ? "" : "off"}" ${t.live ? "" : 'title="Coming soon"'}>${icon(t.icon)}${t.name}</a>`)
+    .map((t) => `<a href="#/library/${t.id}" class="${active === "lib:" + t.id ? "on" : ""} ${t.live ? "" : "off"}" ${t.live ? "" : 'aria-disabled="true"'}>${icon(t.icon)}${t.name}${t.live ? "" : '<span class="soon">Coming Soon</span>'}</a>`)
     .join("");
-  const tabActive = active.startsWith("lib:") || active === "home" ? "library" : active === "bookmarks" ? "bookmark" : active;
+  const tabActive = active.startsWith("lib:") ? "library" : active;
   document.getElementById("tabbar").innerHTML = TABBAR
     .map(([ic, name, href]) => `<a href="${href === "menu" ? "#" : href}" ${href === "menu" ? "data-menu" : ""} class="${tabActive === ic ? "on" : ""}">${icon(ic)}${name}</a>`)
     .join("");
@@ -107,14 +104,14 @@ function viewHome() {
       <p>A library of ancient religious and historical writings: scripture, apocrypha, early Christian texts, and the Church Fathers, with the history behind each one.</p></div>
     ${lw ? `<div class="section-label">Continue reading</div>
       <a class="continue" href="${readHref(last.work, last.ch)}"><small>${esc(lw.col.title)}</small><h3>${esc(lw.work.title)} · Chapter ${last.ch}</h3><p>${esc(lw.work.blurb)}</p></a>` : ""}
-    <div class="section-label">Featured path</div>
+    <div class="section-label">Featured pathway</div>
     ${pathCards()}
     <div class="section-label">Libraries</div>
-    <div class="libs">${L.traditions.map((t) => `<a class="lib ${t.live ? "" : "off"}" href="#/library/${t.id}">${icon(t.icon)}${t.name}${t.live ? "" : '<span class="soon">Soon</span>'}</a>`).join("")}</div>
+    <div class="libs">${L.traditions.map((t) => `<a class="lib ${t.live ? "" : "off"}" href="#/library/${t.id}">${icon(t.icon)}${t.name}${t.live ? "" : '<span class="soon">Coming Soon</span>'}</a>`).join("")}</div>
   </div>`;
 }
 
-const LIB_TABS = [["collections", "Collections"], ["paths", "Paths"], ["timeline", "Timeline"], ["figures", "Key Figures"], ["topics", "Topics"]];
+const LIB_TABS = [["collections", "Collections"], ["paths", "Pathways"], ["timeline", "Timeline"], ["figures", "Key Figures"], ["topics", "Topics"]];
 
 function viewLibrary(id, tab = "collections") {
   const t = L.traditions.find((x) => x.id === id);
@@ -147,10 +144,16 @@ function pathCards() {
       <span class="count">${esc(p.length)}</span><span class="chev">${icon("right")}</span></a>`).join("")}</div>`;
 }
 
+function viewPaths() {
+  return `${topbar()}<div class="page"><h1>Pathways</h1>
+    <p class="lede">Curated reading journeys that follow one idea, figure, or story across texts and centuries.</p>
+    <div style="margin-top:28px">${pathCards()}</div></div>`;
+}
+
 function viewPath(id) {
   const p = L.paths.find((x) => x.id === id);
   if (!p) return viewMissing();
-  const back = { href: "#/library/christianity/paths", label: "Paths" };
+  const back = { href: "#/paths", label: "Pathways" };
   return `${topbar(back)}<div class="page">${crumb(back)}
     <div class="col-head"><span class="num">${icon("paths")}</span><h1>${esc(p.title)}</h1></div>
     <p class="lede">${esc(p.blurb)}</p>
@@ -313,7 +316,7 @@ function viewSoon(key) {
 function viewAbout() {
   return `${topbar()}<div class="page"><h1>About</h1><div class="prose" style="margin-top:20px">
     <p>Scriptorias is a digital library for preserving, exploring, and understanding ancient religious and historical writings.</p>
-    <p>It isn't a devotional app. The focus is historical discovery: where each work came from, how it was transmitted, and how texts speak to one another across centuries. Curated <em>Paths</em> guide readers through those connections.</p>
+    <p>It isn't a devotional app. The focus is historical discovery: where each work came from, how it was transmitted, and how texts speak to one another across centuries. Curated <em>Pathways</em> guide readers through those connections.</p>
     <p>Scriptorias begins with Christianity: biblical texts, apocrypha, early Christian writings, and the Church Fathers. It will grow to include other religious, mythological, and philosophical traditions.</p></div></div>`;
 }
 const viewMissing = () => `${topbar()}<div class="page"><h1>Not found</h1><div class="empty"><b>This page isn't in the library.</b><a href="#/">Return to the collections</a></div></div>`;
@@ -328,7 +331,7 @@ function route() {
   else if (r === "library") { html = viewLibrary(a, b); active = "lib:" + a; }
   else if (r === "c") html = viewCollection(a, b);
   else if (r === "w") html = viewWork(a, b, c, d);
-  else if (r === "path" || r === "paths") { html = a ? viewPath(a) : viewLibrary("christianity", "paths"); active = "paths"; }
+  else if (r === "path" || r === "paths") { html = a ? viewPath(a) : viewPaths(); active = "paths"; }
   else if (r === "search") { html = viewSearch(a || ""); active = "search"; }
   else if (r === "bookmarks") { html = viewBookmarks(); active = "bookmarks"; }
   else if (r === "about") { html = viewAbout(); active = "about"; }
