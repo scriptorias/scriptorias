@@ -105,7 +105,7 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
 .card:hover { background: var(--card-hover); }
 /* Unnumbered cards (collections are categories, not steps). Same height as numbered cards. */
 .card.plain { position: relative; grid-template-columns: 1fr auto 18px; min-height: 92px; padding-left: 28px; }
-.card.plain::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 2px; border-radius: 2px; background: var(--line); transition: background .15s; }
+.card.plain::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 2px; border-radius: 2px; background: #c9b48c; transition: background .15s; }
 .card.plain:hover::before { background: var(--gold); }
 .num { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 8px; background: var(--tile); font-size: 26px; color: var(--ink-2); }
 .card h3 { margin: 0 0 3px; font-size: 19px; font-weight: 500; }

@@ -128,8 +128,7 @@ function viewLibrary(id, tab = "collections") {
       ? pathCards()
       : `<div class="empty"><b>${LIB_TABS.find((x) => x[0] === tab)[1]} is coming soon.</b>This view will connect works by date, author, and theme.</div>`;
   return `${topbar()}<div class="page">
-    <div class="head-row"><div><h1>${t.name}</h1><p class="facets">${trad.facets.map((f) => `<span>${f}</span>`).join("")}</p></div>
-      <button class="icon-btn" aria-label="More">${icon("more")}</button></div>
+    <div><h1>${t.name}</h1><p class="facets">${trad.facets.map((f) => `<span>${f}</span>`).join("")}</p></div>
     <div class="seg">${LIB_TABS.map(([k, n]) => `<a href="#/library/${id}/${k}" class="${tab === k ? "on" : ""}">${n}</a>`).join("")}</div>
     ${body}
   </div>`;
