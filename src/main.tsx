@@ -9,6 +9,9 @@ import "./styles/app.css";
 import { App } from "./App";
 import { legacyHashToPath, migrateStorage } from "./lib/migrate";
 
+// After a new deploy, an open tab may request chunks that no longer exist; reload to get the new build.
+window.addEventListener("vite:preloadError", () => location.reload());
+
 // Prototype links used hash routes (#/w/didache/read/1); rewrite them to clean paths.
 const legacy = legacyHashToPath(location.hash);
 if (legacy) history.replaceState(null, "", legacy);

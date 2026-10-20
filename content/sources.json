@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "lake-1912-apostolic-fathers",
+    "type": "edition",
+    "citation": "Kirsopp Lake, ed. and trans., The Apostolic Fathers, vol. 1, Loeb Classical Library (London: William Heinemann; New York: Macmillan, 1912).",
+    "href": "https://en.wikisource.org/wiki/Didache_(Lake_translation)",
+    "verification": {
+      "status": "unverified",
+      "note": "Verse numbering consulted via the Wikisource transcription (snapshot in content/_raw/wikisource/verification/didache-lake.wikitext); bibliographic details to be confirmed against the printed volume."
+    }
+  },
+  {
+    "id": "wikisource-el-didache",
+    "type": "web",
+    "citation": "Διδαχή των Δώδεκα Αποστόλων (Greek text with chapter and verse numbers), Greek Wikisource.",
+    "href": "https://el.wikisource.org/wiki/%CE%94%CE%B9%CE%B4%CE%B1%CF%87%CE%AE_%CF%84%CF%89%CE%BD_%CE%94%CF%8E%CE%B4%CE%B5%CE%BA%CE%B1_%CE%91%CF%80%CE%BF%CF%83%CF%84%CF%8C%CE%BB%CF%89%CE%BD",
+    "verification": {
+      "status": "unverified",
+      "note": "The page does not name its underlying edition; used only as a second witness to the verse divisions. Snapshot in content/_raw/wikisource/verification/didache-greek.wikitext."
+    }
+  }
+]

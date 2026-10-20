@@ -3,7 +3,11 @@
   "translation": "lightfoot",
   "verification": {
     "status": "proposed",
-    "note": "Chapter 1 aligned to conventional verse divisions; chapters 2–3 anchored at chapter level until verified."
+    "note": "Chapter 1: each Lightfoot/Wikisource segment assigned to the verse whose Greek incipit it falls under; boundaries checked against Lake (1912) and the Greek text, with no disagreements (see docs/REFERENCES.md). Chapters 2–3 not aligned; they resolve to chapter level.",
+    "sources": [
+      "lake-1912-apostolic-fathers",
+      "wikisource-el-didache"
+    ]
   },
   "segments": {
     "1.1": [

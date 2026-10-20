@@ -123,6 +123,7 @@ for (const [id, b] of works) {
   } else if (!memberOf.has(id)) err(w, "work belongs to no collection");
   for (const p of b.work.parts ?? []) if (works.get(p)?.work.partOf !== id) err(w, `part "${p}" missing or not marked partOf "${id}"`);
 
+  if (b.work.refScheme) checkSources(w, b.work.refScheme.verification.sources ?? []);
   if (b.overview) {
     const where = rel(path.join(b.dir, "overview.json"));
     if (b.overview.work !== id) err(where, `work "${b.overview.work}" does not match folder`);
@@ -186,6 +187,7 @@ for (const [id, b] of works) {
     if (covered.join() !== present.join()) err(where, `coverage [${covered}] does not match text sections [${present}]`);
     if (t.alignment) {
       const aw = rel(path.join(t.dir, "alignment.json"));
+      checkSources(aw, t.alignment.verification.sources ?? []);
       for (const [segId, refs] of Object.entries(t.alignment.segments)) {
         if (!ids.has(segId)) err(aw, `unknown segment "${segId}"`);
         for (const r of refs) {

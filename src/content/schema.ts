@@ -26,6 +26,8 @@ export const Verification = z.object({
   by: z.string().optional(),
   date: z.string().optional(),
   note: z.string().optional(),
+  /** Sources the check was made against. */
+  sources: z.array(Id).optional(),
 });
 export type Verification = z.infer<typeof Verification>;
 

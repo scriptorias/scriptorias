@@ -5,7 +5,7 @@
  */
 import { loadAlignment, loadText } from "../content/loaders";
 import { AlignmentIndex, anchorOf, sectionRef } from "../content/refs";
-import { store, type Bookmark } from "./storage";
+import { bookmarkKey, store, type Bookmark } from "./storage";
 
 export const STORAGE_VERSION = 2;
 
@@ -70,7 +70,9 @@ export async function migrateStorage() {
       next.push({ ref: sectionRef(b.work, b.ch), work: b.work, ch: b.ch, at: b.at ?? 0 });
     }
   }
-  store.set("bookmarks", next);
+  // Several prototype segments can fall in one verse; keep one bookmark per passage (the first).
+  const seen = new Set<string>();
+  store.set("bookmarks", next.filter((b) => { const k = bookmarkKey(b); if (seen.has(k)) return false; seen.add(k); return true; }));
 
   // Resume positions: {ch, ref} → {ch, anchor}
   for (const key of store.keys().filter((k) => k.startsWith("rd.pos."))) {

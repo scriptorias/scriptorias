@@ -15,10 +15,14 @@
     "type": "chapter.verse",
     "sectionLabel": "Chapter",
     "sections": 16,
-    "note": "Chapter and verse divisions as conventionally used in citations of the Didache.",
+    "note": "Chapter and verse, as printed in standard editions of the Greek text (e.g. Lake 1912). Cited as didache.<chapter>.<verse>.",
     "verification": {
-      "status": "unverified",
-      "note": "Verse boundaries to be confirmed against a standard critical edition before alignment is marked verified."
+      "status": "proposed",
+      "note": "16 chapters and the chapter 1 verse divisions (1–6) agree in Lake (1912) and the Greek Wikisource text. Chapters 2–16 not yet checked. Awaiting editorial sign-off against a modern critical edition (e.g. Holmes).",
+      "sources": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ]
     }
   }
 }

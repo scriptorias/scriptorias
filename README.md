@@ -16,6 +16,7 @@ npm test               # Playwright end-to-end tests (run after build)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): structure, routing, loading, persistence, Capacitor readiness
 - [docs/CONTENT.md](docs/CONTENT.md): content model, canonical references, provenance, import workflow
 - [docs/DECISIONS.md](docs/DECISIONS.md): architectural decisions and open questions
+- [docs/REFERENCES.md](docs/REFERENCES.md): citation systems per work and how they were checked
 - [docs/MIGRATION.md](docs/MIGRATION.md): identifier, URL, and browser-data migrations from the prototype
 
 The static prototype is preserved at the `prototype-v1` tag.

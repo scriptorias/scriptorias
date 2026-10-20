@@ -16,8 +16,9 @@ keep their own segmentation and map to refs through `alignment.json`, which has 
 verification status. Unaligned text still works: references resolve to the section, with a
 translation-local anchor for precise scrolling. This is what makes side-by-side translations,
 cross-translation bookmarks, and stable citations possible.
-*Open:* the Didache verse scheme and the chapter 1 alignment are marked unverified/proposed and
-need checking against a critical edition. Chapters 2–3 are not aligned yet.
+*Status:* the Didache chapter 1 verse divisions and alignment were cross-checked against Lake
+(1912) and the Greek text with no discrepancies (docs/REFERENCES.md). They stay `proposed` until
+an editor signs them off against a modern critical edition. Chapters 2–3 are not aligned yet.
 
 ## 4. Deterministic importers from committed raw snapshots
 Every text is regenerated from a snapshot in `content/_raw` by a named importer. CI fails if the
