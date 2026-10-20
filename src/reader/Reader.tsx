@@ -8,10 +8,11 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router";
-import { availableTranslations, defaultTranslation, translationsFor, work as getWork } from "../content/catalog";
+import { availableTranslations, defaultTranslation, resolveRef, translationsFor, work as getWork } from "../content/catalog";
 import { loadAlignment, loadNotes, loadOverview, loadText } from "../content/loaders";
 import { AlignmentIndex, anchorOf, formatRef, isVerseRef, parseAnchor, sectionRef } from "../content/refs";
 import type { Note, Segment, Translation } from "../content/schema";
+import { isPlaceholder, transcriptionLabel } from "../content/labels";
 import { Icon } from "../components/Icon";
 import { Page, ShellFrame } from "../components/Shell";
 import { NotFound } from "../pages/Misc";
@@ -159,6 +160,9 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
   // Initial target from the URL (canonical verse, segment, or source label), else resume position.
   useEffect(() => {
     let target: string | null = null;
+    // A superseded verse division (work.refAliases) redirects to its current ref.
+    const asked = verseParam ? `${id}.${chn}.${verseParam}` : null;
+    if (asked && resolveRef(asked) !== asked) { navigate(readPath(id, asked, { tr: tr.id }), { replace: true }); return; }
     if (verseParam) target = idx.segsOf(`${id}.${chn}.${verseParam}`)[0] ?? null;
     else if (segParam) target = sec.segments.some((s) => s.id === segParam) ? segParam : null;
     else if (nParam) target = sec.segments.find((s) => s.n === nParam)?.id ?? null;
@@ -234,7 +238,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
   }, [notes, chRef, idx]);
   const [focusNote, setFocusNote] = useState<string | null>(null);
   const openNotes = (ref: string) => { setPanel("notes", true); setFocusNote(ref); requestAnimationFrame(() => document.querySelector(`[data-for="${CSS.escape(ref)}"]`)?.scrollIntoView({ block: "nearest" })); };
-  const notesSample = notes.some((n) => n.verification.status === "sample");
+  const notesPlaceholder = notes.some((n) => isPlaceholder(n.editorial));
 
   // ----- Bookmarks -----
   const marked = new Set(getBookmarks().map(bookmarkKey));
@@ -250,7 +254,9 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
   const group = groups.find((g) => chn >= g.from && chn <= g.to);
   const yearOf = tr.year ? String(tr.year) : tr.detail;
   const sampleRange = availSections.length < total ? `${label}s ${availSections[0]}–${availSections[availSections.length - 1]} of ${total}` : null;
-  const isSample = tr.verification.status === "sample";
+  const status = transcriptionLabel(tr.editorial);
+  // The text's own status only: a checked verse alignment says nothing about the transcription.
+  const banner = [sampleRange && `Sample passage · ${sampleRange}`, status].filter(Boolean).join(" · ");
   const inline = sec.segments.every((s) => s.runs);
   const selSegs = new Set(sel?.segs ?? []);
   const anyUnaligned = sec.segments.some((s) => !idx.isAligned(s.id));
@@ -327,7 +333,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
         <div className="rd-panel-body">
           <div className="rd-block">
             <h3>Translation</h3>
-            <button className="rd-choice on"><b>{tr.label}</b><span>{tr.detail}{isSample ? " · sample" : ""}</span></button>
+            <button className="rd-choice on"><b>{tr.label}</b><span>{tr.detail}{status ? ` · ${status.toLowerCase()}` : ""}</span></button>
             {otherTranslations.map((t) => t.status === "available" ? (
               <button key={t.id} className="rd-choice" onClick={() => { store.set(`rd.tr.${id}`, t.id); navigate(readSection(id, chn)); }}><b>{t.label}</b><span>{t.detail}</span></button>
             ) : (
@@ -345,7 +351,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
                     <li key={n}>
                       {availSections.includes(n)
                         ? <Link to={readSection(id, n)} className={n === chn ? "on" : ""}>{label} {n}{done.includes(n) && <i className="rd-done" aria-label="Read" />}</Link>
-                        : <span className="off">{label} {n}<small>not in sample</small></span>}
+                        : <span className="off">{label} {n}<small>not yet available</small></span>}
                     </li>
                   ))}
                 </ol>
@@ -369,7 +375,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
       <aside className={`rd-panel rd-right${panels.notes ? " open" : ""}`} id="rd-notes" aria-label="Notes and connections">
         <div className="rd-panel-head"><h2>Notes &amp; connections</h2><button className="icon-btn" aria-label="Close" onClick={() => setPanel("notes", false)}><Icon name="close" /></button></div>
         <div className="rd-panel-body">
-          {notesSample && <p className="rd-sample-tag">Sample notes · not yet verified</p>}
+          {notesPlaceholder && <p className="rd-sample-tag">Placeholder notes · not research</p>}
           {sectionNotes.length > 0 && <div className="rd-block"><h3>This {label.toLowerCase()}</h3>{sectionNotes.map(noteItem)}</div>}
           {verseNotes.size > 0 && (
             <div className="rd-block">
@@ -405,7 +411,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
       <div className={`rd-scrim${panels.settings || (narrow() && (panels.toc || panels.notes)) ? " show" : ""}`} onClick={closeAll} />
 
       <main className="rd-page">
-        {isSample && <p className="rd-sample">Sample passage{sampleRange ? ` · ${sampleRange}` : ""} · {tr.label}{tr.detail ? `, ${tr.detail}` : ""}</p>}
+        {banner && <p className="rd-sample">{banner} · {tr.label}{tr.detail ? `, ${tr.detail}` : ""}</p>}
         <header className="rd-head">
           <p className="rd-kicker">{label}</p>
           <h1 className="rd-num">{chn}</h1>
@@ -417,7 +423,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
         <nav className="rd-pager" aria-label="Chapters">
           {prev ? <Link to={readSection(id, prev)} data-dir="prev"><Icon name="left" />{label} {prev}</Link> : <span />}
           {next ? <Link to={readSection(id, next)} data-dir="next" className="next">{label} {next}<Icon name="right" /></Link>
-            : chn < total ? <span className="rd-end">{label} {chn + 1} is not in this sample</span> : <span className="rd-end">End of {w.title}</span>}
+            : chn < total ? <span className="rd-end">{label} {chn + 1} is not yet available</span> : <span className="rd-end">End of {w.title}</span>}
         </nav>
         <footer className="rd-colophon">
           <p>

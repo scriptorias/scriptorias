@@ -80,8 +80,50 @@
     "note": "Sample: chapters 1–16 of 108."
   },
   "numbering": "source",
-  "verification": {
-    "status": "sample",
-    "note": "Sample text for interface review; not yet checked against the printed edition."
-  }
+  "editorial": {
+    "content": "authentic",
+    "transcription": "unchecked",
+    "provenance": "recorded",
+    "note": "Imported from a third-party digitization; not yet proofread against the printed edition.",
+    "reviews": []
+  },
+  "rights": {
+    "work": {
+      "status": "public-domain",
+      "basis": "Ancient work (c. 3rd century BCE – 1st century CE).",
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": []
+    },
+    "edition": {
+      "status": "public-domain",
+      "basis": "R. H. Charles, The Book of Enoch (Oxford, 1912); Charles died 1931.",
+      "jurisdictions": {
+        "US": "Public domain.",
+        "life+70": "Public domain.",
+        "life+100": "Protected until 2031."
+      },
+      "obligations": [],
+      "legalReview": "recommended",
+      "evidence": []
+    },
+    "digitization": {
+      "status": "licensed",
+      "basis": "Our text is the Wikisource transcription (snapshot in content/_raw).",
+      "license": {
+        "name": "CC BY-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "obligations": [
+        "attribution",
+        "share-alike for the text file"
+      ],
+      "legalReview": "recommended",
+      "evidence": [
+        "wikisource-charles-enoch"
+      ]
+    },
+    "decision": "open"
+  },
+  "version": "0.1"
 }

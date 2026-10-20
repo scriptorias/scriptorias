@@ -5,8 +5,9 @@
  * Content is validated at build time (`npm run content:check`), so it is not re-parsed here.
  * Defaults declared in the schema are applied defensively where they matter.
  */
-import type { Collection, Connection, Pathway, Target, Tradition, Translation, Work } from "./schema";
+import { citationLocator, citationSource, type Citation, type Collection, type Connection, type Pathway, type Source, type Target, type Tradition, type Translation, type Work } from "./schema";
 import traditionsJson from "../../content/traditions.json";
+import sourcesJson from "../../content/sources.json";
 
 const glob = <T,>(mods: Record<string, unknown>) => Object.values(mods) as T[];
 
@@ -19,6 +20,22 @@ const PATHWAYS = glob<Pathway>(import.meta.glob("/content/pathways/*.json", { ea
 
 const workById = new Map(WORKS.map((w) => [w.id, w]));
 const collectionById = new Map(COLLECTIONS.map((c) => [c.id, c]));
+
+const sourceById = new Map((sourcesJson as Source[]).map((s) => [s.id, s]));
+
+export const source = (id: string) => sourceById.get(id);
+/** A citation as reader-facing text: the bibliographic citation plus any page or section locator. */
+export const citationText = (c: Citation) => {
+  const s = sourceById.get(citationSource(c));
+  const loc = citationLocator(c);
+  return `${s?.citation ?? citationSource(c)}${loc ? `, ${loc}` : ""}`;
+};
+
+/** Resolve a ref through the work's aliases (e.g. a superseded verse division), one step only. */
+export const resolveRef = (ref: string) => {
+  const w = workById.get(ref.split(".")[0]);
+  return w?.refAliases?.[ref] ?? ref;
+};
 
 export const traditions = () => TRADITIONS;
 export const tradition = (id: string) => TRADITIONS.find((t) => t.id === id);

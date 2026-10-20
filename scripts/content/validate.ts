@@ -2,6 +2,7 @@
  * Validates every file under /content against the schema, then checks references between them.
  *   npm run content:validate
  */
+import fs from "node:fs";
 import path from "node:path";
 import type { ZodTypeAny } from "zod";
 import * as S from "../../src/content/schema.ts";
@@ -26,6 +27,8 @@ const traditions = parse(S.z.array(S.Tradition), path.join(CONTENT, "traditions.
 const sources = parse(S.z.array(S.Source), path.join(CONTENT, "sources.json")) ?? [];
 const collections = listJson(path.join(CONTENT, "collections")).map((f) => [f, parse(S.Collection, f)] as const);
 const pathways = listJson(path.join(CONTENT, "pathways")).map((f) => [f, parse(S.Pathway, f)] as const);
+const reviewersFile = path.join(CONTENT, "editorial", "reviewers.json");
+const reviewers = exists(reviewersFile) ? parse(S.z.array(S.Reviewer), reviewersFile) ?? [] : [];
 
 type WorkBundle = {
   dir: string;
@@ -34,7 +37,7 @@ type WorkBundle = {
   manuscripts?: S.Manuscript[] | null;
   connections?: S.Connection[] | null;
   notes?: S.Note[] | null;
-  translations: { dir: string; tr: S.Translation; text?: S.Text | null; alignment?: S.Alignment | null }[];
+  translations: { dir: string; tr: S.Translation; text?: S.Text | null; alignment?: S.Alignment | null; corrections?: S.Correction[] | null; revisions?: S.Revision[] | null }[];
 };
 const works = new Map<string, WorkBundle>();
 for (const id of listDirs(path.join(CONTENT, "works"))) {
@@ -56,6 +59,8 @@ for (const id of listDirs(path.join(CONTENT, "works"))) {
     const t: WorkBundle["translations"][number] = { dir: tdir, tr };
     if (exists(path.join(tdir, "text.json"))) t.text = parse(S.Text, path.join(tdir, "text.json"));
     if (exists(path.join(tdir, "alignment.json"))) t.alignment = parse(S.Alignment, path.join(tdir, "alignment.json"));
+    if (exists(path.join(tdir, "corrections.json"))) t.corrections = parse(S.z.array(S.Correction), path.join(tdir, "corrections.json"));
+    if (exists(path.join(tdir, "revisions.json"))) t.revisions = parse(S.z.array(S.Revision), path.join(tdir, "revisions.json"));
     b.translations.push(t);
   }
   works.set(id, b);
@@ -65,7 +70,59 @@ for (const id of listDirs(path.join(CONTENT, "works"))) {
 const traditionIds = new Set(traditions.map((t) => t.id));
 const collectionIds = new Set(collections.flatMap(([, c]) => (c ? [c.id] : [])));
 const sourceIds = new Set(sources.map((s) => s.id));
-const checkSources = (where: string, ids: string[]) => ids.forEach((s) => sourceIds.has(s) || err(where, `unknown source "${s}"`));
+const sourceById = new Map(sources.map((s) => [s.id, s]));
+const reviewerById = new Map(reviewers.map((r) => [r.id, r]));
+const checkSources = (where: string, cites: S.Citation[]) =>
+  cites.forEach((c) => sourceIds.has(S.citationSource(c)) || err(where, `unknown source "${S.citationSource(c)}"`));
+
+// ---------- Editorial rules (docs/EDITORIAL.md) ----------
+const isQualified = (id: string) => {
+  const r = reviewerById.get(id);
+  return Boolean(r?.qualified && r.roles.some((x) => x === "reviewer" || x === "editor"));
+};
+const passes = (ed: S.Editorial, aspects: S.Review["aspect"][], opts: { qualified?: boolean; tierA?: boolean } = {}) =>
+  ed.reviews.some((r) => r.result === "pass" && aspects.includes(r.aspect) && (!opts.tierA || r.tier === "A") && (!opts.qualified || isQualified(r.by)));
+
+function checkReviews(where: string, reviews: S.Review[]) {
+  for (const r of reviews) {
+    if (!reviewerById.has(r.by)) err(where, `review by unknown reviewer "${r.by}" (add to editorial/reviewers.json)`);
+    checkSources(where, r.against);
+  }
+}
+
+/** Status claims must be backed by recorded reviews; tier A statuses need a qualified reviewer. */
+function checkEditorial(where: string, ed: S.Editorial | undefined) {
+  if (!ed) return;
+  checkReviews(where, ed.reviews);
+  if (ed.content === "placeholder") {
+    if (ed.review && ed.review !== "draft") err(where, "placeholder content cannot be reviewed or approved; replace it with authentic material");
+    if (ed.transcription && ed.transcription !== "unchecked") err(where, "placeholder content cannot have a transcription status");
+    return;
+  }
+  if (ed.transcription === "proofread" && !passes(ed, ["transcription", "divisions", "alignment"]))
+    err(where, "transcription 'proofread' needs a recorded passing transcription/divisions/alignment check");
+  if (ed.transcription === "editor-reviewed" && !passes(ed, ["transcription", "divisions", "alignment"], { qualified: true, tierA: true }))
+    err(where, "transcription 'editor-reviewed' needs a passing tier A review by a qualified reviewer");
+  if (ed.provenance === "confirmed" && !passes(ed, ["provenance", "rights"]))
+    err(where, "provenance 'confirmed' needs a passing provenance review");
+  if (ed.review === "reviewed" && !passes(ed, ["claims"])) err(where, "review 'reviewed' needs a passing claims review");
+  if (ed.review === "approved" && !passes(ed, ["claims"], { qualified: true, tierA: true }))
+    err(where, "review 'approved' needs a passing tier A claims review by a qualified reviewer");
+}
+
+function checkRights(where: string, rights: S.Rights | undefined, available: boolean) {
+  if (!rights) { if (available) err(where, "available translation needs a rights record"); return; }
+  const layers = [["work", rights.work], ["edition", rights.edition], ["digitization", rights.digitization], ["siteTerms", rights.siteTerms]] as const;
+  for (const [, l] of layers) if (l) checkSources(where, l.evidence);
+  if (rights.decision === "cleared") {
+    for (const [name, l] of layers) {
+      if (!l) continue;
+      if (l.legalReview === "required" || l.legalReview === "recommended") err(where, `rights cleared but ${name} still has legal review "${l.legalReview}"`);
+      if (l.status === "unknown" || l.status === "restricted") err(where, `rights cleared but ${name} is "${l.status}"`);
+    }
+    if (!rights.decidedBy || !reviewerById.get(rights.decidedBy)?.roles.includes("publisher")) err(where, "rights can only be cleared by the publisher (decidedBy)");
+  }
+}
 
 function checkRef(where: string, ref: string) {
   const [workId, section, verse] = ref.split(".");
@@ -103,7 +160,6 @@ for (const [file, c] of collections) {
   const where = rel(file);
   if (path.basename(file, ".json") !== c.id) err(where, `id "${c.id}" does not match file name`);
   if (!traditionIds.has(c.tradition)) err(where, `unknown tradition "${c.tradition}"`);
-  if (c.sample && !c.verification) { /* sample flag alone is fine */ }
   for (const m of c.members) {
     if ("work" in m) {
       if (!works.has(m.work)) err(where, `unknown work "${m.work}"`);
@@ -111,6 +167,7 @@ for (const [file, c] of collections) {
     } else if (!collectionIds.has(m.collection)) err(where, `unknown collection "${m.collection}"`);
     else if (m.collection === c.id) err(where, "collection contains itself");
   }
+  checkEditorial(where, c.editorial);
 }
 
 for (const [id, b] of works) {
@@ -123,7 +180,15 @@ for (const [id, b] of works) {
   } else if (!memberOf.has(id)) err(w, "work belongs to no collection");
   for (const p of b.work.parts ?? []) if (works.get(p)?.work.partOf !== id) err(w, `part "${p}" missing or not marked partOf "${id}"`);
 
-  if (b.work.refScheme) checkSources(w, b.work.refScheme.verification.sources ?? []);
+  if (b.work.refScheme) checkEditorial(w + " refScheme", b.work.refScheme.editorial);
+  for (const [from, to] of Object.entries(b.work.refAliases ?? {})) {
+    for (const r of [from, to]) if (!r.startsWith(id + ".")) err(w, `ref alias "${r}" does not belong to "${id}"`);
+    checkRef(w, to);
+    if (to.split(".")[2] && !b.translations.some((t) => t.alignment && Object.values(t.alignment.segments).some((refs) => refs.includes(to))))
+      err(w, `ref alias "${from}" → "${to}": target is not aligned in any translation`);
+    if (b.work.refAliases?.[to]) err(w, `ref alias "${from}" → "${to}" points to another alias (no chains)`);
+  }
+  for (const c of b.work.canonicalStatus ?? []) checkSources(w, c.sources);
   if (b.overview) {
     const where = rel(path.join(b.dir, "overview.json"));
     if (b.overview.work !== id) err(where, `work "${b.overview.work}" does not match folder`);
@@ -135,12 +200,18 @@ for (const [id, b] of works) {
     b.overview.facts.forEach((f) => checkSources(where, f.sources));
     b.overview.background.forEach((p) => checkSources(where, p.sources));
     b.overview.sourceGroups.forEach((g) => checkSources(where, g.sources));
+    checkEditorial(where, b.overview.editorial);
+    const claims = [...b.overview.facts, ...b.overview.background];
+    if (b.overview.editorial.content === "placeholder" && claims.some((c) => c.review !== "draft")) err(where, "placeholder overview cannot contain reviewed claims");
+    if (claims.some((c) => c.review === "reviewed" || c.review === "approved") && !passes(b.overview.editorial, ["claims"])) err(where, "claims marked reviewed need a passing claims review in editorial.reviews");
+    if (claims.some((c) => c.review === "approved") && !passes(b.overview.editorial, ["claims"], { qualified: true, tierA: true })) err(where, "claims marked approved need a tier A claims review by a qualified reviewer");
   }
   for (const m of b.manuscripts ?? []) {
     const where = rel(path.join(b.dir, "manuscripts.json"));
     if (m.work !== id) err(where, `${m.id}: work "${m.work}" does not match folder`);
     m.contents.forEach((r) => checkRef(where, r));
     checkSources(where, m.sources);
+    checkEditorial(`${where} ${m.id}`, m.editorial);
   }
   for (const c of b.connections ?? []) {
     const where = rel(path.join(b.dir, "connections.json"));
@@ -148,6 +219,7 @@ for (const [id, b] of works) {
     if (c.from.ref) checkRef(where, c.from.ref);
     checkTarget(where, c.to);
     checkSources(where, c.sources);
+    checkEditorial(where, c.editorial);
   }
   for (const n of b.notes ?? []) {
     const where = rel(path.join(b.dir, "notes.json"));
@@ -156,6 +228,7 @@ for (const [id, b] of works) {
     checkReachable(where, n.ref);
     if (n.to) checkTarget(where, n.to);
     checkSources(where, n.sources);
+    checkEditorial(where, n.editorial);
   }
 
   const defaults = b.translations.filter((t) => t.tr.default && t.tr.status === "available");
@@ -164,6 +237,19 @@ for (const [id, b] of works) {
     const where = rel(path.join(t.dir, "translation.json"));
     if (t.tr.id !== path.basename(t.dir)) err(where, `id "${t.tr.id}" does not match folder`);
     if (t.tr.work !== id) err(where, `work "${t.tr.work}" does not match folder`);
+    checkEditorial(where, t.tr.editorial);
+    checkRights(where, t.tr.rights, t.tr.status === "available");
+    if (t.tr.edition) {
+      const src = sourceById.get(t.tr.edition.source);
+      if (!src) err(where, `edition source "${t.tr.edition.source}" not in sources.json`);
+      else if (src.role && !["base-edition", "translation"].includes(src.role)) err(where, `edition source "${src.id}" has role "${src.role}", not base-edition/translation`);
+      else if (src.use === "consult-only") err(where, `edition source "${src.id}" is consult-only and cannot be reproduced`);
+    }
+    if (t.tr.importer) {
+      const raw = path.join(CONTENT, t.tr.importer.raw);
+      const dir = fs.existsSync(raw) && fs.statSync(raw).isDirectory() ? raw : path.dirname(raw);
+      if (!exists(path.join(dir, "NOTICE.md"))) err(where, `raw snapshot ${rel(dir)} has no NOTICE.md (source, licence, attribution)`);
+    }
     if (t.tr.status === "available") {
       if (!t.text) { err(where, "available translation has no text.json"); continue; }
       if (!t.tr.source) err(where, "available translation needs a source");
@@ -185,9 +271,22 @@ for (const [id, b] of works) {
     const covered = t.tr.coverage?.sections ?? [];
     const present = t.text.sections.map((s) => s.n);
     if (covered.join() !== present.join()) err(where, `coverage [${covered}] does not match text sections [${present}]`);
+    for (const c of t.corrections ?? []) {
+      const cw = rel(path.join(t.dir, "corrections.json"));
+      if (!ids.has(c.segment)) err(cw, `${c.id}: unknown segment "${c.segment}"`);
+      checkSources(cw, c.basis);
+      checkReviews(cw, c.reviews);
+      if (c.status === "adopted" && !c.reviews.some((r) => r.result === "pass" && r.tier === "A" && isQualified(r.by)))
+        err(cw, `${c.id}: adopting a correction needs a passing tier A review by a qualified reviewer`);
+    }
+    for (const r of t.revisions ?? []) {
+      const rw = rel(path.join(t.dir, "revisions.json"));
+      if (!reviewerById.has(r.by)) err(rw, `revision ${r.version}: unknown reviewer "${r.by}"`);
+      r.refs.forEach((x) => checkRef(rw, x));
+    }
     if (t.alignment) {
       const aw = rel(path.join(t.dir, "alignment.json"));
-      checkSources(aw, t.alignment.verification.sources ?? []);
+      checkEditorial(aw, t.alignment.editorial);
       for (const [segId, refs] of Object.entries(t.alignment.segments)) {
         if (!ids.has(segId)) err(aw, `unknown segment "${segId}"`);
         for (const r of refs) {
@@ -204,6 +303,38 @@ for (const [file, p] of pathways) {
   const where = rel(file);
   if (path.basename(file, ".json") !== p.id) err(where, `id "${p.id}" does not match file name`);
   p.steps.forEach((s) => checkTarget(where, s.target));
+}
+
+for (const s2 of sources) { checkEditorial(`sources.json ${s2.id}`, s2.editorial); if (s2.rights) checkSources(`sources.json ${s2.id}`, s2.rights.evidence); }
+
+// Every raw snapshot folder must carry a notice (source, licence, attribution, retrieval date).
+(function checkRaw(dir: string) {
+  if (!fs.existsSync(dir)) return;
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = entries.filter((e) => e.isFile() && !["NOTICE.md", "README.md", ".DS_Store"].includes(e.name));
+  if (files.length && !entries.some((e) => e.name === "NOTICE.md")) err(rel(dir), "raw snapshot folder has no NOTICE.md");
+  entries.filter((e) => e.isDirectory()).forEach((e) => checkRaw(path.join(dir, e.name)));
+})(path.join(CONTENT, "_raw"));
+
+// ---------- Publication gate: only for works marked published ----------
+for (const [, b] of works) {
+  const pub = b.work.publication;
+  if (pub?.status !== "published") continue;
+  const where = `${rel(path.join(b.dir, "work.json"))} (published)`;
+  if (!pub.approvedBy || !reviewerById.get(pub.approvedBy)?.roles.includes("publisher")) err(where, "publication must be approved by the publisher");
+  if (!b.overview || b.overview.editorial.content !== "authentic") err(where, "needs an authentic overview (no placeholder)");
+  for (const c of [...(b.overview?.facts ?? []), ...(b.overview?.background ?? [])]) {
+    if (!c.sources.some((x) => S.citationLocator(x))) err(where, `claim "${"label" in c ? c.label : c.text.slice(0, 40)}" needs a citation with a page or section locator`);
+  }
+  for (const [kind, list] of [["note", b.notes], ["connection", b.connections], ["manuscript", b.manuscripts]] as const)
+    for (const r of list ?? []) if (r.editorial.content === "placeholder") err(where, `${kind} is still a placeholder`);
+  const def = b.translations.find((t) => t.tr.default && t.tr.status === "available");
+  if (def) {
+    if (def.tr.editorial.provenance !== "confirmed") err(where, `default translation "${def.tr.id}" needs provenance confirmed`);
+    if (def.tr.rights?.decision !== "cleared") err(where, `default translation "${def.tr.id}" needs rights cleared`);
+    if (def.tr.editorial.transcription === "unchecked") err(where, `default translation "${def.tr.id}" must be at least proofread`);
+  }
+  if (b.work.refScheme?.editorial.content !== "authentic") err(where, "reference scheme must be authentic");
 }
 
 // ---------- Report ----------

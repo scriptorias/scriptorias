@@ -15,7 +15,8 @@
     "test:e2e": "npm run build && playwright test",
     "content:validate": "tsx scripts/content/validate.ts",
     "content:import": "tsx scripts/content/import.ts",
-    "content:check": "tsx scripts/content/import.ts --check && tsx scripts/content/validate.ts"
+    "content:check": "tsx scripts/content/import.ts --check && tsx scripts/content/validate.ts",
+    "test:content": "tsx --test tests/content/*.test.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

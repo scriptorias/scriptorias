@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - name: Content (import check + schema/reference validation)
         run: npm run content:check
+      - name: Validator rule tests
+        run: npm run test:content
       - name: Typecheck
         run: npm run typecheck
       - name: Build

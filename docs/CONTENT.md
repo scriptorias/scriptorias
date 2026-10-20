@@ -38,9 +38,10 @@ content/
   at section level only.
 - **Notes, connections, pathways, manuscripts** point at canonical references, never at segments.
 - **Claims → Sources.** Facts, background paragraphs, manuscripts, connections, and notes carry
-  `sources: [sourceId]` and a `verification` status (`sample`, `unverified`, `proposed`, `verified`).
+  `sources` (citations: a source id or `{ source, locator }`) and an `editorial` block (content
+  kind, transcription, provenance, claim review, and review entries; see `docs/EDITORIAL.md`).
   `basis` (`established`/`disputed`/`unknown`) and `kind` (`fact`/`interpretation`) describe the
-  claim; `verification` describes whether we have checked it.
+  claim; `editorial` describes what we have checked and who checked it.
 
 ## Canonical references
 
@@ -58,9 +59,11 @@ reader keeps a translation-local anchor (`lightfoot:1.7`) for precise scrolling.
 ## Provenance and licensing
 
 Every translation records `license`, `attribution`, `source` (label, URL, retrieval date),
-`importer` (name, raw snapshot, sections), `coverage`, and `verification`. Wikisource
+`importer` (name, raw snapshot, sections), `coverage`, `edition` (source and pages),
+`transcriptionPolicy`, `version`, layered `rights`, and `editorial`. Wikisource
 transcriptions are CC BY-SA 4.0 even when the underlying text is public domain; the attribution
-string says so and is shown in the reader colophon.
+string says so and is shown in the reader colophon. Each raw snapshot folder has a `NOTICE.md`.
+Rights layers and decisions are described in `docs/EDITORIAL.md` §5.
 
 ## Workflow
 
@@ -69,14 +72,16 @@ npm run content:import          # regenerate text.json (and generated alignments
 npm run content:import -- --check   # fail if committed text differs from importer output
 npm run content:validate        # schema + cross-reference checks
 npm run content:check           # both; runs in CI
+npm run test:content            # validator rule tests; runs in CI
 ```
 
 Adding a text:
 
-1. Save the raw source under `content/_raw/<source>/…` (never edit it by hand).
-2. Create `translation.json` with provenance, `importer`, and `coverage`; set `verification`.
+1. Save the raw source under `content/_raw/<source>/…` (never edit it by hand) with a `NOTICE.md`.
+2. Add the edition to `content/sources.json`, then create `translation.json` with provenance,
+   `edition`, `importer`, `coverage`, `rights`, and `editorial` (`transcription: "unchecked"`).
 3. Run `npm run content:import`, then review the generated `text.json`.
-4. Add or review `alignment.json` (segment → canonical refs) and mark its verification.
+4. Add or review `alignment.json` (segment → canonical refs); record any check as a review entry.
 5. Run `npm run content:check`; fix every error. Warnings flag references no reader can reach yet.
 
 Importers live in `scripts/content/importers.ts`. They are deterministic: the same snapshot always

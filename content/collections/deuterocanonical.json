@@ -6,7 +6,6 @@
   "blurb": "Texts regarded as Scripture in Catholic and Orthodox traditions.",
   "listed": true,
   "order": 2,
-  "sample": false,
   "members": [
     {
       "work": "tobit"

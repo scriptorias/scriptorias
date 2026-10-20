@@ -2,7 +2,6 @@
   "id": "the-watchers",
   "title": "The Watchers",
   "blurb": "Follow one strange story of fallen angels from Genesis through Enoch to the New Testament.",
-  "sample": true,
   "steps": [
     {
       "title": "Genesis 6:1–4",
@@ -42,5 +41,10 @@
         "ref": "1-enoch.1.9"
       }
     }
-  ]
+  ],
+  "editorial": {
+    "content": "placeholder",
+    "note": "Sample pathway written for interface design.",
+    "reviews": []
+  }
 }

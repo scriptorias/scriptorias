@@ -10,9 +10,9 @@
     "note": "Shares the Lord's Prayer and several sayings of Jesus.",
     "disputed": true,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
@@ -27,9 +27,9 @@
     "note": "Both contain closely related forms of the Two Ways teaching.",
     "disputed": false,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
@@ -43,9 +43,9 @@
     "note": "A Latin version of the Two Ways teaching.",
     "disputed": false,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
@@ -59,9 +59,9 @@
     "note": "Book 7 adapts much of the Didache into a later church order.",
     "disputed": false,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   }
 ]

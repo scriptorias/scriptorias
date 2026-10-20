@@ -2,7 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export const CONTENT = path.resolve(import.meta.dirname, "../../content");
+/** Content root; CONTENT_DIR overrides it (used by the validator tests). */
+export const CONTENT = process.env.CONTENT_DIR ? path.resolve(process.env.CONTENT_DIR) : path.resolve(import.meta.dirname, "../../content");
 
 export const readJson = (file: string): unknown => JSON.parse(fs.readFileSync(file, "utf8"));
 export const exists = (file: string) => fs.existsSync(file);

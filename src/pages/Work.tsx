@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import { Link, useParams } from "react-router";
-import { connectionsFor, primaryCollection, translationsFor, tradition, work as getWork } from "../content/catalog";
+import { citationText, connectionsFor, primaryCollection, translationsFor, tradition, work as getWork } from "../content/catalog";
 import { hasText, loadManuscripts, loadOverview } from "../content/loaders";
 import type { Collection, Overview, Work } from "../content/schema";
+import { isPlaceholder } from "../content/labels";
 import { Icon } from "../components/Icon";
 import { Breadcrumb, Page, type Back } from "../components/Shell";
 import { authorLabel } from "./Collection";
@@ -49,7 +50,7 @@ export function WorkPage() {
   if (ov === undefined || manuscripts === undefined) return <Page className="page overview"><div /></Page>;
 
   const { crumbs, back } = workTrail(w);
-  const sample = ov?.verification.status === "sample";
+  const sample = isPlaceholder(ov?.editorial);
   const translations = translationsFor(id);
   const readable = translations.some((t) => t.status === "available" && hasText(id, t.id));
   const parts = (w.parts ?? []).map((p) => getWork(p)).filter(Boolean) as Work[];
@@ -61,7 +62,7 @@ export function WorkPage() {
     <Page back={back} className="page overview">
       <Breadcrumb items={crumbs} current={w.title} />
       <header className="ov-head">
-        {sample && <span className="sample">Sample content · not yet verified</span>}
+        {sample && <span className="sample">Placeholder content · not research</span>}
         <h1>{w.title}</h1>
         {ov?.aka && <p className="ov-aka">{ov.aka}</p>}
         <p className="lede wide-lede">{ov?.intro ?? w.blurb.replace(/\.?$/, ".")}</p>
@@ -173,13 +174,13 @@ export function WorkPage() {
             {ov?.sourceGroups?.length ? ov.sourceGroups.map((g) => (
               <div key={g.title} className="src-group">
                 <h3>{g.title}</h3>
-                {g.sources.length ? <ul>{g.sources.map((s) => <li key={s}>{s}</li>)}</ul> : <p className="src-placeholder">Placeholder · awaiting verified sources</p>}
+                {g.sources.length ? <ul>{g.sources.map((s, i) => <li key={i}>{citationText(s)}</li>)}</ul> : <p className="src-placeholder">Placeholder · awaiting verified sources</p>}
               </div>
             )) : !textSources.length && <p className="src-placeholder">Placeholder · sources for this work have not yet been compiled</p>}
           </section>
           <p className="legend">
             <b>Disputed</b> scholars disagree&ensp;·&ensp;<b>Scholarly interpretation</b> a reading of the evidence, not settled fact
-            {sample && <>&ensp;·&ensp;Sample content is placeholder research awaiting verification.</>}
+            {sample && <>&ensp;·&ensp;Placeholder content was written for design and will be replaced with cited research.</>}
           </p>
         </div>
       </div>
@@ -201,14 +202,24 @@ export function ManuscriptPage() {
     <Page back={{ to: workPath(w.id), label: w.title }} className="page overview">
       <Breadcrumb items={[...(col ? [{ to: collectionPath(col.id), label: col.title }] : []), { to: workPath(w.id), label: w.title }]} current="Manuscripts" />
       <header className="ov-head">
-        <span className="sample">Placeholder record</span>
+        <span className="sample">{isPlaceholder(m.editorial) ? "Placeholder record" : "Draft record · not yet reviewed"}</span>
         <h1>{m.name}</h1>
         <p className="ov-aka">{m.date}</p>
         <p className="lede wide-lede">{m.note}</p>
       </header>
+      {!isPlaceholder(m.editorial) && (m.material || m.holding || m.links?.length) ? (
+        <dl className="ov-facts" style={{ marginTop: 36, maxWidth: 640 }}>
+          {m.material && <div><dt>Material</dt><dd>{m.material}</dd></div>}
+          {m.holding && <div><dt>Held at</dt><dd>{m.holding}</dd></div>}
+          {m.shelfmark && <div><dt>Shelfmark</dt><dd>{m.shelfmark}</dd></div>}
+          {m.links?.map((l) => <div key={l.href}><dt>Images & catalogue</dt><dd><a href={l.href} target="_blank" rel="noreferrer">{l.label}</a></dd></div>)}
+          {m.editorial.note && <div className="is-disputed"><dt>Open question</dt><dd>{m.editorial.note}</dd></div>}
+        </dl>
+      ) : (
       <div className="empty" style={{ marginTop: 36 }}>
         <b>Detailed record in preparation.</b>Provenance, contents, and images (where legally usable) will appear here. No images or catalog links have been sourced yet.
       </div>
+      )}
     </Page>
   );
 }

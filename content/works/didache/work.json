@@ -16,12 +16,26 @@
     "sectionLabel": "Chapter",
     "sections": 16,
     "note": "Chapter and verse, as printed in standard editions of the Greek text (e.g. Lake 1912). Cited as didache.<chapter>.<verse>.",
-    "verification": {
-      "status": "proposed",
+    "editorial": {
+      "content": "authentic",
+      "transcription": "unchecked",
       "note": "16 chapters and the chapter 1 verse divisions (1–6) agree in Lake (1912) and the Greek Wikisource text. Chapters 2–16 not yet checked. Awaiting editorial sign-off against a modern critical edition (e.g. Holmes).",
-      "sources": [
-        "lake-1912-apostolic-fathers",
-        "wikisource-el-didache"
+      "reviews": [
+        {
+          "by": "consuelo",
+          "date": "2026-10-20",
+          "tier": "A",
+          "aspect": "divisions",
+          "result": "pass",
+          "sections": [
+            1
+          ],
+          "against": [
+            "lake-1912-apostolic-fathers",
+            "wikisource-el-didache"
+          ],
+          "method": "Compared chapter 1 verse boundaries in two named witnesses (docs/REFERENCES.md)."
+        }
       ]
     }
   }

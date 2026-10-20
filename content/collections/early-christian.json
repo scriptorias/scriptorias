@@ -7,7 +7,6 @@
   "intro": "Letters, sermons, church manuals, and visions from the earliest generations of Christianity. These writings circulated alongside the emerging New Testament and illuminate the beliefs and practices of the early Church.",
   "listed": true,
   "order": 4,
-  "sample": true,
   "members": [
     {
       "work": "didache"
@@ -33,5 +32,10 @@
     {
       "work": "barnabas"
     }
-  ]
+  ],
+  "editorial": {
+    "content": "placeholder",
+    "note": "Sample metadata written for interface design.",
+    "reviews": []
+  }
 }

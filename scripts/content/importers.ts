@@ -106,7 +106,7 @@ const wikisourceCharlesEnoch: Importer = (tr, rawDir) => {
     alignment: {
       work: tr.work,
       translation: tr.id,
-      verification: { status: "proposed", note: "Generated from Charles' own verse numbers by the importer." },
+      editorial: { content: "authentic", transcription: "unchecked", note: "Generated from Charles' own verse numbers by the importer.", reviews: [] },
       segments: align,
     },
   };

@@ -1,9 +1,5 @@
 {
   "work": "didache",
-  "verification": {
-    "status": "sample",
-    "note": "Prototype sample content; not yet verified."
-  },
   "aka": "The Teaching of the Twelve Apostles",
   "intro": "A brief manual of early Christian instruction covering moral teaching, baptism, prayer, the Eucharist, and the leadership of local communities. It is one of the oldest surviving Christian writings outside the New Testament.",
   "facts": [
@@ -11,53 +7,62 @@
       "label": "Composed",
       "value": "c. 50–120 CE",
       "basis": "disputed",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "label": "Authorship",
       "value": "Anonymous; presented as the teaching of the Twelve Apostles",
       "basis": "established",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "label": "Original language",
       "value": "Koine Greek",
       "basis": "established",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "label": "Place of origin",
       "value": "Uncertain; Syria or Palestine are often proposed",
       "basis": "disputed",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "label": "Canonical status",
       "value": "Not part of the New Testament canon; valued by some early writers for instruction",
       "basis": "established",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     }
   ],
   "background": [
     {
       "kind": "fact",
       "text": "The Didache is a short work of sixteen chapters. It opens with moral instruction framed as a choice between two ways, one of life and one of death, then gives directions for baptism, fasting, prayer, and the Eucharist, and closes with guidance on traveling teachers, local leaders, and watchfulness for the last days.",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "kind": "fact",
       "text": "For centuries the work was known only from mentions by other writers. A complete Greek text was rediscovered in 1873 by Philotheos Bryennios in a manuscript held in Constantinople and published in 1883.",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "kind": "interpretation",
       "text": "Many scholars regard the Didache as a composite work assembled from earlier traditions, including a \"Two Ways\" teaching that also appears in the Epistle of Barnabas.",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     },
     {
       "kind": "interpretation",
       "text": "Its relationship to the Gospel of Matthew, with which it shares the Lord's Prayer and several sayings, remains debated. It may draw on Matthew, on shared oral tradition, or on both.",
-      "sources": []
+      "sources": [],
+      "review": "draft"
     }
   ],
   "structure": [
@@ -99,5 +104,10 @@
       "title": "Scholarly interpretations",
       "sources": []
     }
-  ]
+  ],
+  "editorial": {
+    "content": "placeholder",
+    "note": "Overview written for interface design; to be replaced with cited research.",
+    "reviews": []
+  }
 }

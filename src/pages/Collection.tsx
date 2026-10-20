@@ -91,7 +91,7 @@ export function CollectionPage() {
       <h1 className="col-title">{c.title}</h1>
       <p className="lede wide-lede">{c.intro ?? c.blurb}</p>
       <div className="list-head works-head">
-        <span>{subs.length && !works.length ? `${subs.length} sections` : `${works.length} works`}{c.sample && <em className="sample">Sample metadata</em>}</span>
+        <span>{subs.length && !works.length ? `${subs.length} sections` : `${works.length} works`}{c.editorial?.content === "placeholder" && <em className="sample">Placeholder metadata</em>}</span>
         {hasDates && (
           <div className="sorter" role="group" aria-label="Sort works">
             <span>Sort by</span>

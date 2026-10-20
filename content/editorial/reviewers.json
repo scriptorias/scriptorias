@@ -1,0 +1,21 @@
+[
+  {
+    "id": "publisher",
+    "name": "Scriptorias publisher",
+    "roles": [
+      "publisher"
+    ],
+    "qualified": false,
+    "scope": "Final publication decisions; tier B review."
+  },
+  {
+    "id": "consuelo",
+    "name": "Consuelo (AI assistant)",
+    "roles": [
+      "assistant",
+      "maintainer"
+    ],
+    "qualified": false,
+    "scope": "Prepares research, transcriptions, comparison reports, and first-pass checks. Never approves tier A."
+  }
+]

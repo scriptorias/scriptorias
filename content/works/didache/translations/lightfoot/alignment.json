@@ -1,14 +1,6 @@
 {
   "work": "didache",
   "translation": "lightfoot",
-  "verification": {
-    "status": "proposed",
-    "note": "Chapter 1: each Lightfoot/Wikisource segment assigned to the verse whose Greek incipit it falls under; boundaries checked against Lake (1912) and the Greek text, with no disagreements (see docs/REFERENCES.md). Chapters 2–3 not aligned; they resolve to chapter level.",
-    "sources": [
-      "lake-1912-apostolic-fathers",
-      "wikisource-el-didache"
-    ]
-  },
   "segments": {
     "1.1": [
       "didache.1.1"
@@ -78,6 +70,28 @@
     ],
     "1.23": [
       "didache.1.6"
+    ]
+  },
+  "editorial": {
+    "content": "authentic",
+    "transcription": "proofread",
+    "note": "Chapter 1: each Lightfoot/Wikisource segment assigned to the verse whose Greek incipit it falls under; boundaries checked against Lake (1912) and the Greek text, with no disagreements (see docs/REFERENCES.md). Chapters 2–3 not aligned; they resolve to chapter level.",
+    "reviews": [
+      {
+        "by": "consuelo",
+        "date": "2026-10-20",
+        "tier": "A",
+        "aspect": "alignment",
+        "result": "pass",
+        "sections": [
+          1
+        ],
+        "against": [
+          "lake-1912-apostolic-fathers",
+          "wikisource-el-didache"
+        ],
+        "method": "Each chapter 1 segment assigned to the verse whose incipit it falls under; checked against two witnesses."
+      }
     ]
   }
 }

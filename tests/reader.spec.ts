@@ -8,7 +8,7 @@ test.describe("reader", () => {
     await expect(page.locator(".rd-num")).toHaveText("2");
     await page.keyboard.press("ArrowRight");
     await expect(page).toHaveURL("/works/didache/read/3");
-    await expect(page.locator(".rd-end")).toHaveText("Chapter 4 is not in this sample");
+    await expect(page.locator(".rd-end")).toHaveText("Chapter 4 is not yet available");
     await expect(page.locator(".rd-num")).toHaveText("3");
     await page.keyboard.press("ArrowLeft");
     await expect(page).toHaveURL("/works/didache/read/2");

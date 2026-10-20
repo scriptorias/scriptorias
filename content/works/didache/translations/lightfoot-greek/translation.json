@@ -1,0 +1,24 @@
+{
+  "id": "lightfoot-greek",
+  "work": "didache",
+  "label": "J. B. Lightfoot & J. R. Harmer (Greek)",
+  "detail": "The Apostolic Fathers (1891), Greek text",
+  "language": "grc",
+  "year": 1891,
+  "kind": "original",
+  "status": "planned",
+  "license": {
+    "name": "Public domain"
+  },
+  "numbering": "canonical",
+  "edition": {
+    "source": "lightfoot-harmer-1891",
+    "pages": "217–225"
+  },
+  "editorial": {
+    "content": "authentic",
+    "provenance": "recorded",
+    "note": "Comparison text for the Greek base (Bryennios 1883).",
+    "reviews": []
+  }
+}

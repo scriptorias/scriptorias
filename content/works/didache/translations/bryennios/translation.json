@@ -2,7 +2,7 @@
   "id": "bryennios",
   "work": "didache",
   "label": "Philotheos Bryennios",
-  "detail": "First printed edition of the Greek text, 1883",
+  "detail": "Editio princeps of the Greek text, Constantinople 1883",
   "language": "grc",
   "year": 1883,
   "kind": "original",
@@ -10,7 +10,63 @@
   "license": {
     "name": "Public domain"
   },
-  "verification": {
-    "status": "unverified"
+  "editorial": {
+    "content": "authentic",
+    "provenance": "recorded",
+    "reviews": []
+  },
+  "edition": {
+    "source": "bryennios-1883"
+  },
+  "rights": {
+    "work": {
+      "status": "public-domain",
+      "basis": "Ancient work (c. late 1st–2nd century).",
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": []
+    },
+    "edition": {
+      "status": "public-domain",
+      "basis": "See source record bryennios-1883.",
+      "jurisdictions": {
+        "US": "Public domain.",
+        "life+70": "Public domain."
+      },
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": [
+        "bryennios-1883"
+      ]
+    },
+    "digitization": {
+      "status": "public-domain",
+      "basis": "HathiTrust full-view scan (rights code pd); faithful scans of public-domain works carry no new copyright in the US.",
+      "obligations": [],
+      "legalReview": "recommended",
+      "evidence": [
+        "bryennios-1883"
+      ]
+    },
+    "siteTerms": {
+      "status": "licensed",
+      "basis": "Google-digitized volume: HathiTrust passes on Google's non-binding request to limit commercial use.",
+      "obligations": [
+        "consider non-commercial request"
+      ],
+      "legalReview": "required",
+      "evidence": []
+    },
+    "ours": {
+      "license": "CC0 1.0 (independent transcription)",
+      "status": "preferred"
+    },
+    "decision": "open"
+  },
+  "transcriptionPolicy": {
+    "preserves": [
+      "Bryennios's printed text, accents, and punctuation, as printed"
+    ],
+    "normalizations": []
   }
 }

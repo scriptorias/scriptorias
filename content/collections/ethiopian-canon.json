@@ -5,10 +5,6 @@
   "title": "Ethiopian Orthodox Canon",
   "blurb": "The broader biblical canon of the Ethiopian Orthodox Tewahedo Church.",
   "listed": false,
-  "verification": {
-    "status": "unverified",
-    "note": "Membership limited to works already in the catalog; full canon lists pending."
-  },
   "members": [
     {
       "work": "1-enoch"
@@ -43,5 +39,11 @@
     {
       "work": "additions-daniel"
     }
-  ]
+  ],
+  "editorial": {
+    "content": "authentic",
+    "review": "draft",
+    "note": "Membership limited to works already in the catalog; full canon lists pending.",
+    "reviews": []
+  }
 }

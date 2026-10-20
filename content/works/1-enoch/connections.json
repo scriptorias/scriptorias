@@ -10,9 +10,9 @@
     "note": "The \"sons of God\" and the Nephilim.",
     "disputed": false,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
@@ -26,9 +26,9 @@
     "note": "Quotes 1 Enoch 1:9.",
     "disputed": false,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
@@ -43,9 +43,9 @@
     "note": "Retells the Watchers story.",
     "disputed": false,
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   }
 ]

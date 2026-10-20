@@ -8,24 +8,47 @@
     "contents": [],
     "images": [],
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
     "id": "p-oxy-1782",
     "work": "didache",
-    "name": "Oxyrhynchus Papyrus 1782",
-    "date": "4th century",
-    "note": "Greek fragments of the opening chapters.",
+    "name": "P.Oxy. XV 1782",
+    "date": "late 4th century",
+    "note": "Two parchment leaves of a miniature codex with Greek fragments of Didache chapters 1–3, the earliest surviving Greek witness. Designated P.Oxy. as part of the Oxyrhynchus series, but not papyrus.",
     "contents": [],
     "images": [],
-    "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
-    }
+    "sources": [
+      {
+        "source": "grenfell-hunt-1922-poxy-15",
+        "locator": "no. 1782"
+      },
+      "oxford-poxy-1782",
+      "dclp-64596"
+    ],
+    "editorial": {
+      "content": "authentic",
+      "provenance": "recorded",
+      "review": "draft",
+      "note": "Exact contents differ between descriptions (1.3b–4a with either 2.1–3.2a or 2.7b–3.2a); to be settled from the 1922 edition.",
+      "reviews": []
+    },
+    "material": "parchment (two leaves of a miniature codex)",
+    "holding": "Oxford, Sackler Library (Papyrology Rooms)",
+    "shelfmark": "P.Oxy. XV 1782",
+    "links": [
+      {
+        "label": "University of Oxford record",
+        "href": "https://portal.sds.ox.ac.uk/articles/online_resource/P_Oxy_XV_1782_Didache_i-iii/21132967"
+      },
+      {
+        "label": "Digital Corpus of Literary Papyri",
+        "href": "https://papyri-prod.lib.duke.edu/dclp/64596"
+      }
+    ]
   },
   {
     "id": "bl-or-9271",
@@ -36,9 +59,9 @@
     "contents": [],
     "images": [],
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   },
   {
@@ -50,9 +73,9 @@
     "contents": [],
     "images": [],
     "sources": [],
-    "verification": {
-      "status": "sample",
-      "note": "Prototype sample content; not yet verified."
+    "editorial": {
+      "content": "placeholder",
+      "reviews": []
     }
   }
 ]

@@ -1,9 +1,11 @@
 {
   "work": "1-enoch",
   "translation": "charles",
-  "verification": {
-    "status": "proposed",
-    "note": "Generated from Charles' own verse numbers by the importer."
+  "editorial": {
+    "content": "authentic",
+    "transcription": "unchecked",
+    "note": "Generated from Charles' own verse numbers by the importer.",
+    "reviews": []
   },
   "segments": {
     "1.1": [

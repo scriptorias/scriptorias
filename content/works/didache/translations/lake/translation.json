@@ -10,7 +10,59 @@
   "license": {
     "name": "Public domain"
   },
-  "verification": {
-    "status": "unverified"
+  "editorial": {
+    "content": "authentic",
+    "provenance": "recorded",
+    "reviews": []
+  },
+  "edition": {
+    "source": "lake-1912-apostolic-fathers",
+    "pages": "308–333"
+  },
+  "rights": {
+    "work": {
+      "status": "public-domain",
+      "basis": "Ancient work (c. late 1st–2nd century).",
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": []
+    },
+    "edition": {
+      "status": "public-domain",
+      "basis": "See source record lake-1912-apostolic-fathers.",
+      "jurisdictions": {
+        "US": "Public domain.",
+        "life+70": "Public domain since 2017 (Lake d. 1946).",
+        "life+100": "Protected until 2046."
+      },
+      "obligations": [],
+      "legalReview": "recommended",
+      "evidence": [
+        "lake-1912-apostolic-fathers"
+      ]
+    },
+    "digitization": {
+      "status": "public-domain",
+      "basis": "HathiTrust full-view scan (rights code pd); faithful scans of public-domain works carry no new copyright in the US.",
+      "obligations": [],
+      "legalReview": "recommended",
+      "evidence": [
+        "lake-1912-apostolic-fathers"
+      ]
+    },
+    "siteTerms": {
+      "status": "licensed",
+      "basis": "Google-digitized volume: HathiTrust passes on Google's non-binding request to limit commercial use.",
+      "obligations": [
+        "consider non-commercial request"
+      ],
+      "legalReview": "required",
+      "evidence": []
+    },
+    "ours": {
+      "license": "CC0 1.0 (independent transcription)",
+      "status": "preferred"
+    },
+    "decision": "open"
   }
 }

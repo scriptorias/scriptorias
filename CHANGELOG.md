@@ -9,6 +9,24 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+### Added
+- Editorial infrastructure (docs/EDITORIAL.md): separate statuses for content kind,
+  transcription, provenance and claim review, with recorded review entries and tiers.
+- Bibliography with exact editions, page ranges and scans (`content/sources.json`); layered rights
+  records (work, edition, digitization, site terms) with open decisions and legal-review flags.
+- Reviewer register (`content/editorial/reviewers.json`) and an external reviewer brief
+  (docs/editorial/REVIEWER.md).
+- Validator rules for citations, review evidence, rights clearance, raw-snapshot notices,
+  reference aliases, corrections, revisions and a publication gate, with rule tests
+  (`npm run test:content`).
+- Reference aliases (`work.refAliases`): reader URLs and bookmarks follow corrected divisions.
+- CC BY-SA 4.0 attribution notices for the Wikisource snapshots.
+
+### Changed
+- Status labels: "Sample" wording replaced by "Placeholder content/notes/metadata",
+  "Unverified transcription", and "not yet available" for missing chapters. No visual changes.
+- P.Oxy. XV 1782 recorded as parchment, with holding, catalogue links and its open contents question.
+
 ### Fixed
 - The Scriptorias logo (sidebar and mobile header) now opens the home page (`/home`) instead of
   the Christianity library.

@@ -5,10 +5,6 @@
   "title": "Catholic Canon",
   "blurb": "The biblical canon of the Catholic Church.",
   "listed": false,
-  "verification": {
-    "status": "unverified",
-    "note": "Membership limited to works already in the catalog; full canon lists pending."
-  },
   "members": [
     {
       "work": "tobit"
@@ -37,5 +33,11 @@
     {
       "work": "additions-daniel"
     }
-  ]
+  ],
+  "editorial": {
+    "content": "authentic",
+    "review": "draft",
+    "note": "Membership limited to works already in the catalog; full canon lists pending.",
+    "reviews": []
+  }
 }
