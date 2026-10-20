@@ -16,6 +16,7 @@ test.describe("prototype data and links", () => {
       localStorage.setItem("sc.rd.tr.1-enoch", JSON.stringify("main"));
     });
     await page.goto("/bookmarks");
+    await expect(page.getByRole("heading", { name: "Bookmarks" })).toBeVisible(); // rendered after migration
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("sc.bookmarks")!));
     expect(stored.map((b: { ref: string; anchor?: string }) => [b.ref, b.anchor ?? null])).toEqual([
       ["1-enoch.6", null],

@@ -23,6 +23,12 @@ async function seeded(browser: Browser, bookmarks: Legacy[], extra: Record<strin
   }, { bookmarks, extra });
   return page;
 }
+/** The app renders only after the one-time storage migration finishes; wait for that first. */
+async function open(page: Page, url: string) {
+  await page.goto(url);
+  await expect(page.locator("#root > *").first()).toBeVisible();
+  await expect(page.locator("h1, .rd-num").first()).toBeVisible();
+}
 const stored = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem("sc.bookmarks")!));
 const legacyDidache = (ch: number, n: number, at = n) => ({ ref: `didache.${ch}.${n}`, work: "didache", ch, n: String(n), tr: "lightfoot", at });
 
@@ -30,7 +36,7 @@ test.describe("legacy bookmark migration", () => {
   test("every Didache 1 segment maps to the verse that contains it", async ({ browser }) => {
     for (const [n, verse] of Object.entries(CH1_EXPECTED)) {
       const page = await seeded(browser, [legacyDidache(1, Number(n))]);
-      await page.goto("/bookmarks");
+      await open(page, "/bookmarks");
       expect((await stored(page))[0], `segment 1.${n}`).toMatchObject({ ref: `didache.1.${verse}`, work: "didache", ch: 1 });
       expect((await stored(page))[0].anchor, `segment 1.${n} needs no anchor`).toBeUndefined();
       await page.context().close();
@@ -50,7 +56,7 @@ test.describe("legacy bookmark migration", () => {
   for (const c of cases) {
     test(`preserves the intended passage: ${c.name}`, async ({ browser }) => {
       const page = await seeded(browser, [c.legacy]);
-      await page.goto("/bookmarks");
+      await open(page, "/bookmarks");
       const [b] = await stored(page);
       expect(b.ref).toBe(c.ref);
       expect(b.anchor).toBe(c.anchor);
@@ -67,7 +73,7 @@ test.describe("legacy bookmark migration", () => {
 
   test("segments in the same verse collapse to one bookmark (first kept)", async ({ browser }) => {
     const page = await seeded(browser, [legacyDidache(1, 8, 30), legacyDidache(1, 6, 10), legacyDidache(1, 7, 20), legacyDidache(1, 10, 40)]);
-    await page.goto("/bookmarks");
+    await open(page, "/bookmarks");
     const bs = await stored(page);
     expect(bs.map((b: { ref: string }) => b.ref)).toEqual(["didache.1.3", "didache.1.4"]);
     expect(bs[0].at).toBe(30); // the first entry in stored order is kept
@@ -76,7 +82,7 @@ test.describe("legacy bookmark migration", () => {
 
   test("a migrated bookmark can be removed from the reader without duplicating", async ({ browser }) => {
     const page = await seeded(browser, [legacyDidache(1, 7)]);
-    await page.goto("/works/didache/read/1/3");
+    await open(page, "/works/didache/read/1/3");
     const btn = page.locator(".rd-actions").getByRole("button", { name: "Bookmarked" });
     await expect(btn).toBeVisible();
     await btn.click();
@@ -86,7 +92,7 @@ test.describe("legacy bookmark migration", () => {
 
   test("migration runs once and is stable across reloads", async ({ browser }) => {
     const page = await seeded(browser, [legacyDidache(1, 7), { work: "1-enoch", ch: 6 }]);
-    await page.goto("/bookmarks");
+    await open(page, "/bookmarks");
     const first = await stored(page);
     await page.reload();
     expect(await stored(page)).toEqual(first);
@@ -96,7 +102,7 @@ test.describe("legacy bookmark migration", () => {
 
   test("legacy resume position reopens at the same passage", async ({ browser }) => {
     const page = await seeded(browser, [], { "sc.rd.pos.didache": { ch: 1, ref: "didache.1.14" } });
-    await page.goto("/works/didache/read");
+    await open(page, "/works/didache/read");
     await expect(page.locator(".rd-num")).toHaveText("1");
     await expect(page.locator("#s-1\\.14")).toBeInViewport();
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sc.rd.pos.didache")!))).toMatchObject({ ch: 1 });

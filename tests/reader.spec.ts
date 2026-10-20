@@ -68,7 +68,8 @@ test.describe("reader", () => {
     await page.goto("/works/1-enoch/read/6");
     await expect(page.locator(".rd-text")).toContainText("children of men");
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(300);
+    // Progress is saved from a scroll handler; wait for it rather than for a fixed delay.
+    await expect.poll(() => page.evaluate(() => localStorage.getItem("sc.rd.done.1-enoch"))).toBe("[6]");
     await page.goto("/home");
     await expect(page.locator(".continue")).toContainText("1 Enoch · Chapter 6");
     await page.locator(".continue").click();
