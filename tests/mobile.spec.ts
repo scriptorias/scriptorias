@@ -17,5 +17,12 @@ test.describe("mobile", () => {
     await page.locator("#rd-toc").getByRole("link", { name: "Chapter 2" }).click();
     await expect(page).toHaveURL("/works/didache/read/2");
     await expect(page.locator("#rd-toc")).not.toHaveClass(/open/);
+
+    // Passage actions keep accessible names when their text labels are hidden on phones.
+    await page.goto("/works/didache/read/1");
+    await page.locator(".rd-text .pn", { hasText: "3" }).click();
+    await page.locator(".rd-actions").getByRole("button", { name: "Bookmark", exact: true }).click();
+    await expect(page.locator(".rd-actions").getByRole("button", { name: "Bookmarked" })).toBeVisible();
+    await expect(page.locator(".rd-actions").getByRole("button", { name: "Copy citation" })).toBeVisible();
   });
 });

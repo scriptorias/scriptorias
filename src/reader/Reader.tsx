@@ -409,13 +409,13 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
       {sel && (
         <div className="rd-actions" id="rd-actions">
           <span className="rd-actions-ref">{selLabel}</span>
-          <button className={isMarked(sel.ref, sel.anchor) ? "on" : ""} onClick={() => toggle(sel.ref, sel.anchor)}>
+          <button className={isMarked(sel.ref, sel.anchor) ? "on" : ""} aria-label={isMarked(sel.ref, sel.anchor) ? "Bookmarked" : "Bookmark"} onClick={() => toggle(sel.ref, sel.anchor)}>
             <Icon name="bookmark" /><span>{isMarked(sel.ref, sel.anchor) ? "Bookmarked" : "Bookmark"}</span>
           </button>
-          <button onClick={() => navigator.clipboard?.writeText(citation(sel)).then(() => toast("Citation copied"), () => toast("Copy failed"))}>
+          <button aria-label="Copy citation" onClick={() => navigator.clipboard?.writeText(citation(sel)).then(() => toast("Citation copied"), () => toast("Copy failed"))}>
             <Icon name="quote" /><span>Copy citation</span>
           </button>
-          {verseNotes.has(sel.ref) && <button onClick={() => openNotes(sel.ref)}><Icon name="notes" /><span>Notes</span></button>}
+          {verseNotes.has(sel.ref) && <button aria-label="Notes" onClick={() => openNotes(sel.ref)}><Icon name="notes" /><span>Notes</span></button>}
           <button aria-label="Clear selection" onClick={() => setSel(null)}><Icon name="close" /></button>
         </div>
       )}
