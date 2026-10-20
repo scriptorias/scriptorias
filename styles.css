@@ -573,3 +573,4 @@ a.rd-note:hover b { text-decoration: underline; }
 body.reading .toast { bottom: 92px; }
 @media (max-width: 820px) { body.reading .toast { bottom: calc(130px + env(safe-area-inset-bottom)); } }
 .ov-item > div { flex: 1; min-width: 0; }
+.lede.full-lede { max-width: none; }

@@ -106,7 +106,7 @@ function viewHome() {
   const last = store.get("last", null);
   const lw = last && findWork(last.work);
   return `${topbar()}<div class="page">
-    <div class="hero"><h1>Welcome to Scriptorias</h1>
+    <div class="hero"><h1>Welcome to Scriptorias<sup class="tm">™</sup></h1>
       <p>Ancient writings. Historical context.</p></div>
     ${lw ? `<div class="section-label">Continue reading</div>
       <a class="continue" href="${readHref(last.work, last.ch)}"><small>${esc(lw.col.title)}</small><h3>${esc(lw.work.title)} · Chapter ${last.ch}</h3><p>${esc(lw.work.blurb)}</p></a>` : ""}
@@ -149,7 +149,7 @@ function pathCards() {
 
 function viewPaths() {
   return `${topbar()}<div class="page"><h1>Pathways</h1>
-    <p class="lede">Curated reading journeys that follow one idea, figure, or story across texts and centuries.</p>
+    <p class="lede full-lede">Curated reading journeys that follow one idea, figure, or story across texts and centuries.</p>
     <div style="margin-top:28px">${pathCards()}</div></div>`;
 }
 
