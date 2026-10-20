@@ -574,3 +574,6 @@ body.reading .toast { bottom: 92px; }
 @media (max-width: 820px) { body.reading .toast { bottom: calc(130px + env(safe-area-inset-bottom)); } }
 .ov-item > div { flex: 1; min-width: 0; }
 .lede.full-lede { max-width: none; }
+/* Home hero divider: a hairline with a short muted-gold lead */
+.hero-rule { position: relative; height: 1px; margin: 32px 0 0; border: 0; background: var(--line); overflow: visible; }
+.hero-rule::before { content: ""; position: absolute; left: 0; top: -1px; width: 72px; height: 2px; background: #b89558; }

@@ -106,8 +106,7 @@ function viewHome() {
   const last = store.get("last", null);
   const lw = last && findWork(last.work);
   return `${topbar()}<div class="page">
-    <div class="hero"><h1>Welcome to Scriptorias<sup class="tm">™</sup></h1>
-      <p>Ancient writings. Historical context.</p></div>
+    <div class="hero"><h1>Welcome to Scriptorias<sup class="tm">™</sup></h1><hr class="hero-rule" /></div>
     ${lw ? `<div class="section-label">Continue reading</div>
       <a class="continue" href="${readHref(last.work, last.ch)}"><small>${esc(lw.col.title)}</small><h3>${esc(lw.work.title)} · Chapter ${last.ch}</h3><p>${esc(lw.work.blurb)}</p></a>` : ""}
     <div class="section-label">Featured pathway</div>
