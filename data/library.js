@@ -68,7 +68,7 @@ window.LIBRARY = {
         id: "early-christian",
         title: "Early Christian Writings",
         blurb: "The generations after the apostles, including the Apostolic Fathers and early church writings.",
-        intro: "Letters, sermons, church manuals, and visions from the earliest generations of Christianity: writings that circulated alongside the New Testament but were not included in it.",
+        intro: "Letters, sermons, church manuals, and visions from the earliest generations of Christianity. These writings circulated alongside the emerging New Testament and illuminate the beliefs and practices of the early Church.",
         count: "8 works",
         sample: true,
         works: [
@@ -79,7 +79,18 @@ window.LIBRARY = {
           { id: "2-clement", title: "2 Clement", author: { name: "Clement of Rome", basis: "traditional" }, date: { label: "c. 120–160 CE", sort: 140 },
             blurb: "The oldest surviving Christian sermon outside the New Testament, a call to repentance." },
           { id: "ignatius", title: "Letters of Ignatius of Antioch", author: { name: "Ignatius of Antioch", basis: "known" }, date: { label: "c. 107–115 CE", sort: 110, debated: true },
-            blurb: "Seven letters written on the road to martyrdom in Rome, urging unity around the bishop." },
+            blurb: "Seven letters written on the road to martyrdom in Rome, urging unity around the bishop.",
+            // The seven letters of the middle recension, each addressable on its own.
+            partLabel: "letters",
+            parts: [
+              { id: "ignatius-ephesians", title: "To the Ephesians" },
+              { id: "ignatius-magnesians", title: "To the Magnesians" },
+              { id: "ignatius-trallians", title: "To the Trallians" },
+              { id: "ignatius-romans", title: "To the Romans" },
+              { id: "ignatius-philadelphians", title: "To the Philadelphians" },
+              { id: "ignatius-smyrnaeans", title: "To the Smyrnaeans" },
+              { id: "ignatius-polycarp", title: "To Polycarp" },
+            ] },
           { id: "polycarp-philippians", title: "Letter of Polycarp to the Philippians", author: { name: "Polycarp of Smyrna", basis: "known" }, date: { label: "c. 110–140 CE", sort: 125 },
             blurb: "Pastoral counsel to the church at Philippi, woven with early quotations of apostolic writings." },
           { id: "martyrdom-polycarp", title: "Martyrdom of Polycarp", author: { name: "on behalf of the church at Smyrna", basis: "anonymous" }, date: { label: "c. 155–160 CE", sort: 157 },

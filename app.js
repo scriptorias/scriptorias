@@ -47,6 +47,11 @@ function findWork(id) {
   for (const [ci, c] of trad.collections.entries()) {
     const wi = c.works.findIndex((w) => w.id === id);
     if (wi >= 0) return { col: c, ci, wi, work: { ...c.works[wi], ...(L.works[id] || {}) } };
+    // Grouped entries (e.g. the letters of Ignatius) expose each part as its own work.
+    for (const [wj, w] of c.works.entries()) {
+      const part = w.parts?.find((p) => p.id === id);
+      if (part) return { col: c, ci, wi: wj, parent: w, work: { author: w.author, date: w.date, ...part, ...(L.works[id] || {}) } };
+    }
   }
   return null;
 }
@@ -183,9 +188,22 @@ function workMeta(w) {
   }
   return parts.join("");
 }
+// date.debated may be `true` or an object { note, refs: [{ label, href }] }.
+// When a note exists the marker renders as a button that opens an explanation;
+// until notes are written it stays a static label.
 function workDate(w) {
   if (!w.date) return "";
-  return `<span class="wdate">${esc(w.date.label)}${w.date.debated ? '<small>debated</small>' : ""}</span>`;
+  const d = w.date.debated;
+  const info = d && typeof d === "object" && d.note ? d : null;
+  const marker = !d ? "" : info
+    ? `<button class="debated" data-debated="${esc(w.id)}" aria-expanded="false">debated</button>`
+    : `<small>debated</small>`;
+  return `<span class="wdate">${esc(w.date.label)}${marker}</span>`;
+}
+function debatedNote(w) {
+  const d = w.date?.debated;
+  if (!d || typeof d !== "object" || !d.note) return "";
+  return `<div class="date-note" id="note-${esc(w.id)}" hidden><p>${esc(d.note)}</p>${(d.refs || []).length ? `<ul>${d.refs.map((r) => `<li>${r.href ? `<a href="${esc(r.href)}">${esc(r.label)}</a>` : esc(r.label)}</li>`).join("")}</ul>` : ""}</div>`;
 }
 
 function viewCollection(id) {
@@ -203,17 +221,18 @@ function viewCollection(id) {
   return `${topbar(back)}<div class="page">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${back.href}">Christianity</a>${icon("right")}<span aria-current="page">${esc(c.title)}</span></nav>
     <h1 class="col-title">${esc(c.title)}</h1>
-    <p class="lede">${esc(c.intro || c.blurb)}</p>
+    <p class="lede wide-lede">${esc(c.intro || c.blurb)}</p>
     <div class="list-head works-head"><span>${c.works.length} works${c.sample ? '<em class="sample">Sample metadata</em>' : ""}</span>${sorter}</div>
     <div class="cards">${works.map((w) => `
-      <a class="card plain work" href="#/w/${w.id}">
+      <article class="card plain work">
         <div>
-          <h3>${esc(w.title)}${w.text ? '<span class="avail">Read</span>' : ""}</h3>
+          <h3><a class="stretch" href="#/w/${w.id}">${esc(w.title)}</a>${w.text ? '<span class="avail">Read</span>' : ""}</h3>
           ${w.author ? `<div class="wmeta">${workMeta(w)}<span class="m-date">${w.date ? esc(w.date.label) : ""}</span></div>` : ""}
-          <p>${esc(w.blurb)}</p>
+          <p>${esc(w.blurb)}${w.parts ? `<span class="parts">${w.parts.length} ${esc(w.partLabel || "parts")}</span>` : ""}</p>
+          ${debatedNote(w)}
         </div>
         <span class="count">${workDate(w)}</span><span class="chev">${icon("right")}</span>
-      </a>`).join("")}</div>
+      </article>`).join("")}</div>
     ${hasDates ? `<p class="legend"><b>c.</b> circa, approximate date&ensp;·&ensp;<i>Italic</i> authorship is attributed, traditional, or anonymous&ensp;·&ensp;<b>debated</b> scholarly estimates vary widely</p>` : ""}
   </div>`;
 }
@@ -383,6 +402,12 @@ document.addEventListener("change", (e) => {
   if (sel) location.hash = readHref(location.hash.split("/")[2], sel.value);
 });
 document.addEventListener("click", (e) => {
+  const db = e.target.closest("[data-debated]");
+  if (db) {
+    const note = document.getElementById("note-" + db.dataset.debated);
+    if (note) { note.hidden = !note.hidden; db.setAttribute("aria-expanded", String(!note.hidden)); }
+    return;
+  }
   const so = e.target.closest("[data-sort]");
   if (so) { store.set("sort", so.dataset.sort); route(); return; }
   if (e.target.closest("[data-size]")) {
