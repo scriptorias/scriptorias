@@ -63,7 +63,7 @@ function renderShell(active) {
   document.getElementById("nav-main").innerHTML = NAV.map(link).join("");
   document.getElementById("nav-foot").innerHTML = FOOT.map(link).join("");
   document.getElementById("nav-libraries").innerHTML = L.traditions
-    .map((t) => `<a href="#/library/${t.id}" class="${active === "lib:" + t.id ? "on" : ""} ${t.live ? "" : "off"}" ${t.live ? "" : 'aria-disabled="true"'}>${icon(t.icon)}${t.name}${t.live ? "" : '<span class="soon">Coming Soon</span>'}</a>`)
+    .map((t) => `<a href="#/library/${t.id}" class="${active === "lib:" + t.id ? "on" : ""}">${icon(t.icon)}${t.name}</a>`)
     .join("");
   const tabActive = active.startsWith("lib:") ? "library" : active;
   document.getElementById("tabbar").innerHTML = TABBAR
@@ -107,7 +107,7 @@ function viewHome() {
     <div class="section-label">Featured pathway</div>
     ${pathCards()}
     <div class="section-label">Libraries</div>
-    <div class="libs">${L.traditions.map((t) => `<a class="lib ${t.live ? "" : "off"}" href="#/library/${t.id}">${icon(t.icon)}${t.name}${t.live ? "" : '<span class="soon">Coming Soon</span>'}</a>`).join("")}</div>
+    <div class="libs">${L.traditions.map((t) => `<a class="lib" href="#/library/${t.id}">${icon(t.icon)}${t.name}</a>`).join("")}</div>
   </div>`;
 }
 
@@ -116,8 +116,7 @@ const LIB_TABS = [["collections", "Collections"], ["paths", "Pathways"], ["timel
 function viewLibrary(id, tab = "collections") {
   const t = L.traditions.find((x) => x.id === id);
   if (!t) return viewMissing();
-  if (!t.live) return `${topbar()}<div class="page"><h1>${t.name}</h1>
-    <div class="empty"><b>This library is being assembled.</b>Scriptorias starts with Christianity. ${t.name} is next on the shelf.</div></div>`;
+  if (!t.live) return `${topbar()}<div class="soon-page"><h1>${t.name}</h1><p>Coming soon</p></div>`;
   const body =
     tab === "collections"
       ? `<div class="cards">${trad.collections.map((c, i) => `

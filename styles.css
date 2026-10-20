@@ -265,3 +265,5 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
 .search-box input::-webkit-search-cancel-button { -webkit-appearance: none; }
 @media (max-width: 820px) { .facets { font-size: 15px; } .facets span + span::before { margin: 0 6px; } }
 @media (max-width: 820px) { .head-row > .icon-btn { display: none; } }
+.soon-page { display: grid; place-content: center; text-align: center; min-height: calc(100vh - 200px); }
+.soon-page p { margin: 12px 0 0; font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
