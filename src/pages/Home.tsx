@@ -17,7 +17,7 @@ export function Home() {
       <Hero title="Welcome to Scriptorias" tm />
       {last && lw && (
         <>
-          <div className="section-label">Continue reading</div>
+          <h2 className="section-label">Continue reading</h2>
           <Link className="continue" to={readSection(last.work, last.ch)}>
             {col && <small>{col.title}</small>}
             <h3>{lw.title} · Chapter {last.ch}</h3>
@@ -25,9 +25,9 @@ export function Home() {
           </Link>
         </>
       )}
-      <div className="section-label">Featured pathway</div>
+      <h2 className="section-label">Featured pathway</h2>
       <PathwayCards />
-      <div className="section-label">Libraries</div>
+      <h2 className="section-label">Libraries</h2>
       <div className="libs">
         {traditions().map((t) => (
           <Link key={t.id} className={`lib${t.status === "live" ? "" : " off"}`} to={`/library/${t.id}`}>

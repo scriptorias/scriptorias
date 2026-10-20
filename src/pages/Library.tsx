@@ -34,13 +34,13 @@ export function Library({ id: fixedId }: { id?: string }) {
         <div className="cards">
           {listedCollections(id).map((c) => (
             <Link key={c.id} className="card plain" to={collectionPath(c.id)}>
-              <div><h3>{c.title}</h3><p>{c.blurb}</p></div>
+              <div><h2>{c.title}</h2><p>{c.blurb}</p></div>
               <span className="count">{countLabel(c)}</span><span className="chev"><Icon name="right" /></span>
             </Link>
           ))}
         </div>
       ) : tab === "paths" ? (
-        <PathwayCards />
+        <PathwayCards level={2} />
       ) : (
         <div className="empty"><b>{TABS.find(([k]) => k === tab)![1]} is coming soon.</b>This view will connect works by date, author, and theme.</div>
       )}

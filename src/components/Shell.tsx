@@ -19,7 +19,13 @@ function activeFor(path: string): string {
   return first;
 }
 
+/** App chrome (sidebar, tab bar, drawer) around routed pages. */
 export function Shell() {
+  return <ShellFrame><Outlet /></ShellFrame>;
+}
+
+/** The same chrome around arbitrary content, for pages rendered outside the Shell route. */
+export function ShellFrame({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const [drawer, setDrawer] = useState(false);
   const active = activeFor(pathname);
@@ -29,33 +35,33 @@ export function Shell() {
   return (
     <DrawerContext.Provider value={{ toggle: () => setDrawer((d) => !d) }}>
       <div className={`app${drawer ? " drawer" : ""}`}>
-        <aside className="sidebar" id="sidebar">
+        <aside className="sidebar" id="sidebar" aria-label="Site">
           <Link className="brand" to="/">
             <span className="brand-name">Scriptorias<sup className="tm">™</sup></span>
             <span className="brand-sub">Discover Your Path</span>
           </Link>
-          <nav className="nav">
+          <nav className="nav" aria-label="Main">
             {NAV.map(([id, name, to]) => (
               <Link key={id} to={to} className={active === id ? "on" : ""}><Icon name={id} />{name}</Link>
             ))}
           </nav>
           <div className="nav-label">Libraries</div>
-          <nav className="nav">
+          <nav className="nav" aria-label="Libraries">
             {traditions().map((t) => (
               <Link key={t.id} to={`/library/${t.id}`} className={`${active === "lib:" + t.id ? "on" : ""}${t.status === "live" ? "" : " off"}`}>
                 <Icon name={t.icon} />{t.name}
               </Link>
             ))}
           </nav>
-          <nav className="nav nav-foot">
+          <nav className="nav nav-foot" aria-label="Settings and information">
             {FOOT.map(([id, name, to]) => (
               <Link key={id} to={to} className={active === id ? "on" : ""}><Icon name={id} />{name}</Link>
             ))}
           </nav>
         </aside>
         <div className="scrim" id="scrim" onClick={() => setDrawer(false)} />
-        <main className="main" id="main"><Outlet /></main>
-        <nav className="tabbar">
+        <main className="main" id="main">{children}</main>
+        <nav className="tabbar" aria-label="Sections">
           {TABBAR.map(([icon, name, to]) =>
             to ? (
               <Link key={icon} to={to} className={tabActive === icon ? "on" : ""}><Icon name={icon} />{name}</Link>

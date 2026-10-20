@@ -71,7 +71,7 @@ export function Bookmarks() {
             return (
               <Link key={i} className="row" to={readPath(b.work, b.ref, { seg, tr: b.tr })}>
                 <span className="n">{i + 1}</span>
-                <div><h4>{formatRef(w.title, b.ref)}{seg && !b.ref.split(".")[2] ? ` · passage ${seg}` : ""}</h4><p>{b.ref.split(".").length === 3 || seg ? "Passage" : "Chapter"} bookmark</p></div>
+                <div><h2>{formatRef(w.title, b.ref)}{seg && !b.ref.split(".")[2] ? ` · passage ${seg}` : ""}</h2><p>{b.ref.split(".").length === 3 || seg ? "Passage" : "Chapter"} bookmark</p></div>
                 <span className="chev"><Icon name="right" /></span>
               </Link>
             );
@@ -132,7 +132,7 @@ export function Search() {
     const g = hits.filter((h) => h.kind === kind).slice(0, 40);
     return g.length ? (
       <>
-        <div className="section-label">{label}</div>
+        <h2 className="section-label">{label}</h2>
         {g.map((h, i) => <Link key={i} className="hit" to={h.to}><b><Mark text={h.title} q={query} /></b><span><Mark text={h.sub} q={query} /></span></Link>)}
       </>
     ) : null;

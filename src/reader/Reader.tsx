@@ -13,7 +13,7 @@ import { loadAlignment, loadNotes, loadOverview, loadText } from "../content/loa
 import { AlignmentIndex, anchorOf, formatRef, isVerseRef, parseAnchor, sectionRef } from "../content/refs";
 import type { Note, Segment, Translation } from "../content/schema";
 import { Icon } from "../components/Icon";
-import { Page } from "../components/Shell";
+import { Page, ShellFrame } from "../components/Shell";
 import { NotFound } from "../pages/Misc";
 import { bookmarkKey, getBookmarks, getPrefs, setPrefs, store, toggleBookmark, type Position, type ReaderPrefs } from "../lib/storage";
 import { readPath, readSection, workPath } from "../lib/paths";
@@ -58,16 +58,38 @@ export function Reader() {
   const overview = useAsync(() => loadOverview(id), [id]);
   useTitle(w?.title);
 
-  if (!w) return <NotFound />;
+  if (!w) return <ShellFrame><NotFound /></ShellFrame>;
   if (!tr) {
     return (
-      <Page back={{ to: workPath(id), label: w.title }} className="soon-page">
-        <h1>{w.title}</h1><p>Reading view coming soon</p>
-        <Link className="crumb-link" to={workPath(id)}><Icon name="left" />Back to overview</Link>
-      </Page>
+      <ShellFrame>
+        <Page back={{ to: workPath(id), label: w.title }} className="soon-page">
+          <h1>{w.title}</h1><p>Reading view coming soon</p>
+          <Link className="crumb-link" to={workPath(id)}><Icon name="left" />Back to overview</Link>
+        </Page>
+      </ShellFrame>
     );
   }
   if (text === undefined || alignment === undefined || notes === undefined || overview === undefined || !text) return <div className="rd" />;
+
+  // A chapter in the URL must exist in the work; chapters outside this translation's coverage
+  // get an explanation instead of silently opening another chapter.
+  if (params.ch !== undefined) {
+    const n = Number(params.ch);
+    const total = w.refScheme?.sections ?? text.sections.length;
+    if (!/^\d+$/.test(params.ch) || n < 1 || n > total) return <ShellFrame><NotFound /></ShellFrame>;
+    if (!text.sections.some((s) => s.n === n)) {
+      const label = w.refScheme?.sectionLabel ?? "Chapter";
+      return (
+        <ShellFrame>
+          <Page back={{ to: workPath(id), label: w.title }} className="soon-page">
+            <h1>{w.title} {n}</h1>
+            <p>{label} {n} is not available in this edition yet</p>
+            <Link className="crumb-link" to={readSection(id, text.sections[0].n)}><Icon name="left" />Read from {label.toLowerCase()} {text.sections[0].n}</Link>
+          </Page>
+        </ShellFrame>
+      );
+    }
+  }
 
   return (
     <ReaderView
@@ -187,16 +209,21 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
   // ----- Keyboard -----
   const prev = availSections.filter((n) => n < chn).pop();
   const next = availSections.find((n) => n > chn);
+  // The handler reads neighbours from a ref, so a key pressed right after a chapter change
+  // never acts on the previous chapter's neighbours.
+  const neighbours = useRef({ prev, next });
+  neighbours.current = { prev, next };
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (/INPUT|TEXTAREA|SELECT/.test((document.activeElement as HTMLElement)?.tagName)) return;
+      const { prev: p, next: n } = neighbours.current;
       if (e.key === "Escape") { setSel(null); for (const k of ["toc", "notes", "settings"] as Panel[]) ui[k] = false; setPanels({ ...ui }); }
-      if (e.key === "ArrowRight" && next) navigate(readSection(id, next));
-      if (e.key === "ArrowLeft" && prev) navigate(readSection(id, prev));
+      if (e.key === "ArrowRight" && n) navigate(readSection(id, n));
+      if (e.key === "ArrowLeft" && p) navigate(readSection(id, p));
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
-  }, [id, next, prev, navigate]);
+  }, [id, navigate]);
 
   // ----- Notes -----
   const sectionNotes = notes.filter((n) => n.ref === chRef);
@@ -285,11 +312,11 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
       style={{ "--rd-size": `${prefs.size}px`, "--rd-leading": LEADING[prefs.leading] } as CSSProperties}>
       <div className="rd-progress"><span ref={progress} /></div>
       <header className="rd-bar">
-        <Link className="rd-back" to={workPath(id)}><Icon name="left" /><span>{w.title}</span></Link>
+        <Link className="rd-back" to={workPath(id)} aria-label={`Back to ${w.title} overview`}><Icon name="left" /><span>{w.title}</span></Link>
         <div className="rd-run"><b>{w.title}</b><span>{tr.label}{yearOf ? ` (${yearOf})` : ""} · {label} {chn}</span></div>
         <div className="rd-tools">
           <button className={`rd-tool${panels.toc ? " on" : ""}`} aria-label="Contents" onClick={() => setPanel("toc")}><Icon name="contents" /><span>Contents</span></button>
-          <button className={`rd-tool${panels.settings ? " on" : ""}`} aria-label="Reading settings" onClick={() => setPanel("settings")}><Icon name="type" /><span>Text</span></button>
+          <button className={`rd-tool${panels.settings ? " on" : ""}`} aria-label="Text settings" onClick={() => setPanel("settings")}><Icon name="type" /><span>Text</span></button>
           <button className={`rd-tool${chMarked ? " on marked" : ""}`} aria-label={`Bookmark this ${label.toLowerCase()}`} onClick={() => toggle(chRef, undefined, label)}><Icon name="bookmark" /><span>Bookmark</span></button>
           <button className={`rd-tool${panels.notes ? " on" : ""}`} aria-label="Notes and connections" onClick={() => setPanel("notes")}><Icon name="notes" /><span>Notes</span></button>
         </div>
@@ -387,7 +414,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
         <article ref={textEl} className={`rd-text ${inline ? "prose-mode" : "verse-mode"}`}>
           {inline ? <p>{segments}</p> : segments}
         </article>
-        <nav className="rd-pager">
+        <nav className="rd-pager" aria-label="Chapters">
           {prev ? <Link to={readSection(id, prev)} data-dir="prev"><Icon name="left" />{label} {prev}</Link> : <span />}
           {next ? <Link to={readSection(id, next)} data-dir="next" className="next">{label} {next}<Icon name="right" /></Link>
             : chn < total ? <span className="rd-end">{label} {chn + 1} is not in this sample</span> : <span className="rd-end">End of {w.title}</span>}

@@ -29,7 +29,7 @@ test.describe("navigation", () => {
 
   test("collection sorting by date and A–Z", async ({ page }) => {
     await page.goto("/collections/early-christian");
-    const titles = () => page.locator(".card.work h3 a").allTextContents();
+    const titles = () => page.locator(".card.work h2 a").allTextContents();
     expect((await titles())[0]).toBe("The Didache");
     await page.getByRole("button", { name: "A–Z" }).click();
     expect((await titles()).slice(0, 3)).toEqual(["1 Clement", "2 Clement", "The Didache"]);

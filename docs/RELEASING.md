@@ -57,20 +57,29 @@ While a rollback is active, Vercel stops promoting new pushes to production. Tha
 it holds the stable version while the fix is prepared. Fix forward with B, then use **Undo
 Rollback** or promote the fixed deployment.
 
-### B. Durable: revert on a branch (preserves history)
+### B. Durable: restore a release on a branch (preserves history)
 
-Revert the bad change instead of resetting `main`:
+**Primary method: restore the release's files.** This works whatever happened since the release:
+merge commits, empty commits, or many changes. It was tested on 2026-10-20 and produced a tree
+byte-identical to the tag.
 
 ```
-git checkout -b rollback/<issue> main
-git revert <bad-sha>                      # one commit
-git revert --no-edit <good-tag>..main     # or: everything since the last good release
+git fetch origin --tags
+git checkout -b rollback/<issue> origin/main
+git restore --source vX.Y.Z --staged --worktree :/   # make every file match the release
+git commit -m "Roll back to vX.Y.Z: <reason>"
+git diff vX.Y.Z HEAD --stat                           # must print nothing
 git push -u origin rollback/<issue>
 ```
 
 Open a pull request into `main`. CI runs, and Vercel builds a preview of the rolled-back code.
-Review it, merge, and verify production. If the reverted work is still wanted, re-apply it later on
-`dev` with a fix (`git revert <revert-sha>`).
+Review it, merge, and verify production. History stays intact: the rollback is a new commit on
+top of `main`.
+
+**Alternative for a single bad commit:** `git revert <bad-sha>` on the same kind of branch. Avoid
+`git revert` over a range; it stops on empty commits and needs `-m 1` for merge commits.
+
+If the rolled-back work is still wanted, re-apply it later on `dev` with a fix.
 
 ### Rolling back past v0.1.0 (to the prototype)
 

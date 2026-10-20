@@ -54,7 +54,7 @@ test.describe("reader", () => {
 
   test("text size, line spacing, and theme persist", async ({ page }) => {
     await page.goto("/works/didache/read/1");
-    await page.getByRole("button", { name: "Reading settings" }).click();
+    await page.getByRole("button", { name: "Text settings" }).click();
     await page.getByRole("button", { name: "Larger text" }).click();
     await page.getByRole("button", { name: "Airy" }).click();
     await page.getByRole("button", { name: "Dark" }).click();

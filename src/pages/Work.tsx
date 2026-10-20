@@ -73,7 +73,7 @@ export function WorkPage() {
         )}
       </header>
       <div className="ov-grid">
-        <aside className="ov-aside">
+        <aside className="ov-aside" aria-label="At a glance">
           <h2>At a glance</h2>
           {fl.length ? (
             <dl className="ov-facts">

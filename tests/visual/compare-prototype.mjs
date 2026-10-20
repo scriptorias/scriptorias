@@ -35,7 +35,7 @@ async function shot(url, [w, h], action, out) {
   await p.evaluate(() => document.fonts.ready);
   if (action === "panels") { await p.click('[aria-label="Contents"]'); await p.click('[aria-label="Notes and connections"]'); }
   if (action === "toc") await p.click('.rd-tools [aria-label="Contents"]');
-  if (action === "dark") { await p.click('[aria-label="Reading settings"]'); await p.click('text=Dark'); await p.click('[aria-label="Reading settings"]'); }
+  if (action === "dark") { await p.click('[aria-label="Text settings"]'); await p.click('text=Dark'); await p.click('[aria-label="Text settings"]'); }
   await p.mouse.move(0, h - 1);
   await p.waitForTimeout(500);
   await p.screenshot({ path: out });

@@ -9,16 +9,43 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-20
+
+Maintenance release: accessibility, robustness, and release documentation. No new features,
+content, or visual redesign.
+
 ### Fixed
-- Reader: passage action buttons (Bookmark, Copy citation, Notes) now have accessible names on
-  phones, where their text labels are visually hidden.
+- **Accessible names:** the reader's back link and the passage actions (Bookmark, Copy citation,
+  Notes, Clear) now have names on phones, where their text labels are hidden. The Text settings
+  button's name now matches its visible label.
+- **Invalid chapter URLs:** chapters that don't exist (e.g. `/works/didache/read/99`) show Not
+  Found instead of silently opening another chapter. Chapters outside an edition's coverage (e.g.
+  Didache 4) say so and link to the first available chapter. The reading placeholder for works
+  without text keeps the site navigation again.
+- **320px screens:** the facets line on the Christianity page no longer overflows.
+- **Keyboard navigation:** arrow keys pressed immediately after changing chapter use the new
+  chapter's neighbours.
 
 ### Changed
-- `package.json` version corrected to `0.1.0`. The v0.1.0 commit carries a placeholder `0.2.0`
-  set during scaffolding.
+- **Text contrast:** muted text, small gold labels, and the "Read" status now meet WCAG AA (4.5:1)
+  on the cream backgrounds, in light and dark reader themes. The palette is the same, slightly
+  deepened for readable text only. Decorative accents and intentionally disabled items (Coming
+  Soon libraries, planned editions, chapters outside the sample) are unchanged.
+- **Structure:** page headings follow a correct outline (cards and section labels are proper
+  sub-headings), navigation regions and side panels are labelled, and the duplicate-landmark
+  warnings are resolved. No visual change.
+- **Rollback docs:** the primary rollback method is now restoring a release's files on a branch
+  (tested; preserves history). `git revert` is kept for single commits.
+- `package.json` version corrected to `0.1.1` (the v0.1.0 commit carries a placeholder `0.2.0`).
 
 ### Added
 - Release process, rollback procedure (docs/RELEASING.md), and this changelog.
+- Automated accessibility checks (axe-core) on 16 views, on Chromium and WebKit, desktop and
+  mobile, plus regression tests for every fix above.
+
+### Known limitations
+- Unchanged from 0.1.0, except the items fixed above. Intentionally de-emphasised disabled items
+  remain below 4.5:1 contrast by design.
 
 ## [0.1.0] - 2026-10-20
 
@@ -64,5 +91,6 @@ Chrome desktop and Safari iPhone.
 
 Static HTML/CSS/JS prototype, preserved at tag `prototype-v1` (commit `02c831d`).
 
-[Unreleased]: https://github.com/scriptorias/scriptorias/compare/v0.1.0...dev
+[Unreleased]: https://github.com/scriptorias/scriptorias/compare/v0.1.1...dev
+[0.1.1]: https://github.com/scriptorias/scriptorias/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/scriptorias/scriptorias/compare/prototype-v1...v0.1.0

@@ -44,7 +44,7 @@ function WorkCard({ w }: { w: Work }) {
   return (
     <article className="card plain work">
       <div>
-        <h3><Link className="stretch" to={workPath(w.id)}>{w.title}</Link>{readable && <span className="avail">Read</span>}</h3>
+        <h2><Link className="stretch" to={workPath(w.id)}>{w.title}</Link>{readable && <span className="avail">Read</span>}</h2>
         {w.author && (
           <div className="wmeta">
             <span className={w.author.basis !== "known" ? "unsure" : ""}>{authorLabel(w.author)}</span>
@@ -102,7 +102,7 @@ export function CollectionPage() {
       <div className="cards">
         {subs.map((s) => (
           <Link key={s.id} className="card plain" to={collectionPath(s.id)}>
-            <div><h3>{s.title}</h3><p>{s.blurb}</p></div>
+            <div><h2>{s.title}</h2><p>{s.blurb}</p></div>
             <span className="count">{countLabel(s)}</span><span className="chev"><Icon name="right" /></span>
           </Link>
         ))}

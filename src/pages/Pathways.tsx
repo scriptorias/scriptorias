@@ -8,13 +8,15 @@ import { useTitle } from "../lib/useTitle";
 
 const stepsLabel = (n: number) => `${n} ${n === 1 ? "step" : "steps"}`;
 
-export function PathwayCards() {
+/** Pathway cards; `level` keeps the heading outline correct where the cards appear. */
+export function PathwayCards({ level = 3 }: { level?: 2 | 3 }) {
+  const H = level === 2 ? "h2" : "h3";
   return (
     <div className="cards">
       {pathways().map((p) => (
         <Link key={p.id} className="card" to={pathwayPath(p.id)}>
           <span className="num"><Icon name="paths" /></span>
-          <div><h3>{p.title}</h3><p>{p.blurb}</p></div>
+          <div><H>{p.title}</H><p>{p.blurb}</p></div>
           <span className="count">{stepsLabel(p.steps.length)}</span><span className="chev"><Icon name="right" /></span>
         </Link>
       ))}
@@ -27,7 +29,7 @@ export function Pathways() {
   return (
     <Page>
       <Hero title="Explore Pathways" />
-      <div style={{ marginTop: 44 }}><PathwayCards /></div>
+      <div style={{ marginTop: 44 }}><PathwayCards level={2} /></div>
     </Page>
   );
 }
@@ -50,7 +52,7 @@ export function PathwayPage() {
           const inner = (
             <>
               <span className="n">{i + 1}</span>
-              <div><h4>{s.title}{reads && <span className="avail">Read</span>}</h4><p>{s.note}</p></div>
+              <div><h2>{s.title}{reads && <span className="avail">Read</span>}</h2><p>{s.note}</p></div>
               {to ? <span className="chev"><Icon name="right" /></span> : <span />}
             </>
           );
