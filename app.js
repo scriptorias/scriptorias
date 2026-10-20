@@ -112,7 +112,7 @@ function viewHome() {
     <div class="section-label">Featured pathway</div>
     ${pathCards()}
     <div class="section-label">Libraries</div>
-    <div class="libs">${L.traditions.map((t) => `<a class="lib" href="#/library/${t.id}">${icon(t.icon)}${t.name}</a>`).join("")}</div>
+    <div class="libs">${L.traditions.map((t) => `<a class="lib${t.live ? "" : " off"}" href="#/library/${t.id}">${icon(t.icon)}${t.name}</a>`).join("")}</div>
   </div>`;
 }
 
