@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test("reader labels the Didache as internally checked, never verified", async ({ page }) => {
   await page.goto("/works/didache/read/1");
-  await expect(page.locator(".rd-colophon [data-status-cue]")).toContainText("Internally checked transcription · not independently verified."); // reading screen, after the text
+  await expect(page.locator("[data-status-cue]")).toHaveCount(0); // not on the reading screen (publisher decision 2026-10-21)
   await expect(page.locator("#rd-toc [data-status-line]")).toContainText("Internally checked transcription · not independently verified"); // Contents
   await expect(page.locator("#rd-toc .ed-status")).toContainText("Internally checked transcription · not independently verified."); // in About this edition
   // Every "verified" is negated ("not independently verified", "unverified").

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router";
+import { trChoice } from "./lib/trChoice";
 import { Shell } from "./components/Shell";
 import { Home } from "./pages/Home";
 import { Library } from "./pages/Library";
@@ -12,7 +13,9 @@ import { Reader } from "./reader/Reader";
 /** New pages start at the top; the reader positions itself. */
 function ScrollReset() {
   const { pathname } = useLocation();
-  useEffect(() => { if (!pathname.includes("/read")) window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => {
+    if (!pathname.includes("/read")) { window.scrollTo(0, 0); trChoice.clearAll(); } // leaving the reader: books reopen in English
+  }, [pathname]);
   return null;
 }
 

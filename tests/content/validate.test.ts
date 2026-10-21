@@ -163,3 +163,9 @@ test("a work in preview cannot be built for production", () => {
   assert.match(prod.stdout + prod.stderr, /work in preview cannot be built for production/);
   assert.equal(preview.status, 0, preview.stdout + preview.stderr);
 });
+
+test("English is the default edition when one is available", () =>
+  rejects((d) => {
+    edit(d, "works/didache/translations/lightfoot-1891-en/translation.json", (t) => (t.default = false));
+    edit(d, "works/didache/translations/lightfoot-1891-grc/translation.json", (t) => (t.default = true));
+  }, /default translation must be English/));

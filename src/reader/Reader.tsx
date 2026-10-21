@@ -25,6 +25,7 @@ import { toast } from "../lib/toast";
 import { useAsync } from "../lib/useAsync";
 import { useTitle } from "../lib/useTitle";
 import { prototypeTranslation } from "../lib/migrate";
+import { trChoice } from "../lib/trChoice";
 import { EditionSections, LanguageToggle, NO_SECTIONS, ProvisionalMark, SECTION_ID, provisionalMarks, switchTarget, type EditionData, type EditionSection, type MarkInfo } from "./EditionPanel";
 
 const SIZES = [16, 17, 18, 19, 20, 22, 24];
@@ -66,8 +67,10 @@ export function Reader() {
   // Translation: ?tr= (from an edition link) wins and becomes the preference.
   const avail = availableTranslations(id);
   const wanted = search.get("tr");
-  if (wanted && avail.some((t) => t.id === wanted)) store.set(`rd.tr.${id}`, wanted);
-  const stored = store.get<string | null>(`rd.tr.${id}`, null);
+  if (wanted && avail.some((t) => t.id === wanted)) trChoice.set(id, wanted);
+  const stored = trChoice.get(id);
+  // English is the default whenever a book is opened; a reader's switch lasts only while they stay in this book.
+  useEffect(() => () => trChoice.clear(id), [id]);
   const tr: Translation | undefined = avail.find((t) => t.id === (wanted ?? stored)) ?? defaultTranslation(id);
   // Links into a retired translation (?tr=<old id>, or prototype ?n= numbering) open the same
   // passage in its replacement, through the old segment map (work.retiredTranslations).
@@ -423,7 +426,7 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
           <Link className="rd-back" to={workPath(id)} aria-label={`Back to ${w.title} overview`}><Icon name="left" /><span>{w.title}</span></Link>
           {edition && otherEdition && (
             <LanguageToggle tr={tr} other={otherEdition} target={switchTarget(edition.refmap, sel?.segs ?? [], chRef)}
-              onSwitch={(t, ref) => { store.set(`rd.tr.${id}`, t); navigate(readPath(id, ref)); }} />
+              onSwitch={(t, ref) => { trChoice.set(id, t); navigate(readPath(id, ref)); }} />
           )}
         </div>
         <div className="rd-run">
@@ -447,7 +450,7 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
             <h3>Translation</h3>
             <button className="rd-choice on"><b>{tr.label}</b><span>{tr.detail}{status ? ` · ${status.toLowerCase()}` : ""}</span></button>
             {otherTranslations.map((t) => t.status === "available" ? (
-              <button key={t.id} className="rd-choice" onClick={() => { store.set(`rd.tr.${id}`, t.id); navigate(readSection(id, chn)); }}><b>{t.label}</b><span>{t.detail}</span></button>
+              <button key={t.id} className="rd-choice" onClick={() => { trChoice.set(id, t.id); navigate(readSection(id, chn)); }}><b>{t.label}</b><span>{t.detail}</span></button>
             ) : (
               <div key={t.id} className="rd-choice off"><b>{t.label}</b><span>{t.detail} · planned</span></div>
             ))}
@@ -549,11 +552,6 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
             {tr.source && <> · <a href={tr.source.href} target="_blank" rel="noopener">{tr.source.label}</a></>}
           </p>
           {tr.notices?.publicDomain && !edition && <p data-notice="public-domain">{richText(tr.notices.publicDomain)}</p>}
-          {edition && (
-            <p data-status-cue>
-              {status ? `${status}. ` : ""}Sources, licensing and notices: <button type="button" className="ed-linkbtn" onClick={() => showSection("about")}>About this edition</button> (in Contents).
-            </p>
-          )}
           {tr.attribution && <p>{tr.attribution}</p>}
           {tr.italics && <p>{tr.italics}</p>}
           <p>

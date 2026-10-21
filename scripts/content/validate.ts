@@ -240,6 +240,9 @@ for (const [id, b] of works) {
 
   const defaults = b.translations.filter((t) => t.tr.default && t.tr.status === "available");
   if (b.translations.some((t) => t.tr.status === "available") && defaults.length !== 1) err(rel(b.dir), `needs exactly one available default translation (found ${defaults.length})`);
+  // Publisher rule (2026-10-21): English is always the default when an English edition is available.
+  if (defaults.length === 1 && defaults[0].tr.language !== "en" && b.translations.some((t) => t.tr.status === "available" && t.tr.language === "en"))
+    err(rel(b.dir), `default translation must be English when an English edition is available (default is "${defaults[0].tr.id}", ${defaults[0].tr.language})`);
   for (const t of b.translations) {
     const where = rel(path.join(t.dir, "translation.json"));
     if (t.tr.id !== path.basename(t.dir)) err(where, `id "${t.tr.id}" does not match folder`);

@@ -101,7 +101,11 @@ export function resolveRetired(workId: string, tr: string, seg: string): { tr: s
   const m = r.segments[seg];
   return m ? { tr: r.replacedBy, ref: resolveRef(m.ref), ...(m.seg ? { seg: m.seg } : {}) } : { tr: r.replacedBy, ref: `${workId}.${Number(seg.split(".")[0])}` };
 }
-export const defaultTranslation = (workId: string) => availableTranslations(workId)[0];
+/** English is always the default edition when one is available; otherwise the first available. */
+export const defaultTranslation = (workId: string) => {
+  const avail = availableTranslations(workId);
+  return avail.find((t) => t.language === "en" && t.default) ?? avail.find((t) => t.language === "en") ?? avail[0];
+};
 
 /** Connections touching a work, from either end. Incoming ones use the inverse label. */
 export function connectionsFor(workId: string): { rel: string; target: Target; note: string; disputed: boolean }[] {

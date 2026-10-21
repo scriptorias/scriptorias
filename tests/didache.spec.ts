@@ -141,7 +141,7 @@ test("labels: internally checked, never verified; text release; provisional read
   for (const tr of [GRC, EN]) {
     await page.goto(`/works/didache/read/3?tr=${tr}`);
     await expect(page.locator("#rd-toc [data-status-line]")).toHaveText("Internally checked transcription · not independently verified");
-    await expect(page.locator(".rd-colophon [data-status-cue]")).toContainText("Internally checked transcription · not independently verified.");
+    await expect(page.locator("[data-status-cue]")).toHaveCount(0);
     await expect(page.locator("[data-preview]")).toHaveCount(0); // text release: no preview tag
     const body = (await page.locator("body").innerText()).toLowerCase();
     for (const m of body.matchAll(/verified/g)) expect(body.slice(Math.max(0, m.index! - 18), m.index)).toMatch(/(not independently |un)$/);
@@ -417,13 +417,9 @@ test("Contents: chapter list and the edition sections, closed by default, with a
   await expect(notes.locator('[data-section="refs"] tr[data-segs="16.1"]')).toBeVisible();
   await expect(drawer(page, "history").locator("[data-revisions] li").first()).toBeVisible();
   await expect(drawer(page, "report").locator('[data-report="chapter"]')).toBeVisible();
-  // The colophon's link opens Contents at About this edition.
+  // No status line on the reading screen; it lives in About this edition (Contents).
   await page.goto(`/works/didache/read/1?tr=${EN}`);
-  await expect(page.locator(".rd-colophon [data-status-cue]")).toContainText("Internally checked transcription · not independently verified.");
-  await page.locator(".rd-colophon").getByRole("button", { name: "About this edition" }).click();
-  await expect(page.locator("#rd-toc")).toHaveClass(/open/);
-  await expect(drawer(page, "about").locator(".ed-drawer-h button")).toBeFocused();
-  await expect(drawer(page, "about").locator('[data-notice="status"]')).toBeInViewport();
+  await expect(page.locator("[data-status-cue]")).toHaveCount(0);
 });
 
 test("inline provisional markers open their explanation", async ({ page }) => {
@@ -482,4 +478,17 @@ test("other works keep their own layout: no language switch, edition sections or
   await expect(page.locator(".rd-run span").first()).toBeVisible();
   await page.getByRole("button", { name: "Contents" }).click();
   await expect(page.locator("#rd-toc .rd-toc a").first()).toBeVisible();
+});
+
+test("English is always the default edition; a switch lasts only while reading that book", async ({ page }) => {
+  await page.goto("/works/didache/read/1");
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", EN);
+  await page.locator("[data-lang-toggle]").getByRole("button", { name: "Greek" }).click();
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", GRC);
+  await page.locator('.rd-pager [data-dir="next"]').click();
+  await expect(page.locator("#rd")).toHaveAttribute("data-ch", "2");
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", GRC); // stays Greek inside the book
+  await page.goto("/works/didache");
+  await page.goto("/works/didache/read/1");
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", EN); // reopened: English again
 });
