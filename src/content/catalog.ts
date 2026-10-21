@@ -87,6 +87,20 @@ export const translationsFor = (workId: string) =>
     (a, b) => Number(Boolean(b.default)) - Number(Boolean(a.default)) || Number(b.status === "available") - Number(a.status === "available") || (a.year ?? 0) - (b.year ?? 0),
   );
 export const availableTranslations = (workId: string) => translationsFor(workId).filter((t) => t.status === "available");
+
+/** A withdrawn translation id and its replacement (work.retiredTranslations), if `tr` is one. */
+export const retiredTranslation = (workId: string, tr: string) => workById.get(workId)?.retiredTranslations?.[tr];
+
+/**
+ * Where a passage of a retired translation now lives: its canonical ref, plus the replacement's
+ * segment when the ref is only a chapter. Unknown old segments fall back to their chapter.
+ */
+export function resolveRetired(workId: string, tr: string, seg: string): { tr: string; ref: string; seg?: string } | null {
+  const r = retiredTranslation(workId, tr);
+  if (!r) return null;
+  const m = r.segments[seg];
+  return m ? { tr: r.replacedBy, ref: resolveRef(m.ref), ...(m.seg ? { seg: m.seg } : {}) } : { tr: r.replacedBy, ref: `${workId}.${Number(seg.split(".")[0])}` };
+}
 export const defaultTranslation = (workId: string) => availableTranslations(workId)[0];
 
 /** Connections touching a work, from either end. Incoming ones use the inverse label. */

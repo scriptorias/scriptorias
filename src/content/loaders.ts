@@ -1,7 +1,7 @@
 /**
  * On-demand content. Each file becomes its own chunk, fetched the first time a page needs it.
  */
-import type { Alignment, Manuscript, Note, Overview, Text } from "./schema";
+import type { Alignment, EditionDifference, EditorialQuestion, Manuscript, Note, Overview, RefMap, Revision, Text } from "./schema";
 
 type Loader<T> = () => Promise<T>;
 const lazy = <T,>(mods: Record<string, unknown>) => mods as Record<string, Loader<T>>;
@@ -11,6 +11,10 @@ const MANUSCRIPTS = lazy<Manuscript[]>(import.meta.glob("/content/works/*/manusc
 const NOTES = lazy<Note[]>(import.meta.glob("/content/works/*/notes.json", { import: "default" }));
 const TEXTS = lazy<Text>(import.meta.glob("/content/works/*/translations/*/text.json", { import: "default" }));
 const ALIGNMENTS = lazy<Alignment>(import.meta.glob("/content/works/*/translations/*/alignment.json", { import: "default" }));
+const REFMAPS = lazy<RefMap>(import.meta.glob("/content/works/*/translations/*/refmap.json", { import: "default" }));
+const REVISIONS = lazy<Revision[]>(import.meta.glob("/content/works/*/translations/*/revisions.json", { import: "default" }));
+const QUESTIONS = lazy<EditorialQuestion[]>(import.meta.glob("/content/works/*/questions.json", { import: "default" }));
+const DIFFERENCES = lazy<EditionDifference[]>(import.meta.glob("/content/works/*/differences.json", { import: "default" }));
 
 const cache = new Map<string, Promise<unknown>>();
 function load<T>(table: Record<string, Loader<T>>, key: string, fallback: T): Promise<T> {
@@ -26,6 +30,10 @@ export const loadManuscripts = (id: string) => load<Manuscript[]>(MANUSCRIPTS, w
 export const loadNotes = (id: string) => load<Note[]>(NOTES, w(id, "notes.json"), []);
 export const loadText = (id: string, tr: string) => load<Text | null>(TEXTS, t(id, tr, "text.json"), null);
 export const loadAlignment = (id: string, tr: string) => load<Alignment | null>(ALIGNMENTS, t(id, tr, "alignment.json"), null);
+export const loadRefMap = (id: string, tr: string) => load<RefMap | null>(REFMAPS, t(id, tr, "refmap.json"), null);
+export const loadRevisions = (id: string, tr: string) => load<Revision[]>(REVISIONS, t(id, tr, "revisions.json"), []);
+export const loadQuestions = (id: string) => load<EditorialQuestion[]>(QUESTIONS, w(id, "questions.json"), []);
+export const loadDifferences = (id: string) => load<EditionDifference[]>(DIFFERENCES, w(id, "differences.json"), []);
 export const hasText = (id: string, tr: string) => Boolean(TEXTS[t(id, tr, "text.json")]);
 /** Every work/translation pair with text (used by search until a build-time index exists). */
 export const textKeys = () =>

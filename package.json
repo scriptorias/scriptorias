@@ -16,8 +16,10 @@
     "test:e2e": "npm run build && playwright test",
     "content:validate": "tsx scripts/content/validate.ts",
     "content:import": "tsx scripts/content/import.ts",
-    "content:check": "tsx scripts/content/import.ts --check && tsx scripts/content/validate.ts",
-    "test:content": "tsx --test tests/content/*.test.ts"
+    "content:import-lightfoot": "tsx scripts/content/import-lightfoot-1891.ts",
+    "content:check": "tsx scripts/content/import.ts --check && tsx scripts/content/import-lightfoot-1891.ts --check && tsx scripts/content/validate.ts",
+    "test:content": "tsx --test tests/content/*.test.ts",
+    "release:simulate": "tsx scripts/content/simulate-release.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

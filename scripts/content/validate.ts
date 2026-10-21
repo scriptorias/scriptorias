@@ -37,7 +37,9 @@ type WorkBundle = {
   manuscripts?: S.Manuscript[] | null;
   connections?: S.Connection[] | null;
   notes?: S.Note[] | null;
-  translations: { dir: string; tr: S.Translation; text?: S.Text | null; alignment?: S.Alignment | null; corrections?: S.Correction[] | null; revisions?: S.Revision[] | null }[];
+  questions?: S.EditorialQuestion[] | null;
+  differences?: S.EditionDifference[] | null;
+  translations: { dir: string; tr: S.Translation; text?: S.Text | null; alignment?: S.Alignment | null; refmap?: S.RefMap | null; corrections?: S.Correction[] | null; revisions?: S.Revision[] | null }[];
 };
 const works = new Map<string, WorkBundle>();
 for (const id of listDirs(path.join(CONTENT, "works"))) {
@@ -52,6 +54,8 @@ for (const id of listDirs(path.join(CONTENT, "works"))) {
   if (exists(f("manuscripts.json"))) b.manuscripts = parse(S.z.array(S.Manuscript), f("manuscripts.json"));
   if (exists(f("connections.json"))) b.connections = parse(S.z.array(S.Connection), f("connections.json"));
   if (exists(f("notes.json"))) b.notes = parse(S.z.array(S.Note), f("notes.json"));
+  if (exists(f("questions.json"))) b.questions = parse(S.z.array(S.EditorialQuestion), f("questions.json"));
+  if (exists(f("differences.json"))) b.differences = parse(S.z.array(S.EditionDifference), f("differences.json"));
   for (const tid of listDirs(f("translations"))) {
     const tdir = path.join(f("translations"), tid);
     const tr = parse(S.Translation, path.join(tdir, "translation.json"));
@@ -59,6 +63,7 @@ for (const id of listDirs(path.join(CONTENT, "works"))) {
     const t: WorkBundle["translations"][number] = { dir: tdir, tr };
     if (exists(path.join(tdir, "text.json"))) t.text = parse(S.Text, path.join(tdir, "text.json"));
     if (exists(path.join(tdir, "alignment.json"))) t.alignment = parse(S.Alignment, path.join(tdir, "alignment.json"));
+    if (exists(path.join(tdir, "refmap.json"))) t.refmap = parse(S.RefMap, path.join(tdir, "refmap.json"));
     if (exists(path.join(tdir, "corrections.json"))) t.corrections = parse(S.z.array(S.Correction), path.join(tdir, "corrections.json"));
     if (exists(path.join(tdir, "revisions.json"))) t.revisions = parse(S.z.array(S.Revision), path.join(tdir, "revisions.json"));
     b.translations.push(t);
@@ -297,7 +302,91 @@ for (const [id, b] of works) {
         }
       }
     }
+    if (t.refmap) checkRefMap(id, t.tr, t.text, t.alignment ?? null, t.refmap, rel(path.join(t.dir, "refmap.json")));
   }
+
+  // Retired translation ids keep resolving: replacement exists, old segments map into it.
+  for (const [old, r] of Object.entries(b.work.retiredTranslations ?? {})) {
+    const where = `${w} retiredTranslations.${old}`;
+    if (b.translations.some((t) => t.tr.id === old)) err(where, "a retired translation id cannot also be a current translation");
+    const rep = b.translations.find((t) => t.tr.id === r.replacedBy);
+    if (!rep || rep.tr.status !== "available" || !rep.text) { err(where, `replacement "${r.replacedBy}" is not an available translation with text`); continue; }
+    const repIdx = new Map(rep.text.sections.flatMap((s) => s.segments.map((g) => [g.id, s.n] as const)));
+    const repRefs = new Set(Object.values(rep.alignment?.segments ?? {}).flat());
+    for (const [seg, m] of Object.entries(r.segments)) {
+      checkRef(where, m.ref);
+      const [, sec, verse] = m.ref.split(".");
+      if (!m.ref.startsWith(`${id}.`) || Number(sec) !== Number(seg.split(".")[0])) err(where, `old segment ${seg} → ${m.ref}: not in the same ${id} chapter`);
+      if (verse && !repRefs.has(m.ref)) err(where, `old segment ${seg} → ${m.ref}: verse not aligned in "${r.replacedBy}"`);
+      if (!verse && !m.seg) err(where, `old segment ${seg} resolves only to a chapter: name the replacement segment (seg)`);
+      if (m.seg && repIdx.get(m.seg) !== Number(sec)) err(where, `old segment ${seg} → replacement segment ${m.seg} is not in chapter ${sec}`);
+    }
+  }
+
+  // Open editorial questions and recorded edition differences.
+  const trIds = new Set(b.translations.map((t) => t.tr.id));
+  const qw = rel(path.join(b.dir, "questions.json"));
+  const qids = new Set<string>();
+  for (const q of b.questions ?? []) {
+    if (qids.has(q.id)) err(qw, `duplicate question "${q.id}"`);
+    qids.add(q.id);
+    q.refs.forEach((r) => { if (!r.startsWith(id + ".")) err(qw, `${q.id}: ref "${r}" does not belong to "${id}"`); else checkRef(qw, r); });
+    q.translations.forEach((tid) => trIds.has(tid) || err(qw, `${q.id}: unknown translation "${tid}"`));
+    checkReviews(qw, q.reviews);
+    if (q.status === "settled" && !q.reviews.some((r) => r.result === "pass" && r.tier === "A" && isQualified(r.by)))
+      err(qw, `${q.id}: only a qualified reviewer can settle an editorial question (tier A review needed); keep it open`);
+  }
+  const dw = rel(path.join(b.dir, "differences.json"));
+  for (const d of b.differences ?? []) {
+    d.refs.forEach((r) => { if (!r.startsWith(id + ".")) err(dw, `ref "${r}" does not belong to "${id}"`); else checkRef(dw, r); });
+    if (!trIds.has(d.translation)) err(dw, `unknown translation "${d.translation}"`);
+    checkSources(dw, [d.witness]);
+  }
+}
+
+/** Plain text of a segment (runs only). */
+function segText(g: S.Segment) { return (g.runs ?? []).map((r) => r.t).join(""); }
+
+/**
+ * Edition-aware reference maps (refmap.json): every segment mapped exactly once, kinds and levels
+ * consistent, editions that print no verse numbers only aligned editorially, uncertain or split
+ * mappings explained, alignment.json exactly the verse-level projection, and no verse inserted
+ * into an edition that prints its own numbers.
+ */
+function checkRefMap(work: string, tr: S.Translation, text: S.Text | null | undefined, alignment: S.Alignment | null, map: S.RefMap, where: string) {
+  if (map.work !== work || map.translation !== tr.id) err(where, "work/translation does not match folder");
+  checkEditorial(where, map.editorial);
+  if (!text) return err(where, "refmap.json needs text.json");
+  const segs = new Map(text.sections.flatMap((s) => s.segments.map((g) => [g.id, g] as const)));
+  const seen = new Map<string, number>();
+  for (const m of map.mappings) {
+    const at = `${where} [${m.segments.join(",")}]`;
+    m.segments.forEach((s) => { seen.set(s, (seen.get(s) ?? 0) + 1); if (!segs.has(s)) err(at, `unknown segment "${s}"`); });
+    const expect = m.refs.length === 0 ? "unmapped" : m.segments.length > 1 && m.refs.length === 1 ? "many-to-one" : m.segments.length === 1 && m.refs.length > 1 ? "one-to-many" : m.segments.length === 1 ? "one-to-one" : "?";
+    if (m.kind !== expect) err(at, `kind "${m.kind}" does not fit ${m.segments.length} segment(s) → ${m.refs.length} ref(s)`);
+    if ((m.kind === "unmapped") !== (m.level === "none")) err(at, "unmapped entries (only) have level none");
+    for (const r of m.refs) {
+      if (!r.startsWith(work + ".")) { err(at, `ref "${r}" does not belong to "${work}"`); continue; }
+      checkRef(at, r);
+      const parts = r.split(".");
+      if ((m.level === "verse") !== (parts.length === 3)) err(at, `ref "${r}" does not match level ${m.level}`);
+      if (m.segments.some((s) => Number(s.split(".")[0]) !== Number(parts[1]))) err(at, `ref "${r}" crosses a chapter`);
+    }
+    if (!map.printsVerses && m.level === "verse" && m.basis !== "editorial") err(at, "the edition prints no verse numbers: verse-level mappings must have basis editorial");
+    if (m.basis === "editorial" && !(m.note ?? "").toLowerCase().includes("editorial alignment")) err(at, "editorial mappings must say “editorial alignment” in their note");
+    if ((m.certainty === "uncertain" || m.kind === "one-to-many") && !m.note) err(at, "uncertain and one-to-many mappings need an explanatory note");
+    if (map.printsVerses && m.level === "verse" && m.basis === "original")
+      for (const s of m.segments) if (!segs.get(s)?.label) err(at, `segment "${s}" has no printed number: an edition's own numbering cannot gain a verse it does not print`);
+    for (const [r, words] of Object.entries(m.starts ?? {})) {
+      if (!m.refs.includes(r)) err(at, `starts names ${r}, which is not mapped here`);
+      if (!m.segments.map((s) => segText(segs.get(s) ?? { id: s, n: "" })).join("").includes(words)) err(at, `opening "${words}" for ${r} not found in the edition text`);
+    }
+    checkSources(at, m.against);
+    m.alternatives.forEach((a) => { a.refs.forEach((r) => checkRef(at, r)); checkSources(at, a.sources); });
+  }
+  for (const s of segs.keys()) if (seen.get(s) !== 1) err(where, `segment "${s}" mapped ${seen.get(s) ?? 0} times (must be exactly once)`);
+  const proj = Object.fromEntries(map.mappings.filter((m) => m.level === "verse").flatMap((m) => m.segments.map((s) => [s, m.refs])));
+  if (JSON.stringify(proj) !== JSON.stringify(alignment?.segments ?? {})) err(where, "alignment.json is not the projection of the verse-level mappings in refmap.json");
 }
 
 for (const [file, p] of pathways) {
@@ -317,6 +406,14 @@ for (const s2 of sources) { checkEditorial(`sources.json ${s2.id}`, s2.editorial
   if (files.length && !entries.some((e) => e.name === "NOTICE.md")) err(rel(dir), "raw snapshot folder has no NOTICE.md");
   entries.filter((e) => e.isDirectory()).forEach((e) => checkRaw(path.join(dir, e.name)));
 })(path.join(CONTENT, "_raw"));
+
+// ---------- Production hold: works in preview never reach production ----------
+// Vercel sets VERCEL_ENV=production for production deployments (main). SCRIPTORIAS_TARGET=production
+// simulates one locally. Preview deployments and CI are unaffected.
+const PRODUCTION = process.env.VERCEL_ENV === "production" || process.env.SCRIPTORIAS_TARGET === "production";
+for (const [, b] of works)
+  if (PRODUCTION && b.work.publication?.status === "preview")
+    err(`${rel(path.join(b.dir, "work.json"))} (preview)`, "a work in preview cannot be built for production; release it first (publication.status published, approved by the publisher)");
 
 // ---------- Publication gate: only for works marked published ----------
 for (const [, b] of works) {

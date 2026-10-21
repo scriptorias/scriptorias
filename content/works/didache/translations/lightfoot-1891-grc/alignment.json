@@ -1,0 +1,310 @@
+{
+  "work": "didache",
+  "translation": "lightfoot-1891-grc",
+  "editorial": {
+    "content": "authentic",
+    "transcription": "unchecked",
+    "note": "Lightfoot's printed verse numbers. They coincide with the SCRIPTORIAS verse numbering (Lake 1912, checked for chapter XVI on the printed page; Greek Wikisource) in chapters I–XV and XVI.1–5; in chapter XVI his verse 6 holds SCRIPTORIAS 16.6–7 and his verse 7 is SCRIPTORIAS 16.8. Provisional; not reviewed by a qualified editor. Generated from refmap.json (verse-level mappings only).",
+    "reviews": []
+  },
+  "segments": {
+    "1.1": [
+      "didache.1.1"
+    ],
+    "1.2": [
+      "didache.1.2"
+    ],
+    "1.3": [
+      "didache.1.3"
+    ],
+    "1.4": [
+      "didache.1.4"
+    ],
+    "1.5": [
+      "didache.1.5"
+    ],
+    "1.6": [
+      "didache.1.6"
+    ],
+    "2.1": [
+      "didache.2.1"
+    ],
+    "2.2": [
+      "didache.2.2"
+    ],
+    "2.3": [
+      "didache.2.3"
+    ],
+    "2.4": [
+      "didache.2.4"
+    ],
+    "2.5": [
+      "didache.2.5"
+    ],
+    "2.6": [
+      "didache.2.6"
+    ],
+    "2.7": [
+      "didache.2.7"
+    ],
+    "3.1": [
+      "didache.3.1"
+    ],
+    "3.2": [
+      "didache.3.2"
+    ],
+    "3.3": [
+      "didache.3.3"
+    ],
+    "3.4": [
+      "didache.3.4"
+    ],
+    "3.5": [
+      "didache.3.5"
+    ],
+    "3.6": [
+      "didache.3.6"
+    ],
+    "3.7": [
+      "didache.3.7"
+    ],
+    "3.8": [
+      "didache.3.8"
+    ],
+    "3.9": [
+      "didache.3.9"
+    ],
+    "3.10": [
+      "didache.3.10"
+    ],
+    "4.1": [
+      "didache.4.1"
+    ],
+    "4.2": [
+      "didache.4.2"
+    ],
+    "4.3": [
+      "didache.4.3"
+    ],
+    "4.4": [
+      "didache.4.4"
+    ],
+    "4.5": [
+      "didache.4.5"
+    ],
+    "4.6": [
+      "didache.4.6"
+    ],
+    "4.7": [
+      "didache.4.7"
+    ],
+    "4.8": [
+      "didache.4.8"
+    ],
+    "4.9": [
+      "didache.4.9"
+    ],
+    "4.10": [
+      "didache.4.10"
+    ],
+    "4.11": [
+      "didache.4.11"
+    ],
+    "4.12": [
+      "didache.4.12"
+    ],
+    "4.13": [
+      "didache.4.13"
+    ],
+    "4.14": [
+      "didache.4.14"
+    ],
+    "5.1": [
+      "didache.5.1"
+    ],
+    "5.2": [
+      "didache.5.2"
+    ],
+    "6.1": [
+      "didache.6.1"
+    ],
+    "6.2": [
+      "didache.6.2"
+    ],
+    "6.3": [
+      "didache.6.3"
+    ],
+    "7.1": [
+      "didache.7.1"
+    ],
+    "7.2": [
+      "didache.7.2"
+    ],
+    "7.3": [
+      "didache.7.3"
+    ],
+    "7.4": [
+      "didache.7.4"
+    ],
+    "8.1": [
+      "didache.8.1"
+    ],
+    "8.2": [
+      "didache.8.2"
+    ],
+    "8.3": [
+      "didache.8.3"
+    ],
+    "9.1": [
+      "didache.9.1"
+    ],
+    "9.2": [
+      "didache.9.2"
+    ],
+    "9.3": [
+      "didache.9.3"
+    ],
+    "9.4": [
+      "didache.9.4"
+    ],
+    "9.5": [
+      "didache.9.5"
+    ],
+    "10.1": [
+      "didache.10.1"
+    ],
+    "10.2": [
+      "didache.10.2"
+    ],
+    "10.3": [
+      "didache.10.3"
+    ],
+    "10.4": [
+      "didache.10.4"
+    ],
+    "10.5": [
+      "didache.10.5"
+    ],
+    "10.6": [
+      "didache.10.6"
+    ],
+    "10.7": [
+      "didache.10.7"
+    ],
+    "11.1": [
+      "didache.11.1"
+    ],
+    "11.2": [
+      "didache.11.2"
+    ],
+    "11.3": [
+      "didache.11.3"
+    ],
+    "11.4": [
+      "didache.11.4"
+    ],
+    "11.5": [
+      "didache.11.5"
+    ],
+    "11.6": [
+      "didache.11.6"
+    ],
+    "11.7": [
+      "didache.11.7"
+    ],
+    "11.8": [
+      "didache.11.8"
+    ],
+    "11.9": [
+      "didache.11.9"
+    ],
+    "11.10": [
+      "didache.11.10"
+    ],
+    "11.11": [
+      "didache.11.11"
+    ],
+    "11.12": [
+      "didache.11.12"
+    ],
+    "12.1": [
+      "didache.12.1"
+    ],
+    "12.2": [
+      "didache.12.2"
+    ],
+    "12.3": [
+      "didache.12.3"
+    ],
+    "12.4": [
+      "didache.12.4"
+    ],
+    "12.5": [
+      "didache.12.5"
+    ],
+    "13.1": [
+      "didache.13.1"
+    ],
+    "13.2": [
+      "didache.13.2"
+    ],
+    "13.3": [
+      "didache.13.3"
+    ],
+    "13.4": [
+      "didache.13.4"
+    ],
+    "13.5": [
+      "didache.13.5"
+    ],
+    "13.6": [
+      "didache.13.6"
+    ],
+    "13.7": [
+      "didache.13.7"
+    ],
+    "14.1": [
+      "didache.14.1"
+    ],
+    "14.2": [
+      "didache.14.2"
+    ],
+    "14.3": [
+      "didache.14.3"
+    ],
+    "15.1": [
+      "didache.15.1"
+    ],
+    "15.2": [
+      "didache.15.2"
+    ],
+    "15.3": [
+      "didache.15.3"
+    ],
+    "15.4": [
+      "didache.15.4"
+    ],
+    "16.1": [
+      "didache.16.1"
+    ],
+    "16.2": [
+      "didache.16.2"
+    ],
+    "16.3": [
+      "didache.16.3"
+    ],
+    "16.4": [
+      "didache.16.4"
+    ],
+    "16.5": [
+      "didache.16.5"
+    ],
+    "16.6": [
+      "didache.16.6",
+      "didache.16.7"
+    ],
+    "16.7": [
+      "didache.16.8"
+    ]
+  }
+}

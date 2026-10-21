@@ -33,6 +33,23 @@ Keys keep the `sc.` prefix. On first load the app runs a one-time migration and 
 - `sc.rd.tr.1-enoch`: `main` becomes `charles`.
 - `sc.last`, `sc.rd.prefs`, `sc.rd.done.<work>`, `sc.sort`: unchanged.
 
+## Retired translations (schema 3, 2026-10-21)
+
+The Didache's Wikisource English (`lightfoot`, chapters 1–3) and the planned `lightfoot-greek` record
+were retired for `lightfoot-1891-en` and `lightfoot-1891-grc` (`work.retiredTranslations`). On first
+load the app records `sc.schema = 3`:
+
+- `sc.rd.tr.<work>`: a retired id becomes its replacement.
+- `sc.bookmarks`: `tr` becomes the replacement; anchors into the retired text (`lightfoot:2.3`) become
+  the same passage in the replacement: a verse ref without anchor (chapter 1) or the chapter
+  paragraph (`lightfoot-1891-en:2.1`). Bookmarks that now name the same passage merge (first kept).
+- `sc.rd.pos.<work>`: anchors move the same way (verse refs to the replacement's first segment of
+  that verse, e.g. `lightfoot:1.10` → verse 1.4 → `lightfoot-1891-en:1.1d`).
+- Prototype data (schema 1) is resolved through the same map.
+- Links: `?tr=lightfoot[&seg=…]`, `?tr=lightfoot-greek` and prototype `?n=` Didache links redirect to
+  the same passage in the new editions. Tests: `tests/didache.spec.ts`, `tests/migration.spec.ts`,
+  `tests/bookmark-migration.spec.ts`.
+
 ## URLs
 
 Hash routes are replaced by clean paths. Old links keep working: on load, `#/…` is rewritten to

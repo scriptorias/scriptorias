@@ -47,8 +47,8 @@ test.describe("legacy bookmark migration", () => {
     { name: "Didache seg 1.7 → 1.3", legacy: legacyDidache(1, 7), ref: "didache.1.3", phrase: "Bless them that curse you" },
     { name: "Didache seg 1.10 → 1.4", legacy: legacyDidache(1, 10), ref: "didache.1.4", phrase: "blow on thy right cheek" },
     { name: "Didache seg 1.23 → 1.6", legacy: legacyDidache(1, 23), ref: "didache.1.6", phrase: "Let thine alms sweat" },
-    { name: "Didache seg 2.3 (unaligned) → chapter + anchor", legacy: legacyDidache(2, 3), ref: "didache.2", anchor: "lightfoot:2.3", phrase: "the double tongue is a snare of death" },
-    { name: "Didache seg 3.1 (unaligned) → chapter + anchor", legacy: legacyDidache(3, 1), ref: "didache.3", anchor: "lightfoot:3.1", phrase: "flee from every evil" },
+    { name: "Didache seg 2.3 (unaligned) → chapter + anchor", legacy: legacyDidache(2, 3), ref: "didache.2", anchor: "lightfoot-1891-en:2.1", phrase: "the double tongue is a snare of death" },
+    { name: "Didache seg 3.1 (unaligned) → chapter + anchor", legacy: legacyDidache(3, 1), ref: "didache.3", anchor: "lightfoot-1891-en:3.1", phrase: "flee from every evil" },
     { name: "1 Enoch 1.9 (Charles verse) unchanged", legacy: { ref: "1-enoch.1.9", work: "1-enoch", ch: 1, n: "9", tr: "main", at: 1 }, ref: "1-enoch.1.9", phrase: "ten thousands of His holy ones" },
     { name: "1 Enoch 5.b (sub-verse) → parent verse 5.6", legacy: { ref: "1-enoch.5.b", work: "1-enoch", ch: 5, n: "b", tr: "main", at: 1 }, ref: "1-enoch.5.6", phrase: "And by you shall all who curse, curse" },
   ];
@@ -96,7 +96,7 @@ test.describe("legacy bookmark migration", () => {
     const first = await stored(page);
     await page.reload();
     expect(await stored(page)).toEqual(first);
-    expect(await page.evaluate(() => localStorage.getItem("sc.schema"))).toBe("2");
+    expect(await page.evaluate(() => localStorage.getItem("sc.schema"))).toBe("3");
     await page.context().close();
   });
 
@@ -104,7 +104,8 @@ test.describe("legacy bookmark migration", () => {
     const page = await seeded(browser, [], { "sc.rd.pos.didache": { ch: 1, ref: "didache.1.14" } });
     await open(page, "/works/didache/read");
     await expect(page.locator(".rd-num")).toHaveText("1");
-    await expect(page.locator("#s-1\\.14")).toBeInViewport();
+    // Wikisource segment 1.14 lies in verse 1.5: segment 1.1e of the replacement edition.
+    await expect(page.locator("#s-1\\.1e")).toBeInViewport();
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sc.rd.pos.didache")!))).toMatchObject({ ch: 1 });
     await page.context().close();
   });

@@ -19,21 +19,23 @@
     "scans": [
       {
         "repository": "internet-archive",
+        "id": "cu31924024254744",
+        "url": "https://archive.org/details/cu31924024254744",
+        "holding": "Cornell University Library",
+        "digitizedBy": "Internet Archive (sponsor: MSN)",
+        "primary": true,
+        "printing": "1907 reprint (title page dated 1907; verso: “First Edition 1891. Reprinted 1893, 1898, 1907”). The Internet Archive metadata gives 1891, which is wrong for this copy.",
+        "note": "Reading copy for the SCRIPTORIAS transcription (clean copy); 592 images, 300 ppi. Didache: Greek pp. 217–225 = images n232–n240; English pp. 229–235 = n244–n250."
+      },
+      {
+        "repository": "internet-archive",
         "id": "apostolicfathers00lighuoft",
         "url": "https://archive.org/details/apostolicfathers00lighuoft",
         "holding": "Robarts Library, University of Toronto",
         "digitizedBy": "Internet Archive (sponsor: MSN)",
         "rightsCode": "NOT_IN_COPYRIGHT",
-        "primary": true,
-        "note": "616 images, 400 ppi. Didache pages from printed running heads; confirm visually."
-      },
-      {
-        "repository": "internet-archive",
-        "id": "cu31924024254744",
-        "url": "https://archive.org/details/cu31924024254744",
-        "holding": "Cornell University Library",
-        "digitizedBy": "Internet Archive (sponsor: MSN)",
-        "note": "Second copy for proofreading; 592 images, 300 ppi."
+        "printing": "1891 first printing",
+        "note": "Check copy: every Didache page compared with the reading copy; no printed difference found. Carries a previous reader's pencil marks (ignored). 616 images, 400 ppi; same image indexes as the Cornell copy for the Didache pages."
       }
     ],
     "rights": {
@@ -52,7 +54,7 @@
       "content": "authentic",
       "provenance": "recorded",
       "reviews": [],
-      "note": "Edition identified from catalogue records and scan metadata; page ranges from running heads."
+      "note": "Edition identified from catalogue records and the title pages; page ranges from running heads. The reading copy (Cornell) is a 1907 reprint of the 1891 edition; the check copy (Toronto) is the 1891 printing."
     }
   },
   {

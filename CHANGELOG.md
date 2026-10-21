@@ -10,6 +10,17 @@ last release are listed under **Unreleased**.
 ## [Unreleased]
 
 ### Added
+- The Didache in Lightfoot & Harmer (1891), Greek and English, all 16 chapters, transcribed by
+  SCRIPTORIAS from page images (internally checked; not independently verified). **Not released:**
+  the work is in preview, which production builds refuse (docs/releases/didache-release-steps.md).
+- Edition-aware references (`refmap.json`): the edition's own numbering next to SCRIPTORIAS refs,
+  with provisional mappings (e.g. 16.8 ↔ Lightfoot XVI.7) and editorial verse alignment labelled.
+- Reader: printed paragraphs and page breaks, uncial and uncertain-reading marks, open questions,
+  edition differences, provenance with external source links only, correction history, approved
+  public notices, and "Report a suspected error" (GitHub issue form) on every passage.
+- Retired translation ids (`work.retiredTranslations`) with link redirects and storage schema 3.
+- Validator: reference-map, retired-translation and open-question rules; production hold for works
+  in preview. Importer `npm run content:import-lightfoot` with byte-for-byte rebuild checks.
 - Editorial infrastructure (docs/EDITORIAL.md): separate statuses for content kind,
   transcription, provenance and claim review, with recorded review entries and tiers.
 - Bibliography with exact editions, page ranges and scans (`content/sources.json`); layered rights
@@ -25,6 +36,12 @@ last release are listed under **Unreleased**.
 - CC BY-SA 4.0 attribution notices for the Wikisource snapshots.
 
 ### Changed
+- Status labels: "Internally checked transcription · not independently verified" (proofread) and
+  "Independently verified" (editor-reviewed), per docs/EDITORIAL.md §9.
+- The Didache's Wikisource English (chapters 1–3) is replaced by the new edition; old links and
+  bookmarks open the same passages.
+- `content/sources.json`: the Cornell copy of Lightfoot & Harmer is recorded as the 1907 reprint
+  (reading copy); the Toronto copy as the 1891 printing (check copy).
 - Status labels: "Sample" wording replaced by "Placeholder content/notes/metadata",
   "Unverified transcription", and "not yet available" for missing chapters. No visual changes.
 - P.Oxy. XV 1782 recorded as parchment, with holding, catalogue links and its open contents question.

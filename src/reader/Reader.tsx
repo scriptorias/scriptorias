@@ -8,12 +8,15 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router";
-import { availableTranslations, defaultTranslation, resolveRef, translationsFor, work as getWork } from "../content/catalog";
-import { loadAlignment, loadNotes, loadOverview, loadText } from "../content/loaders";
+import { availableTranslations, defaultTranslation, resolveRef, resolveRetired, retiredTranslation, translationsFor, work as getWork } from "../content/catalog";
+import { loadAlignment, loadDifferences, loadNotes, loadOverview, loadQuestions, loadRefMap, loadRevisions, loadText } from "../content/loaders";
 import { AlignmentIndex, anchorOf, formatRef, isVerseRef, parseAnchor, sectionRef } from "../content/refs";
-import type { Note, Segment, Translation } from "../content/schema";
+import type { Note, Run, Segment, Translation } from "../content/schema";
 import { isPlaceholder, transcriptionLabel } from "../content/labels";
+import { editionRef, numberInfo, shortRef } from "../content/editions";
+import { CC0_NOTICE, REPORT_NOTE, reportUrl } from "../content/notices";
 import { Icon } from "../components/Icon";
+import { Notice, richText } from "../components/Notice";
 import { Page, ShellFrame } from "../components/Shell";
 import { NotFound } from "../pages/Misc";
 import { bookmarkKey, getBookmarks, getPrefs, setPrefs, store, toggleBookmark, type Position, type ReaderPrefs } from "../lib/storage";
@@ -21,6 +24,8 @@ import { readPath, readSection, workPath } from "../lib/paths";
 import { toast } from "../lib/toast";
 import { useAsync } from "../lib/useAsync";
 import { useTitle } from "../lib/useTitle";
+import { prototypeTranslation } from "../lib/migrate";
+import { EditionPanel, type EditionData } from "./EditionPanel";
 
 const SIZES = [16, 17, 18, 19, 20, 22, 24];
 const LEADING = { compact: 1.55, comfortable: 1.75, airy: 1.95 } as const;
@@ -31,8 +36,17 @@ const narrow = () => window.innerWidth < 1200;
 
 interface Selection { ref: string; segs: string[]; anchor?: string }
 
+/** One run: italics, uncial type, an uncertain reading (shown as ⟦?…⟧), or a printed page break. */
+function runNode(r: Run, i: number): ReactNode {
+  if (r.pb !== undefined) return r.restated ? null : <span key={i} className="pb" data-page={r.pb} title={`Page ${r.pb} of the printed edition begins here`}>[p. {r.pb}]</span>;
+  let n: ReactNode = r.t;
+  if (r.uncertain) n = <span className="unc" title="Uncertain reading (provisional): see the open questions">⟦?{n}⟧</span>;
+  if (r.uncial) n = <span className="uncial" title="Set in uncial type in the printed edition">{n}</span>;
+  return r.em ? <em key={i}>{n}</em> : <span key={i}>{n}</span>;
+}
+
 function runsOf(seg: Segment): ReactNode {
-  if (seg.runs) return seg.runs.map((r, i) => (r.em ? <em key={i}>{r.t}</em> : <span key={i}>{r.t}</span>));
+  if (seg.runs) return seg.runs.map(runNode);
   return (seg.lines ?? []).map((l, i) =>
     typeof l === "string" ? <span key={i} className="ln">{l}</span> : <span key={i} className="ln stanza">{l.t}</span>,
   );
@@ -52,14 +66,33 @@ export function Reader() {
   if (wanted && avail.some((t) => t.id === wanted)) store.set(`rd.tr.${id}`, wanted);
   const stored = store.get<string | null>(`rd.tr.${id}`, null);
   const tr: Translation | undefined = avail.find((t) => t.id === (wanted ?? stored)) ?? defaultTranslation(id);
+  // Links into a retired translation (?tr=<old id>, or prototype ?n= numbering) open the same
+  // passage in its replacement, through the old segment map (work.retiredTranslations).
+  const nParam = search.get("n");
+  const proto = !wanted && nParam && params.ch ? prototypeTranslation(id) : undefined;
+  const retiredId = wanted && retiredTranslation(id, wanted) ? wanted : proto && retiredTranslation(id, proto) ? proto : null;
 
   const text = useAsync(() => (tr ? loadText(id, tr.id) : Promise.resolve(null)), [id, tr?.id]);
   const alignment = useAsync(() => (tr ? loadAlignment(id, tr.id) : Promise.resolve(null)), [id, tr?.id]);
+  const edition = useAsync(async (): Promise<EditionData | null> => {
+    const refmap = tr ? await loadRefMap(id, tr.id) : null;
+    if (!tr || !refmap) return null;
+    const [questions, differences, revisions] = await Promise.all([loadQuestions(id), loadDifferences(id), loadRevisions(id, tr.id)]);
+    return { refmap, questions, differences, revisions };
+  }, [id, tr?.id]);
   const notes = useAsync(() => loadNotes(id), [id]);
   const overview = useAsync(() => loadOverview(id), [id]);
   useTitle(w?.title);
 
   if (!w) return <ShellFrame><NotFound /></ShellFrame>;
+  if (retiredId) {
+    const seg = search.get("seg") ?? (proto && nParam ? `${params.ch}.${nParam}` : null);
+    const r = seg ? resolveRetired(id, retiredId, seg)! : null;
+    const to = r
+      ? readPath(id, r.ref, { tr: r.tr, ...(!isVerseRef(r.ref) && r.seg ? { seg: r.seg } : {}) })
+      : readPath(id, params.ch ? `${id}.${params.ch}${params.verse ? `.${params.verse}` : ""}` : undefined, { tr: retiredTranslation(id, retiredId)!.replacedBy });
+    return <Redirect to={to} />;
+  }
   if (!tr) {
     return (
       <ShellFrame>
@@ -70,7 +103,7 @@ export function Reader() {
       </ShellFrame>
     );
   }
-  if (text === undefined || alignment === undefined || notes === undefined || overview === undefined || !text) return <div className="rd" />;
+  if (text === undefined || alignment === undefined || edition === undefined || notes === undefined || overview === undefined || !text) return <div className="rd" />;
 
   // A chapter in the URL must exist in the work; chapters outside this translation's coverage
   // get an explanation instead of silently opening another chapter.
@@ -95,11 +128,18 @@ export function Reader() {
   return (
     <ReaderView
       key={`${id}:${tr.id}`}
-      id={id} tr={tr} text={text} alignment={alignment} notes={notes} overview={overview}
-      chParam={params.ch} verseParam={params.verse} segParam={search.get("seg")} nParam={search.get("n")}
+      id={id} tr={tr} text={text} alignment={alignment} edition={edition} notes={notes} overview={overview}
+      chParam={params.ch} verseParam={params.verse} segParam={search.get("seg")} nParam={nParam}
       navigate={navigate} locationKey={location.key}
     />
   );
+}
+
+/** Client-side redirect that replaces the history entry (old links keep the back button clean). */
+function Redirect({ to }: { to: string }) {
+  const navigate = useNavigate();
+  useEffect(() => { navigate(to, { replace: true }); }, [to, navigate]);
+  return <div className="rd" />;
 }
 
 type ViewProps = {
@@ -107,6 +147,7 @@ type ViewProps = {
   tr: Translation;
   text: NonNullable<Awaited<ReturnType<typeof loadText>>>;
   alignment: Awaited<ReturnType<typeof loadAlignment>>;
+  edition: EditionData | null;
   notes: Note[];
   overview: Awaited<ReturnType<typeof loadOverview>>;
   chParam?: string; verseParam?: string; segParam: string | null; nParam: string | null;
@@ -114,7 +155,7 @@ type ViewProps = {
   locationKey: string;
 };
 
-function ReaderView({ id, tr, text, alignment, notes, overview, chParam, verseParam, segParam, nParam, navigate, locationKey }: ViewProps) {
+function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam, verseParam, segParam, nParam, navigate, locationKey }: ViewProps) {
   const w = getWork(id)!;
   const scheme = w.refScheme;
   const label = scheme?.sectionLabel ?? "Chapter";
@@ -256,15 +297,20 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
   const sampleRange = availSections.length < total ? `${label}s ${availSections[0]}–${availSections[availSections.length - 1]} of ${total}` : null;
   const status = transcriptionLabel(tr.editorial);
   // The text's own status only: a checked verse alignment says nothing about the transcription.
-  const banner = [sampleRange && `Sample passage · ${sampleRange}`, status].filter(Boolean).join(" · ");
+  // Editions with an edition panel show their status line there instead.
+  const banner = edition ? "" : [sampleRange && `Sample passage · ${sampleRange}`, status].filter(Boolean).join(" · ");
+  const map = edition?.refmap ?? null;
+  const editor = map?.editionName.split(" ")[0] ?? tr.label;
+  const preview = w.publication?.status === "preview";
   const inline = sec.segments.every((s) => s.runs);
   const selSegs = new Set(sel?.segs ?? []);
   const anyUnaligned = sec.segments.some((s) => !idx.isAligned(s.id));
   const otherTranslations = translationsFor(id).filter((t) => t.id !== tr.id);
+  const otherEdition = map ? otherTranslations.find((t) => t.status === "available" && t.numbering === "source" && t.provenance) : undefined;
 
   /** Number shown before a segment: canonical verse at the start of each verse, else the source label. */
   const numberFor = (s: Segment, i: number): string | null => {
-    if (tr.numbering === "source") return s.n;
+    if (tr.numbering === "source") return s.n || null;
     const ref = idx.refOf(s.id);
     if (!isVerseRef(ref)) return s.n;
     const prevRef = i > 0 ? idx.refOf(sec.segments[i - 1].id) : null;
@@ -283,10 +329,12 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
     const noteRef = noteAfter(s, i);
     const ref = idx.refOf(s.id);
     const cls = `psg${selSegs.has(s.id) ? " sel" : ""}${isMarked(ref) || isMarked(ref, anchorOf(tr.id, s.id)) ? " marked" : ""}${!inline ? " block" : ""}${!inline && s.stanza ? " stanza" : ""}`;
+    const info = map ? numberInfo(map, s.id, editor) : null;
+    const pnClass = `pn${info?.className ? ` ${info.className}` : ""}`;
     const pn = num !== null && (
       inline
-        ? <sup className="pn" onClick={() => selectSeg(s.id, true)}>{num}</sup>
-        : <span className="pn" onClick={() => selectSeg(s.id, true)}>{num}</span>
+        ? <sup className={pnClass} title={info?.title} onClick={() => selectSeg(s.id, true)}>{num}</sup>
+        : <span className={pnClass} title={info?.title} onClick={() => selectSeg(s.id, true)}>{num}</span>
     );
     const mark = noteRef && <button className="nmark" aria-label={`Notes on ${formatRef(w.title, noteRef)}`} onClick={() => { selectSeg(s.id); openNotes(noteRef); }} />;
     return inline ? (
@@ -296,12 +344,27 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
     );
   });
 
-  const selLabel = sel ? (sel.anchor ? `${formatRef(w.title, sel.ref)} · ${tr.label} ${parseAnchor(sel.anchor).seg}` : formatRef(w.title, sel.ref)) : "";
+  // Editions with a reference map also name the passage in the edition's own numbering.
+  const edRef = (segs: string[]) => (map ? editionRef(map, segs) : null);
+  // Printed paragraphs (prose): a segment marked `para` starts a new one; otherwise one paragraph.
+  const paragraphs = sec.segments.reduce<number[][]>((acc, s, i) => { if (i === 0 || s.para) acc.push([i]); else acc[acc.length - 1].push(i); return acc; }, []);
+  const selEdition = sel ? edRef(sel.segs) : null;
+  const selLabel = sel ? (selEdition ? `${formatRef(w.title, sel.ref)} · ${selEdition}` : sel.anchor ? `${formatRef(w.title, sel.ref)} · ${tr.label} ${parseAnchor(sel.anchor).seg}` : formatRef(w.title, sel.ref)) : "";
+  const passageUrl = (s: Selection) => location.origin + readPath(id, s.ref, s.anchor ? { seg: parseAnchor(s.anchor).seg, tr: tr.id } : { tr: tr.id });
   const citation = (s: Selection) => {
-    const url = location.origin + readPath(id, s.ref, s.anchor ? { seg: parseAnchor(s.anchor).seg, tr: tr.id } : {});
-    const where = s.anchor ? `${formatRef(w.title, s.ref)} (${tr.label} passage ${parseAnchor(s.anchor).seg})` : formatRef(w.title, s.ref);
-    return `${where}, trans. ${tr.label}${tr.detail ? ` (${tr.detail})` : ""}. Scriptorias, ${url}`;
+    const ed = edRef(s.segs);
+    const where = ed ? `${formatRef(w.title, s.ref)} (${ed})` : s.anchor ? `${formatRef(w.title, s.ref)} (${tr.label} passage ${parseAnchor(s.anchor).seg})` : formatRef(w.title, s.ref);
+    return `${where}, trans. ${tr.label}${tr.detail ? ` (${tr.detail})` : ""}. SCRIPTORIAS, ${passageUrl(s)}`;
   };
+  // Suspected-error reports (GitHub issue form), prefilled with work, edition and passage.
+  const editionName = `${tr.label}, ${tr.detail}`;
+  const reportFor = (s: Selection | null) => reportUrl({
+    work: id,
+    edition: editionName,
+    ref: s
+      ? `${shortRef(s.ref)}${edRef(s.segs) ? ` (${edRef(s.segs)})` : s.anchor ? ` (${tr.label} passage ${parseAnchor(s.anchor).seg})` : ""} ${passageUrl(s)}`
+      : `${chn} ${location.origin}${readPath(id, chRef, { tr: tr.id })}`,
+  });
 
   const noteItem = (n: Note, key: number) => {
     const inner = <><span className="rd-kind">{n.kind}</span><b>{n.title}</b><span>{n.note}</span></>;
@@ -364,7 +427,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
               <ul className="rd-bms">
                 {bookmarksHere.map((b) => {
                   const seg = b.anchor ? parseAnchor(b.anchor).seg : undefined;
-                  return <li key={bookmarkKey(b)}><Link to={readPath(id, b.ref, seg ? { seg } : {})}>{formatRef(w.title, b.ref)}{seg && !isVerseRef(b.ref) ? ` · ${seg}` : ""}</Link></li>;
+                  return <li key={bookmarkKey(b)}><Link to={readPath(id, b.ref, seg ? { seg, tr: b.tr } : {})}>{formatRef(w.title, b.ref)}{seg && !isVerseRef(b.ref) ? ` · ${seg}` : ""}</Link></li>;
                 })}
               </ul>
             ) : <p className="rd-hint">No bookmarks yet.</p>}
@@ -390,6 +453,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
           )}
           {!sectionNotes.length && !verseNotes.size && <p className="rd-hint">No notes for this {label.toLowerCase()} yet.</p>}
           <div className="rd-block"><Link className="rd-link" to={workPath(id)}>Historical overview<Icon name="right" /></Link></div>
+          <Notice kind="cc0" className="rd-hint" text={CC0_NOTICE} />
         </div>
       </aside>
 
@@ -412,13 +476,17 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
 
       <main className="rd-page">
         {banner && <p className="rd-sample">{banner} · {tr.label}{tr.detail ? `, ${tr.detail}` : ""}</p>}
+        {edition && (
+          <EditionPanel work={id} tr={tr} data={edition} chapter={chn} selected={sel?.segs ?? []} other={otherEdition} preview={preview}
+            reportHref={reportFor(null)} onSwitch={(t, ref) => { store.set(`rd.tr.${id}`, t); navigate(readPath(id, ref)); }} />
+        )}
         <header className="rd-head">
           <p className="rd-kicker">{label}</p>
           <h1 className="rd-num">{chn}</h1>
           {(sec.title || group?.title) && <p className="rd-group">{sec.title || group!.title}</p>}
         </header>
         <article ref={textEl} className={`rd-text ${inline ? "prose-mode" : "verse-mode"}`}>
-          {inline ? <p>{segments}</p> : segments}
+          {inline ? paragraphs.map((g, k) => <p key={k} className={sec.segments[g[0]].heading ? "rd-heading" : undefined}>{g.map((i) => segments[i])}</p>) : segments}
         </article>
         <nav className="rd-pager" aria-label="Chapters">
           {prev ? <Link to={readSection(id, prev)} data-dir="prev"><Icon name="left" />{label} {prev}</Link> : <span />}
@@ -430,6 +498,7 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
             <b>{tr.label}</b>{tr.detail ? `, ${tr.detail}` : ""} · {tr.license.name}
             {tr.source && <> · <a href={tr.source.href} target="_blank" rel="noopener">{tr.source.label}</a></>}
           </p>
+          {tr.notices?.publicDomain && <p data-notice="public-domain">{richText(tr.notices.publicDomain)}</p>}
           {tr.attribution && <p>{tr.attribution}</p>}
           {tr.italics && <p>{tr.italics}</p>}
           <p>
@@ -449,6 +518,9 @@ function ReaderView({ id, tr, text, alignment, notes, overview, chParam, versePa
             <Icon name="quote" /><span>Copy citation</span>
           </button>
           {verseNotes.has(sel.ref) && <button aria-label="Notes" onClick={() => openNotes(sel.ref)}><Icon name="notes" /><span>Notes</span></button>}
+          <a className="rd-report" href={reportFor(sel)} target="_blank" rel="noopener" data-report aria-label={`Report a suspected error ${REPORT_NOTE}`} title={`Report a suspected error ${REPORT_NOTE}`}>
+            <Icon name="flag" /><span>Report a suspected error</span><small>{REPORT_NOTE}</small>
+          </a>
           <button aria-label="Clear selection" onClick={() => setSel(null)}><Icon name="close" /></button>
         </div>
       )}

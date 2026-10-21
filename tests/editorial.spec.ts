@@ -1,10 +1,17 @@
 /** Editorial status labels (docs/EDITORIAL.md §9): wording only, nothing labelled verified. */
 import { expect, test } from "@playwright/test";
 
-test("reader labels the transcription as unverified, never verified", async ({ page }) => {
+test("reader labels the Didache as internally checked, never verified", async ({ page }) => {
   await page.goto("/works/didache/read/1");
-  await expect(page.locator(".rd-sample")).toContainText("Sample passage · Chapters 1–3 of 16 · Unverified transcription");
-  await expect(page.locator("body")).not.toContainText(/\bverified\b(?! transcription)/i);
+  await expect(page.locator(".ed-status")).toContainText("Internally checked transcription · not independently verified.");
+  // Every "verified" is negated ("not independently verified", "unverified").
+  const body = await page.locator("body").innerText();
+  for (const m of body.matchAll(/verified/gi)) expect(body.slice(Math.max(0, m.index! - 18), m.index)).toMatch(/(not independently |un)$/i);
+});
+
+test("other texts keep their own status label", async ({ page }) => {
+  await page.goto("/works/1-enoch/read/1");
+  await expect(page.locator(".rd-sample")).toContainText("Unverified transcription");
 });
 
 test("placeholder overview is labelled as placeholder", async ({ page }) => {

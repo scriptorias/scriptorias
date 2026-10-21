@@ -1,0 +1,677 @@
+{
+  "work": "didache",
+  "translation": "lightfoot-1891-en",
+  "numbering": "Lightfoot & Harmer (1891), English translation pp. 229–235: chapters 1–16 in arabic numerals; no verse numbers are printed. Paragraphs as printed.",
+  "printsVerses": false,
+  "editionName": "Lightfoot English",
+  "editorial": {
+    "content": "authentic",
+    "transcription": "unchecked",
+    "note": "Chapter-level alignment is Lightfoot's own (he numbers chapters only). Verse-level alignment exists for chapters 1 and 16 only and is an editorial alignment by SCRIPTORIAS, not Lightfoot's numbering. Provisional; not reviewed by a qualified editor.",
+    "reviews": []
+  },
+  "mappings": [
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "title"
+      ],
+      "segments": [
+        "1.0a"
+      ],
+      "refs": [],
+      "kind": "unmapped",
+      "level": "none",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Printed before the numbered text; outside the chapter and verse numbering."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "1"
+      ],
+      "segments": [
+        "1.1a"
+      ],
+      "refs": [
+        "didache.1.1"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "1"
+      ],
+      "segments": [
+        "1.1b"
+      ],
+      "refs": [
+        "didache.1.2"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "1"
+      ],
+      "segments": [
+        "1.1c"
+      ],
+      "refs": [
+        "didache.1.3"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "1"
+      ],
+      "segments": [
+        "1.1d"
+      ],
+      "refs": [
+        "didache.1.4"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "1"
+      ],
+      "segments": [
+        "1.1e"
+      ],
+      "refs": [
+        "didache.1.5"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "1"
+      ],
+      "segments": [
+        "1.1f"
+      ],
+      "refs": [
+        "didache.1.6"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "229"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "2"
+      ],
+      "segments": [
+        "2.1"
+      ],
+      "refs": [
+        "didache.2"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "229",
+        "230"
+      ],
+      "note": "Lightfoot prints chapter 2 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "3"
+      ],
+      "segments": [
+        "3.1"
+      ],
+      "refs": [
+        "didache.3"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "230"
+      ],
+      "note": "Lightfoot prints chapter 3 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "4"
+      ],
+      "segments": [
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4"
+      ],
+      "refs": [
+        "didache.4"
+      ],
+      "kind": "many-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "230",
+        "231"
+      ],
+      "note": "Lightfoot prints chapter 4 (no verse numbers) in 4 paragraphs; each resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "5"
+      ],
+      "segments": [
+        "5.1"
+      ],
+      "refs": [
+        "didache.5"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "231"
+      ],
+      "note": "Lightfoot prints chapter 5 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "6"
+      ],
+      "segments": [
+        "6.1",
+        "6.2"
+      ],
+      "refs": [
+        "didache.6"
+      ],
+      "kind": "many-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "231",
+        "232"
+      ],
+      "note": "Lightfoot prints chapter 6 (no verse numbers) in 2 paragraphs; each resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "7"
+      ],
+      "segments": [
+        "7.1"
+      ],
+      "refs": [
+        "didache.7"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "232"
+      ],
+      "note": "Lightfoot prints chapter 7 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "8"
+      ],
+      "segments": [
+        "8.1"
+      ],
+      "refs": [
+        "didache.8"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "232"
+      ],
+      "note": "Lightfoot prints chapter 8 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "9"
+      ],
+      "segments": [
+        "9.1"
+      ],
+      "refs": [
+        "didache.9"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "232"
+      ],
+      "note": "Lightfoot prints chapter 9 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "10"
+      ],
+      "segments": [
+        "10.1",
+        "10.2"
+      ],
+      "refs": [
+        "didache.10"
+      ],
+      "kind": "many-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "232",
+        "233"
+      ],
+      "note": "Lightfoot prints chapter 10 (no verse numbers) in 2 paragraphs; each resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "11"
+      ],
+      "segments": [
+        "11.1",
+        "11.2"
+      ],
+      "refs": [
+        "didache.11"
+      ],
+      "kind": "many-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "233",
+        "234"
+      ],
+      "note": "Lightfoot prints chapter 11 (no verse numbers) in 2 paragraphs; each resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "12"
+      ],
+      "segments": [
+        "12.1"
+      ],
+      "refs": [
+        "didache.12"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "234"
+      ],
+      "note": "Lightfoot prints chapter 12 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "13"
+      ],
+      "segments": [
+        "13.1"
+      ],
+      "refs": [
+        "didache.13"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "234"
+      ],
+      "note": "Lightfoot prints chapter 13 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "14"
+      ],
+      "segments": [
+        "14.1"
+      ],
+      "refs": [
+        "didache.14"
+      ],
+      "kind": "one-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "234"
+      ],
+      "note": "Lightfoot prints chapter 14 without verse numbers; the passage resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [],
+      "edition": [
+        "15"
+      ],
+      "segments": [
+        "15.1",
+        "15.2"
+      ],
+      "refs": [
+        "didache.15"
+      ],
+      "kind": "many-to-one",
+      "level": "chapter",
+      "basis": "original",
+      "certainty": "proposed",
+      "pages": [
+        "234",
+        "235"
+      ],
+      "note": "Lightfoot prints chapter 15 (no verse numbers) in 2 paragraphs; each resolves to the chapter."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1a"
+      ],
+      "refs": [
+        "didache.16.1"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1b"
+      ],
+      "refs": [
+        "didache.16.2"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1c"
+      ],
+      "refs": [
+        "didache.16.3"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1d"
+      ],
+      "refs": [
+        "didache.16.4"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1e"
+      ],
+      "refs": [
+        "didache.16.5"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1f"
+      ],
+      "refs": [
+        "didache.16.6"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1g"
+      ],
+      "refs": [
+        "didache.16.7"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    },
+    {
+      "alternatives": [],
+      "against": [
+        "lake-1912-apostolic-fathers",
+        "wikisource-el-didache"
+      ],
+      "edition": [
+        "16"
+      ],
+      "segments": [
+        "16.1h"
+      ],
+      "refs": [
+        "didache.16.8"
+      ],
+      "kind": "one-to-one",
+      "level": "verse",
+      "basis": "editorial",
+      "certainty": "proposed",
+      "pages": [
+        "235"
+      ],
+      "note": "Editorial alignment: Lightfoot prints no verse numbers. SCRIPTORIAS placed the verse opening to match the Greek verse openings (Lake 1912; Greek Wikisource). Provisional; not reviewed by a qualified editor."
+    }
+  ]
+}

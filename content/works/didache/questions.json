@@ -1,0 +1,145 @@
+[
+  {
+    "id": "greek-1-4-siagona",
+    "title": "Greek 1.4 σιαγονα printed without an accent (p. 217)",
+    "detail": "Neither copy shows an accent on σιαγονα. It is transcribed as printed; the accented form σιαγόνα (as in Bryennios 1883) is recorded as a proposed correction and not applied.",
+    "refs": [
+      "didache.1.4"
+    ],
+    "translations": [
+      "lightfoot-1891-grc"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "greek-3-10-ater",
+    "title": "Greek 3.10 ἄτερ (p. 219)",
+    "detail": "A dot under α in both copies: a misplaced iota subscript (ᾄτερ) or a print speck? Transcribed ἄτερ and marked ⟦?ἄτερ⟧. Not resolved.",
+    "refs": [
+      "didache.3.10"
+    ],
+    "translations": [
+      "lightfoot-1891-grc"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "english-3-6-self-willed",
+    "title": "English 3.6 “self-willed” (p. 230)",
+    "detail": "The hyphen falls at a line end; whether Lightfoot printed a hyphenated or a solid form cannot be decided from this edition. Transcribed as hyphenated. Not resolved.",
+    "refs": [
+      "didache.3.6"
+    ],
+    "translations": [
+      "lightfoot-1891-en"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "chapter-16-numbering",
+    "title": "Chapter 16 numbering: Lightfoot prints no verse 8",
+    "detail": "Lightfoot's Greek prints verses 1–7 only. The printed Lake 1912 (p. 332; checked on the page image), Funk 1901 and Schaff 1885 begin 16.7 at οὐ πάντων δέ and 16.8 at τότε ὄψεται. SCRIPTORIAS maps 16.6–7 to Lightfoot's XVI.6 and 16.8 to his XVI.7. No verse 8 is inserted. Provisional: the display and citation of 16.8 have not been reviewed by a qualified editor.",
+    "refs": [
+      "didache.16.6",
+      "didache.16.7",
+      "didache.16.8"
+    ],
+    "translations": [
+      "lightfoot-1891-grc",
+      "lightfoot-1891-en"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "english-verse-alignment",
+    "title": "English verse numbers in chapters 1 and 16 are an editorial alignment",
+    "detail": "Lightfoot's translation prints chapter numbers only. In chapters 1 and 16, SCRIPTORIAS shows bracketed verse numbers placed to match the Greek verse openings; elsewhere passages resolve to the chapter. Provisional; not reviewed by a qualified editor.",
+    "refs": [
+      "didache.1",
+      "didache.16"
+    ],
+    "translations": [
+      "lightfoot-1891-en"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "italic-punctuation",
+    "title": "Italic or roman punctuation next to italics (English, 7 places)",
+    "detail": "Where the italic status of adjoining punctuation cannot be seen at scan resolution, it is placed inside the italic span if it lies within the quotation, otherwise outside: 2.2 (twice), 8.2 (comma after “as the hypocrites”), 16.1 (twice), 16.4, 16.7. Wikisource differs on 8.2 and 16.7. Judgements, not readings; not resolved.",
+    "refs": [
+      "didache.2.2",
+      "didache.8.2",
+      "didache.16.1",
+      "didache.16.4",
+      "didache.16.7"
+    ],
+    "translations": [
+      "lightfoot-1891-en"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "greek-4-7-4-11-manuscript",
+    "title": "Greek 4.7 ὁ (ἀνταποδότης) and 4.11 οἱ δοῦλοι",
+    "detail": "Bryennios's notes give different manuscript readings at these places; the text is transcribed as Lightfoot printed it. For an editor to note or decide.",
+    "refs": [
+      "didache.4.7",
+      "didache.4.11"
+    ],
+    "translations": [
+      "lightfoot-1891-grc"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "lightfoot-bryennios-variants",
+    "title": "Lightfoot and Bryennios differ (25 confirmed edition differences)",
+    "detail": "Genuine differences between Lightfoot's Greek and Bryennios's first edition (1883) need an editor's review (see Edition differences). The Lightfoot text is kept as Lightfoot printed it; no reading has been harmonized.",
+    "refs": [
+      "didache.4.3",
+      "didache.10.6",
+      "didache.11.9",
+      "didache.12.3",
+      "didache.13.1",
+      "didache.14.1",
+      "didache.16.4"
+    ],
+    "translations": [
+      "lightfoot-1891-grc"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "reading-copy-1907-reprint",
+    "title": "The reading copy is a 1907 reprint",
+    "detail": "The text was read from the Cornell copy, a 1907 reprint (“First Edition 1891. Reprinted 1893, 1898, 1907”), and compared page by page with the Toronto copy of the 1891 printing. No printed difference was found on the Didache pages. Not yet confirmed by a qualified editor.",
+    "refs": [],
+    "translations": [
+      "lightfoot-1891-grc",
+      "lightfoot-1891-en"
+    ],
+    "status": "open",
+    "reviews": []
+  },
+  {
+    "id": "display-reference-system",
+    "title": "Reference system for display; presentation of uncertain readings",
+    "detail": "Which verse system SCRIPTORIAS displays, and how uncertain readings are presented, have not been reviewed by a qualified editor. The reader shows Lightfoot's numbering as printed next to SCRIPTORIAS references, and uncertain readings as ⟦?…⟧.",
+    "refs": [],
+    "translations": [
+      "lightfoot-1891-grc",
+      "lightfoot-1891-en"
+    ],
+    "status": "open",
+    "reviews": []
+  }
+]

@@ -1,0 +1,125 @@
+[
+  {
+    "refs": [
+      "didache.4.3"
+    ],
+    "kind": "substantive",
+    "translation": "lightfoot-1891-grc",
+    "reading": "ποιήσεις",
+    "other": "ποθήσεις",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.10.6"
+    ],
+    "kind": "substantive",
+    "translation": "lightfoot-1891-grc",
+    "reading": "μαρὰν ἀθά",
+    "other": "μαραναθά",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.11.9"
+    ],
+    "kind": "substantive",
+    "translation": "lightfoot-1891-grc",
+    "reading": "position of “εἰ δὲ μήγε, ψευδοπροφήτης ἐστίν”",
+    "other": "placed differently relative to “οὐ φάγεται ἀπ᾽ αὐτῆς”",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.12.3",
+      "didache.13.1"
+    ],
+    "kind": "substantive",
+    "translation": "lightfoot-1891-grc",
+    "reading": "καθῆσθαι",
+    "other": "καθῆσαι",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.14.1"
+    ],
+    "kind": "substantive",
+    "translation": "lightfoot-1891-grc",
+    "reading": "προεξομολογησάμενοι",
+    "other": "προσεξομολογησάμενοι",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.16.4"
+    ],
+    "kind": "substantive",
+    "translation": "lightfoot-1891-grc",
+    "reading": "κοσμοπλανὴς",
+    "other": "κοσμοπλάνος",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.3.4",
+      "didache.5.1"
+    ],
+    "kind": "orthographic",
+    "translation": "lightfoot-1891-grc",
+    "reading": "εἰδωλολατρία family; φαρμακίαι",
+    "other": "εἰδωλολατρεία family; φαρμακεῖαι",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.7.4"
+    ],
+    "kind": "orthographic",
+    "translation": "lightfoot-1891-grc",
+    "reading": "κελεύεις",
+    "other": "κελεύσεις",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.11.11",
+      "didache.13.1"
+    ],
+    "kind": "orthographic",
+    "translation": "lightfoot-1891-grc",
+    "reading": "ἀληθινὸς with comma",
+    "other": "ἀληθινός",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.13.7"
+    ],
+    "kind": "orthographic",
+    "translation": "lightfoot-1891-grc",
+    "reading": "ἀπαρχὴν (comma)",
+    "other": "differs in punctuation",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [],
+    "kind": "orthographic",
+    "translation": "lightfoot-1891-grc",
+    "reading": "movable ν (ἐστι/ἐστιν ×5, διώξουσι), οὕτω/οὕτως (×4), accentuation of ἐστι",
+    "other": "differs",
+    "witness": "bryennios-1883"
+  },
+  {
+    "refs": [
+      "didache.5.1",
+      "didache.8.2",
+      "didache.14.3"
+    ],
+    "kind": "punctuation",
+    "translation": "lightfoot-1891-en",
+    "reading": "printed punctuation mark present",
+    "other": "omitted by Wikisource (rev. 14637905); no wording differences in chapters 2–16",
+    "witness": "wikisource-lightfoot-didache"
+  }
+]

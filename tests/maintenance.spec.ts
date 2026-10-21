@@ -10,10 +10,10 @@ test.describe("v0.1.1 maintenance fixes", () => {
   });
 
   test("chapters outside the edition's coverage explain why", async ({ page }) => {
-    await page.goto("/works/didache/read/4");
-    await expect(page.locator(".soon-page")).toContainText("Chapter 4 is not available in this edition yet");
+    await page.goto("/works/1-enoch/read/50");
+    await expect(page.locator(".soon-page")).toContainText("Chapter 50 is not available in this edition yet");
     await page.getByRole("link", { name: "Read from chapter 1" }).click();
-    await expect(page).toHaveURL("/works/didache/read/1");
+    await expect(page).toHaveURL("/works/1-enoch/read/1");
     await expect(page.locator(".rd-num")).toHaveText("1");
   });
 
@@ -24,6 +24,7 @@ test.describe("v0.1.1 maintenance fixes", () => {
     for (const name of ["Bookmark", "Copy citation", "Notes", "Clear selection"]) {
       await expect(page.locator(".rd-actions").getByRole("button", { name, exact: true })).toBeVisible();
     }
+    await expect(page.locator(".rd-actions").getByRole("link", { name: /Report a suspected error/ })).toBeVisible();
   });
 
   test("no horizontal overflow at 320px", async ({ browser }) => {

@@ -15,6 +15,9 @@ content/
   works/<id>/translations/<tid>/translation.json   Edition/translation record with provenance
   works/<id>/translations/<tid>/text.json          Generated text (sections → segments)
   works/<id>/translations/<tid>/alignment.json     Segment → canonical reference map
+  works/<id>/translations/<tid>/refmap.json        Edition references (as printed) ↔ SCRIPTORIAS refs; alignment.json is its projection
+  works/<id>/translations/<tid>/revisions.json     Public correction history
+  works/<id>/questions.json, differences.json      Open editorial questions (provisional); recorded edition differences
   sources.json                        Bibliographic sources (referenced by id from any claim)
   pathways/<id>.json                  Curated pathways (point at works and refs; never copy text)
   _raw/                               Raw source snapshots used by importers

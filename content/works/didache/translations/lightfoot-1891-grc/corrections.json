@@ -1,0 +1,17 @@
+[
+  {
+    "id": "greek-1-4-siagona",
+    "segment": "1.4",
+    "printed": "σιαγονα",
+    "proposed": "σιαγόνα",
+    "basis": [
+      {
+        "source": "bryennios-1883",
+        "note": "Bryennios prints the accented form."
+      }
+    ],
+    "status": "proposed",
+    "reviews": [],
+    "note": "No accent is printed in either copy of Lightfoot. Recorded, not applied; for a qualified editor to decide."
+  }
+]

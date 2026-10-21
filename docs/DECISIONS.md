@@ -45,3 +45,22 @@ normalization.
 All persistence goes through `src/lib/storage.ts` with a `sc.schema` version and one-time
 migrations, so future changes (or a move to Capacitor Preferences / a synced backend) don't lose
 readers' data.
+
+## 9. Didache: Wikisource English replaced; what stays and why (2026-10-21)
+The Wikisource transcription of Lightfoot's English (chapters 1–3, translation id `lightfoot`) is
+retired and replaced by SCRIPTORIAS's own transcription of Lightfoot & Harmer (1891), English
+(`lightfoot-1891-en`) and Greek (`lightfoot-1891-grc`, which also replaces the planned
+`lightfoot-greek` record). `work.retiredTranslations` maps every old segment to its canonical ref
+(and, for chapters 2–3, to the new chapter paragraph), so old `?tr=lightfoot` links, prototype `?n=`
+links, bookmarks, notes and resume positions open the same passages (storage schema 3).
+
+Wikisource-derived material after the replacement:
+- **Site build (dist/):** none for the Didache. No Wikisource text is bundled; the factual old→new
+  segment map contains no text. The Wikisource CC BY-SA notice (approved notice 5) is therefore
+  not rendered in the reader. Wikisource is named only as a comparison witness (edition
+  differences), as before. (1 Enoch still uses a Wikisource text, with its own attribution.)
+- **Repository:** still distributed. `content/_raw/wikisource/didache-lightfoot/` (the retired
+  snapshot, kept for reproducibility of version 0.1 and because it remains in git history) and
+  `content/_raw/wikisource/verification/` (Greek Wikisource and Lake, used only by checks) stay
+  with their `NOTICE.md` (licence, attribution, changes). Remove a notice only when its files are
+  gone from the repository; history keeps them, so in practice the notices stay.

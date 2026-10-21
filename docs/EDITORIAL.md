@@ -96,8 +96,11 @@ Each layer has `status`, `basis`, optional `jurisdictions`, `obligations`, and `
   status of `unknown` or `restricted`.
 - Only the publisher can clear rights (`decidedBy`).
 
-Licensing directions (not final): CC0 for structured data and eligible transcriptions; CC BY 4.0
-for editorial writing. Recorded as `ours.status: "preferred"`.
+Licensing (publisher decision, 2026-10-21): no copyright is claimed in public-domain texts or
+unprotectable material; original SCRIPTORIAS material (introductions, notes, verse alignments) is
+dedicated under CC0 1.0 to the extent rights exist; third-party material keeps its own licence;
+factual data is unclaimed. Recorded as `ours.status: "decided"` where it applies. Public-domain
+notices name only the markets assessed (US, UK, EU), never worldwide.
 
 Raw third-party snapshots under `content/_raw/` each need a `NOTICE.md` with source, licence,
 attribution and retrieval date **(enforced)**.
@@ -160,7 +163,9 @@ A work is published only when `work.publication.status` is `published` and `appr
 publisher. The gate then requires **(enforced)**: an authentic overview, no placeholder notes,
 connections or manuscript records, cited locators on every claim, a default translation that is at
 least proofread (internally checked, see section 6) with provenance confirmed and rights cleared, and an authentic reference scheme.
-Works in `draft` or `preview` are not gated; they show their status labels instead.
+Works in `draft` or `preview` are not gated; they show their status labels instead. A work in
+`preview` may appear in preview deployments only: a production build fails while any work is in
+preview **(enforced)**, so releasing it is a data change (see `docs/releases/didache-release-steps.md`).
 
 ## 9. Reader-facing labels
 
@@ -178,11 +183,13 @@ Wording only; the existing badge styles are unchanged.
 
 Nothing is labelled "verified" without a qualified tier A review and the publisher's approval.
 
-## 10. Current state (2026-10-20)
+## 10. Current state (2026-10-21)
 
-- Didache: Lightfoot translation chs. 1–3, transcription unchecked (Wikisource import), rights
-  open. Ch. 1 verse alignment proofread by the assistant against Lake 1912 and the Greek text;
-  awaiting qualified review. Overview, notes, and most manuscript records are placeholders.
+- Didache (preview, not released): Lightfoot & Harmer 1891 Greek and English, all 16 chapters,
+  SCRIPTORIAS transcription, internally checked (proofread), provenance recorded, rights open
+  (source-reuse basis pending). Edition-aware reference maps; open questions shown as provisional.
+  The Wikisource English chs. 1–3 is retired (docs/DECISIONS.md §9). Overview, notes, and most
+  manuscript records are placeholders.
   P.Oxy. XV 1782 is an authentic draft record (parchment; contents range open).
 - 1 Enoch: Charles 1917 sample chapters, unchecked, rights open, placeholder overview.
 - Exact scans and rights findings: `docs/proposals/didache-sources.md` and `content/sources.json`.

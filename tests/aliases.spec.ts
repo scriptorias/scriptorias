@@ -14,12 +14,12 @@ const seed = (page: Page, bookmarks: object[]) =>
 test("an old verse URL redirects to the current ref and selects it", async ({ page }) => {
   await page.goto("/works/didache/read/1/7");
   await expect(page).toHaveURL(/\/works\/didache\/read\/1\/6(\?|$)/);
-  await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 1.6");
+  await expect(page.locator(".rd-actions-ref")).toContainText("The Didache 1.6");
 });
 
 test("an old verse URL keeps the chosen translation", async ({ page }) => {
-  await page.goto("/works/didache/read/1/8?tr=lightfoot");
-  await expect(page).toHaveURL(/\/works\/didache\/read\/1\/3\?tr=lightfoot/);
+  await page.goto("/works/didache/read/1/8?tr=lightfoot-1891-grc");
+  await expect(page).toHaveURL(/\/works\/didache\/read\/1\/3\?tr=lightfoot-1891-grc/);
 });
 
 test("current refs are not redirected", async ({ page }) => {
@@ -34,7 +34,7 @@ test("a bookmark saved under an old ref shows and opens the current ref", async 
   await expect(row.locator("h2")).toHaveText("The Didache 1.6");
   await row.click();
   await expect(page).toHaveURL(/\/works\/didache\/read\/1\/6/);
-  await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 1.6");
+  await expect(page.locator(".rd-actions-ref")).toContainText("The Didache 1.6");
   await expect(page.getByRole("button", { name: "Bookmarked", exact: true })).toBeVisible();
   await expect(page.locator(".rd-text .psg.marked").first()).toBeVisible();
 });

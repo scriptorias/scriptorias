@@ -49,7 +49,7 @@ export const Review = z.object({
   by: Id,
   date: z.string(),
   tier: z.enum(["A", "B", "C"]),
-  aspect: z.enum(["transcription", "divisions", "alignment", "provenance", "rights", "claims", "metadata"]),
+  aspect: z.enum(["transcription", "divisions", "alignment", "provenance", "completeness", "technical", "rights", "claims", "metadata"]),
   result: z.enum(["pass", "changes-requested", "fail"]),
   against: z.array(Citation).default([]),
   sections: z.array(z.number().int()).optional(),
@@ -186,8 +186,23 @@ export const Work = z.object({
     note: z.string().optional(),
     sources: z.array(Citation).default([]),
   })).optional(),
-  /** Only `published` works are held to the publication rules in the validator. */
-  publication: z.object({ status: z.enum(["draft", "preview", "published"]), approvedBy: Id.optional(), date: z.string().optional() }).optional(),
+  /**
+   * Only `published` works are held to the publication rules in the validator. `preview` works may
+   * appear in preview deployments but never in production: a production build fails while any
+   * work is in preview (docs/EDITORIAL.md §8).
+   */
+  publication: z.object({ status: z.enum(["draft", "preview", "published"]), approvedBy: Id.optional(), date: z.string().optional(), note: z.string().optional() }).optional(),
+  /**
+   * Translations or editions that were withdrawn and replaced. Old links, bookmarks and reading
+   * positions that name a retired id resolve to the replacement. `segments` maps each old segment
+   * id to its canonical ref and, where the ref is only a chapter, the replacement's segment.
+   */
+  retiredTranslations: z.record(Id, z.object({
+    replacedBy: Id,
+    date: z.string(),
+    note: z.string(),
+    segments: z.record(SegmentId, z.object({ ref: Ref, seg: SegmentId.optional() })).default({}),
+  })).optional(),
 });
 export type Work = z.infer<typeof Work>;
 
@@ -269,11 +284,42 @@ export const Translation = z.object({
   }).optional(),
   version: z.string().optional(),
   rights: Rights.optional(),
+  /**
+   * How a page-image transcription was made: the copies read (scan ids from sources.json), pages
+   * drafted from OCR, and the working transcription files the text was generated from (commit and
+   * SHA-256 of each file, so the generated text can be checked against them byte for byte).
+   */
+  provenance: z.object({
+    method: z.string(),
+    copies: z.array(z.object({ source: Id, scan: z.string(), role: z.enum(["reading", "check"]), images: z.string().optional() })).default([]),
+    ocrAssisted: z.array(z.object({ page: z.string(), sections: z.array(z.number().int()), note: z.string() })).default([]),
+    workingFiles: z.object({
+      commit: z.string().regex(/^[0-9a-f]{40}$/),
+      date: z.string(),
+      files: z.array(z.object({ name: z.string(), bytes: z.number().int(), sha256: z.string().regex(/^[0-9a-f]{64}$/) })),
+    }).optional(),
+  }).optional(),
+  /** Public notices shown with this text (approved wording; **bold**, *italic* and [links](url) only). */
+  notices: z.object({ publicDomain: z.string().optional(), sources: z.string().optional() }).optional(),
   editorial: Editorial,
 });
 export type Translation = z.infer<typeof Translation>;
 
-export const Run = z.object({ t: z.string(), em: z.literal(true).optional() });
+/**
+ * A run of text with its typography. Optional features for page-image transcriptions:
+ * `uncial` (set in uncial type), `uncertain` (an uncertain reading, shown as ⟦?…⟧), and `pb`
+ * (an empty run marking where a printed page begins; `restated` when a page file repeats the
+ * page already in progress).
+ */
+export const Run = z.object({
+  t: z.string(),
+  em: z.literal(true).optional(),
+  uncial: z.literal(true).optional(),
+  uncertain: z.literal(true).optional(),
+  pb: z.string().optional(),
+  restated: z.literal(true).optional(),
+});
+export type Run = z.infer<typeof Run>;
 export const Line = z.union([z.string(), z.object({ t: z.string(), stanza: z.literal(true) })]);
 export const Segment = z.object({
   id: SegmentId,
@@ -281,6 +327,12 @@ export const Segment = z.object({
   runs: z.array(Run).optional(),
   lines: z.array(Line).optional(),
   stanza: z.literal(true).optional(),
+  /** The edition's own number or label printed at this point, exactly as printed (e.g. "XVI.", "7."). */
+  label: z.string().optional(),
+  /** Starts a new printed paragraph (prose texts). Without any `para`, a section is one paragraph. */
+  para: z.literal(true).optional(),
+  /** Title or inscription printed before the numbered text. */
+  heading: z.literal(true).optional(),
 });
 export type Segment = z.infer<typeof Segment>;
 export const TextSection = z.object({ n: z.number().int(), title: z.string().optional(), segments: z.array(Segment) });
@@ -298,6 +350,69 @@ export const Alignment = z.object({
   segments: z.record(SegmentId, z.array(Ref)),
 });
 export type Alignment = z.infer<typeof Alignment>;
+
+/**
+ * Edition-aware references. An edition's own numbering (as printed) and SCRIPTORIAS passage refs
+ * are separate systems; each mapping links edition passages (by segment) to refs explicitly.
+ *   kind         one-to-one · one-to-many (one edition passage, several refs) ·
+ *                many-to-one (several segments, one ref) · unmapped (no ref)
+ *   basis        original: the edition's own numbering gives the correspondence;
+ *                editorial: our alignment (the edition prints no such division)
+ *   certainty    proposed (checked against named witnesses, not reviewed) · uncertain (provisional)
+ * `alignment.json` is the reader's projection of the verse-level mappings.
+ */
+export const RefMapping = z.object({
+  edition: z.array(z.string()).default([]),
+  segments: z.array(SegmentId).min(1),
+  refs: z.array(Ref),
+  kind: z.enum(["one-to-one", "one-to-many", "many-to-one", "unmapped"]),
+  level: z.enum(["verse", "chapter", "none"]),
+  basis: z.enum(["original", "editorial"]),
+  certainty: z.enum(["proposed", "uncertain"]),
+  pages: z.array(z.string()).default([]),
+  /** Where each ref begins inside a longer edition passage (opening words, as printed). */
+  starts: z.record(Ref, z.string()).optional(),
+  note: z.string().optional(),
+  alternatives: z.array(z.object({ refs: z.array(Ref), note: z.string(), sources: z.array(Citation).default([]) })).default([]),
+  against: z.array(Citation).default([]),
+});
+export type RefMapping = z.infer<typeof RefMapping>;
+export const RefMap = z.object({
+  work: Id,
+  translation: Id,
+  /** How the edition numbers its text, in words (e.g. "chapters I–XVI with printed verse numbers"). */
+  numbering: z.string(),
+  /** Whether the edition prints verse numbers. If not, verse-level mappings must be editorial. */
+  printsVerses: z.boolean(),
+  /** Short name used in edition references, e.g. "Lightfoot Greek" → "Lightfoot Greek XVI.7". */
+  editionName: z.string(),
+  editorial: Editorial,
+  mappings: z.array(RefMapping),
+});
+export type RefMap = z.infer<typeof RefMap>;
+
+/** An open editorial question, kept visible as provisional until a qualified editor settles it. */
+export const EditorialQuestion = z.object({
+  id: Id,
+  title: z.string(),
+  detail: z.string(),
+  refs: z.array(Ref).default([]),
+  translations: z.array(Id).default([]),
+  status: z.enum(["open", "settled"]),
+  reviews: z.array(Review).default([]),
+});
+export type EditorialQuestion = z.infer<typeof EditorialQuestion>;
+
+/** A difference between an edition we reproduce and another witness (recorded, never harmonized). */
+export const EditionDifference = z.object({
+  refs: z.array(Ref).default([]),
+  kind: z.enum(["substantive", "orthographic", "punctuation"]),
+  translation: Id,
+  reading: z.string(),
+  other: z.string(),
+  witness: Id,
+});
+export type EditionDifference = z.infer<typeof EditionDifference>;
 
 // ---------- Connections, notes, sources, pathways ----------
 
@@ -341,6 +456,8 @@ export const Scan = z.object({
   rightsCode: z.string().optional(),
   terms: z.string().optional(),
   primary: z.boolean().default(false),
+  /** The printing actually scanned, when it differs from the cited edition (e.g. a later reprint). */
+  printing: z.string().optional(),
   note: z.string().optional(),
 });
 export const Source = z.object({

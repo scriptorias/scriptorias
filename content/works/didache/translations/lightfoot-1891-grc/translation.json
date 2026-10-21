@@ -1,0 +1,260 @@
+{
+  "id": "lightfoot-1891-grc",
+  "work": "didache",
+  "label": "Lightfoot & Harmer · Greek",
+  "detail": "The Apostolic Fathers (1891), Greek text, pp. 217–225",
+  "language": "grc",
+  "year": 1891,
+  "kind": "original",
+  "status": "available",
+  "default": false,
+  "license": {
+    "name": "Public domain in the US, UK and EU"
+  },
+  "source": {
+    "label": "Internet Archive: Cornell University Library copy (1907 reprint)",
+    "href": "https://archive.org/details/cu31924024254744",
+    "retrieved": "2026-10-21"
+  },
+  "coverage": {
+    "sections": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "note": "All 16 chapters"
+  },
+  "italics": "Lightfoot sets Scripture quotations in the Greek in uncial (capital-form) type; shown here in a distinct style.",
+  "numbering": "source",
+  "edition": {
+    "source": "lightfoot-harmer-1891",
+    "pages": "217–225"
+  },
+  "transcriptionPolicy": {
+    "preserves": [
+      "printed wording, spelling, capitalization, punctuation and accentuation, as printed",
+      "the editor's paragraphing",
+      "page breaks of the printed edition",
+      "uncertain readings, marked ⟦?…⟧ and left unresolved",
+      "uncial type",
+      "Lightfoot's chapter numerals and verse numbers exactly as printed (XVI has verses 1–7 only)",
+      "accents, breathings and iota subscripts as printed, including forms an editor would correct"
+    ],
+    "normalizations": [
+      {
+        "what": "spacing",
+        "how": "Victorian spacing before ; : ? ! removed. No other punctuation changed."
+      },
+      {
+        "what": "line breaks",
+        "how": "Print line breaks not kept; paragraphs kept. Line-end hyphenation joined; a word divided across a page break stays divided, with its printed hyphen."
+      },
+      {
+        "what": "drop capitals",
+        "how": "A drop capital and the small capitals after it are written as ordinary capitals and not lowered."
+      },
+      {
+        "what": "italic punctuation",
+        "how": "Where the roman/italic status of adjoining punctuation cannot be seen at scan resolution, it goes inside the span if within the quotation, else outside (7 places, listed as open questions)."
+      },
+      {
+        "what": "uncial type",
+        "how": "Text set in uncial type is transcribed in ordinary lowercase with σ/ς and the accents and breathings as printed."
+      }
+    ]
+  },
+  "version": "1.0",
+  "rights": {
+    "work": {
+      "status": "public-domain",
+      "basis": "Ancient work (c. late 1st–2nd century).",
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": []
+    },
+    "edition": {
+      "status": "public-domain",
+      "basis": "Lightfoot & Harmer (1891). J. B. Lightfoot died 1889, J. R. Harmer died 1944. Assessed for the intended markets only (United States, United Kingdom, European Union); other countries not assessed.",
+      "jurisdictions": {
+        "US": "Public domain: published 1891.",
+        "UK": "Public domain: last author died 1944 (life + 70).",
+        "EU": "Public domain: last author died 1944 (life + 70)."
+      },
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": [
+        "lightfoot-harmer-1891"
+      ]
+    },
+    "digitization": {
+      "status": "public-domain",
+      "basis": "SCRIPTORIAS's own transcription from Internet Archive page images of two copies; no third-party transcription copied (Wikisource used for comparison only). No copyright is claimed in the historical text.",
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": [
+        "lightfoot-harmer-1891"
+      ]
+    },
+    "siteTerms": {
+      "status": "unknown",
+      "basis": "The Internet Archive's terms of use give access to its collections for scholarship and research. Whether publishing a text-only transcription made from the page images rests on an acceptable reuse basis has not yet been decided by the publisher.",
+      "obligations": [],
+      "legalReview": "not-needed",
+      "evidence": []
+    },
+    "ours": {
+      "license": "CC0 1.0 for original SCRIPTORIAS material, to the extent rights exist; no copyright claimed in the historical text",
+      "status": "decided"
+    },
+    "decision": "open",
+    "note": "Not cleared. The source-reuse basis for the page images is open and the publisher has not signed off this work. Release steps: docs/releases/didache-release-steps.md."
+  },
+  "provenance": {
+    "method": "Transcribed with AI assistance from the page images of the Cornell copy (1907 reprint) and checked by SCRIPTORIAS against the page images of that copy and of the Toronto copy (1891 printing).",
+    "copies": [
+      {
+        "source": "lightfoot-harmer-1891",
+        "scan": "cu31924024254744",
+        "role": "reading",
+        "images": "pp. 217–225 = images n232–n240"
+      },
+      {
+        "source": "lightfoot-harmer-1891",
+        "scan": "apostolicfathers00lighuoft",
+        "role": "check",
+        "images": "pp. 217–225 = images n232–n240"
+      }
+    ],
+    "ocrAssisted": [],
+    "workingFiles": {
+      "commit": "bb5251e66ed185ad8b2f24bcd57fbd95cf7c5dac",
+      "date": "2026-10-21",
+      "files": [
+        {
+          "name": "lightfoot-1891-greek-ch01.txt",
+          "bytes": 2911,
+          "sha256": "cb92bb4281499422a7484f4d561f63cf93783b93487dd95658238f522dbeb54a"
+        },
+        {
+          "name": "lightfoot-1891-greek-p218-221.txt",
+          "bytes": 13446,
+          "sha256": "749eb2277510d42710fa13a3fa8ccb0ba6623e5959838375f3be3b9b7a2dcc48"
+        },
+        {
+          "name": "lightfoot-1891-greek-p222-225.txt",
+          "bytes": 10992,
+          "sha256": "c6ae6fff2f0ea64b388da6365266c296ab7227d6e1777cfa4672e87c328bf4c8"
+        }
+      ]
+    }
+  },
+  "notices": {
+    "publicDomain": "**Public domain.** This is a transcription of J. B. Lightfoot and J. R. Harmer, *The Apostolic Fathers* (London: Macmillan, 1891), Greek text, pp. 217–225. The work is in the public domain in the United States, the United Kingdom and the European Union: it was published in 1891, and its authors died in 1889 and 1944. Its status in other countries has not been assessed. SCRIPTORIAS claims no copyright in this text.",
+    "sources": "Transcribed from page images of the Cornell University Library copy (1907 reprint) and checked against the University of Toronto copy (1891 printing), both digitized by the Internet Archive: [Cornell copy](https://archive.org/details/cu31924024254744) · [Toronto copy](https://archive.org/details/apostolicfathers00lighuoft). SCRIPTORIAS does not reproduce the page images. The transcription was prepared with AI assistance and checked by SCRIPTORIAS against the page images. Page 235 was drafted from the Internet Archive's machine-read text and then corrected against both copies."
+  },
+  "editorial": {
+    "content": "authentic",
+    "transcription": "proofread",
+    "provenance": "recorded",
+    "note": "Internally checked transcription (docs/EDITORIAL.md §6), not independently verified. Open questions are shown with the text as provisional.",
+    "reviews": [
+      {
+        "by": "consuelo",
+        "date": "2026-10-21",
+        "tier": "B",
+        "aspect": "transcription",
+        "result": "pass",
+        "against": [
+          {
+            "source": "lightfoot-harmer-1891",
+            "locator": "pp. 217–225"
+          }
+        ],
+        "sections": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "method": "Internal check (docs/EDITORIAL.md §6), not an independent verification. Read from the page images of the Cornell copy (1907 reprint); every page compared word by word and mark by mark with the images and with the Toronto copy (1891 printing)."
+      },
+      {
+        "by": "consuelo",
+        "date": "2026-10-21",
+        "tier": "B",
+        "aspect": "provenance",
+        "result": "pass",
+        "against": [
+          "lightfoot-harmer-1891"
+        ],
+        "method": "Internal check: edition, printing actually read (1907 reprint) and second copy (1891 printing), page and image indexes, and the size and SHA-256 of each transcription file recorded; sources linked externally, no page images hosted."
+      },
+      {
+        "by": "consuelo",
+        "date": "2026-10-21",
+        "tier": "B",
+        "aspect": "completeness",
+        "result": "pass",
+        "against": [
+          {
+            "source": "lightfoot-harmer-1891",
+            "locator": "pp. 217–225"
+          }
+        ],
+        "sections": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "method": "Internal check: all 16 chapters present, including the title and inscription; page joins continuous; nothing omitted."
+      },
+      {
+        "by": "consuelo",
+        "date": "2026-10-21",
+        "tier": "C",
+        "aspect": "technical",
+        "result": "pass",
+        "against": [],
+        "method": "Markup balanced; text.json rebuilds the transcription files byte for byte; refmap and alignment validate (npm run content:check, npm run test:content)."
+      }
+    ]
+  }
+}

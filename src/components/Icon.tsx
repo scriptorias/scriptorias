@@ -28,6 +28,7 @@ export const ICONS: Record<string, string> = {
   contents: '<path d="M4 6h16M4 12h16M4 18h10"/>',
   type: '<path d="M4 19 9 5l5 14M5.8 14h6.4"/><path d="M15 19l3-8 3 8M15.9 16.5h4.2"/>',
   quote: '<path d="M7 17c-2 0-3-1.5-3-3.5C4 10 6 7.5 9 7M17 17c-2 0-3-1.5-3-3.5 0-3.5 2-6 5-6.5"/>',
+  flag: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
   library: '<path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6v14"/>',
 };
 

@@ -23,7 +23,7 @@ test.describe("navigation", () => {
     await page.getByRole("link", { name: "Read This Work" }).click();
     await expect(page).toHaveURL(/\/works\/didache\/read/);
     await expect(page.locator(".rd-num")).toHaveText("1");
-    await expect(page.locator(".rd-text")).toContainText("There are two ways");
+    await expect(page.locator(".rd-text")).toContainText("are two ways, one of life and one of death");
     expect(errors).toEqual([]);
   });
 

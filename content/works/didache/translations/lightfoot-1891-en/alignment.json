@@ -1,0 +1,54 @@
+{
+  "work": "didache",
+  "translation": "lightfoot-1891-en",
+  "editorial": {
+    "content": "authentic",
+    "transcription": "unchecked",
+    "note": "Chapter-level alignment is Lightfoot's own (he numbers chapters only). Verse-level alignment exists for chapters 1 and 16 only and is an editorial alignment by SCRIPTORIAS, not Lightfoot's numbering. Provisional; not reviewed by a qualified editor. Generated from refmap.json (verse-level mappings only).",
+    "reviews": []
+  },
+  "segments": {
+    "1.1a": [
+      "didache.1.1"
+    ],
+    "1.1b": [
+      "didache.1.2"
+    ],
+    "1.1c": [
+      "didache.1.3"
+    ],
+    "1.1d": [
+      "didache.1.4"
+    ],
+    "1.1e": [
+      "didache.1.5"
+    ],
+    "1.1f": [
+      "didache.1.6"
+    ],
+    "16.1a": [
+      "didache.16.1"
+    ],
+    "16.1b": [
+      "didache.16.2"
+    ],
+    "16.1c": [
+      "didache.16.3"
+    ],
+    "16.1d": [
+      "didache.16.4"
+    ],
+    "16.1e": [
+      "didache.16.5"
+    ],
+    "16.1f": [
+      "didache.16.6"
+    ],
+    "16.1g": [
+      "didache.16.7"
+    ],
+    "16.1h": [
+      "didache.16.8"
+    ]
+  }
+}

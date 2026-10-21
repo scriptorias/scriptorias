@@ -21,13 +21,13 @@ test.describe("prototype data and links", () => {
     expect(stored.map((b: { ref: string; anchor?: string }) => [b.ref, b.anchor ?? null])).toEqual([
       ["1-enoch.6", null],
       ["didache.1.3", null],
-      ["didache.2", "lightfoot:2.3"],
+      ["didache.2", "lightfoot-1891-en:2.1"],
       ["1-enoch.1.9", null],
       ["1-enoch.5.6", null],
     ]);
-    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sc.rd.pos.didache")!))).toEqual({ ch: 1, anchor: "lightfoot:1.10" });
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sc.rd.pos.didache")!))).toEqual({ ch: 1, anchor: "lightfoot-1891-en:1.1d" });
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sc.rd.tr.1-enoch")!))).toBe("charles");
-    expect(await page.evaluate(() => localStorage.getItem("sc.schema"))).toBe("2");
+    expect(await page.evaluate(() => localStorage.getItem("sc.schema"))).toBe("3");
     await expect(page.locator(".row")).toHaveCount(5);
   });
 
@@ -36,7 +36,8 @@ test.describe("prototype data and links", () => {
       ["/#/c/early-christian", /\/collections\/early-christian$/],
       ["/#/w/didache", /\/works\/didache$/],
       ["/#/w/1-enoch/read/1/9", /\/works\/1-enoch\/read\/1\/9$/],
-      ["/#/w/didache/read/1/7", /\/works\/didache\/read\/1\?n=7$/],
+      // Prototype Didache numbering (Wikisource segment 7) → the same passage in the replacement edition.
+      ["/#/w/didache/read/1/7", /\/works\/didache\/read\/1\/3\?tr=lightfoot-1891-en$/],
       ["/#/w/didache/ms/p-oxy-1782", /\/works\/didache\/manuscripts\/p-oxy-1782$/],
       ["/#/path/the-watchers", /\/pathways\/the-watchers$/],
       ["/#/search/hermon", /\/search\?q=hermon$/],
@@ -47,6 +48,6 @@ test.describe("prototype data and links", () => {
       await expect(page).toHaveURL(to);
     }
     await page.goto("/#/w/didache/read/1/7");
-    await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 1.3"); // segment 7 lies in verse 3
+    await expect(page.locator(".rd-actions-ref")).toContainText("The Didache 1.3"); // segment 7 lies in verse 3
   });
 });

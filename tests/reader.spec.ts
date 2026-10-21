@@ -8,19 +8,19 @@ test.describe("reader", () => {
     await expect(page.locator(".rd-num")).toHaveText("2");
     await page.keyboard.press("ArrowRight");
     await expect(page).toHaveURL("/works/didache/read/3");
-    await expect(page.locator(".rd-end")).toHaveText("Chapter 4 is not yet available");
     await expect(page.locator(".rd-num")).toHaveText("3");
     await page.keyboard.press("ArrowLeft");
     await expect(page).toHaveURL("/works/didache/read/2");
     await page.getByRole("button", { name: "Contents" }).click();
     await expect(page.locator("#rd-toc")).toHaveClass(/open/);
-    await page.locator("#rd-toc").getByRole("link", { name: "Chapter 1" }).click();
+    await page.locator("#rd-toc").locator("a[href=\"/works/didache/read/1\"]").click();
     await expect(page).toHaveURL("/works/didache/read/1");
   });
 
   test("canonical verse numbers and notes panel", async ({ page }) => {
     await page.goto("/works/didache/read/1");
-    await expect(page.locator(".rd-text .pn")).toHaveText(["1", "2", "3", "4", "5", "6"]);
+    // Lightfoot's English prints no verse numbers: chapter 1 shows the editorial alignment in brackets.
+    await expect(page.locator(".rd-text .pn")).toHaveText(["[1]", "[2]", "[3]", "[4]", "[5]", "[6]"]);
     await page.getByRole("button", { name: "Notes on The Didache 1.3" }).click();
     await expect(page.locator("#rd-notes")).toHaveClass(/open/);
     await expect(page.locator('.rd-note-group[data-for="didache.1.3"]')).toHaveClass(/on/);
@@ -29,8 +29,8 @@ test.describe("reader", () => {
 
   test("passage bookmark and chapter bookmark persist across reloads", async ({ page }) => {
     await page.goto("/works/didache/read/1");
-    await page.locator(".rd-text .pn", { hasText: "3" }).click();
-    await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 1.3");
+    await page.locator(".rd-text .pn", { hasText: "[3]" }).click();
+    await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 1.3 · Lightfoot English ch. 1, p. 229 · editorial alignment");
     await page.locator(".rd-actions").getByRole("button", { name: "Bookmark" }).click();
     await page.getByRole("button", { name: "Bookmark this chapter" }).click();
     await page.reload();
@@ -39,17 +39,17 @@ test.describe("reader", () => {
     await expect(page.locator(".row")).toHaveCount(2);
     await expect(page.locator(".rows")).toContainText("The Didache 1.3");
     await page.locator(".row", { hasText: "The Didache 1.3" }).click();
-    await expect(page).toHaveURL(/\/works\/didache\/read\/1\/3(\?tr=lightfoot)?$/);
-    await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 1.3");
+    await expect(page).toHaveURL(/\/works\/didache\/read\/1\/3(\?tr=lightfoot-1891-en)?$/);
+    await expect(page.locator(".rd-actions-ref")).toContainText("The Didache 1.3");
   });
 
   test("unaligned passages bookmark at chapter level with an anchor", async ({ page }) => {
-    await page.goto("/works/didache/read/2");
-    await page.locator(".rd-text .pn", { hasText: /^3$/ }).click();
-    await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 2 · J. B. Lightfoot 2.3");
+    await page.goto("/works/didache/read/4");
+    await page.locator(".rd-text .pn").nth(1).click();
+    await expect(page.locator(".rd-actions-ref")).toHaveText("The Didache 4 · Lightfoot English ch. 4, ¶ 2, pp. 230–231");
     await page.locator(".rd-actions").getByRole("button", { name: "Bookmark" }).click();
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("sc.bookmarks")!));
-    expect(stored[0]).toMatchObject({ ref: "didache.2", anchor: "lightfoot:2.3", work: "didache", ch: 2 });
+    expect(stored[0]).toMatchObject({ ref: "didache.4", anchor: "lightfoot-1891-en:4.2", work: "didache", ch: 4 });
   });
 
   test("text size, line spacing, and theme persist", async ({ page }) => {
