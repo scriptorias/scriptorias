@@ -2,19 +2,24 @@
  * The Didache in Lightfoot & Harmer (1891), Greek and English: navigation, edition-aware
  * references (incl. the provisional 16.8 mapping), bookmarks, notes, legacy links and stored data
  * from the retired Wikisource text, status labels, notices and suspected-error reports.
- * Layout: the text comes first; references and notes, and the edition's provenance and notices,
- * sit in two sections after it, closed by default; provisional readings and mappings carry
- * inline markers that open their explanation.
+ * Layout: the reading screen shows the chapter heading and the text; the English / Greek switch
+ * sits in the top bar; everything about the edition (status, provenance, notices, references and
+ * textual notes, correction history, error reports) lives in the Contents panel, in sections
+ * closed by default; provisional readings and mappings carry small inline markers whose
+ * explanation links to References & textual notes there.
  */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
 const GRC = "lightfoot-1891-grc";
 const EN = "lightfoot-1891-en";
-const header = (page: Page) => page.locator(".ed-head");
-const drawer = (page: Page, name: "notes" | "about") => page.locator(`[data-drawer="${name}"]`);
-/** Opens "References & textual notes" (notes) or "About this edition" (about) and returns it. */
-async function open(page: Page, name: "notes" | "about") {
+type Section = "about" | "licensing" | "notes" | "history" | "report";
+const lang = (page: Page) => page.locator(".rd-bar [data-lang-toggle]");
+const drawer = (page: Page, name: Section) => page.locator(`#rd-toc [data-drawer="${name}"]`);
+/** Opens Contents and one of its edition sections, and returns the section. */
+async function open(page: Page, name: Section) {
+  if (!(await page.locator("#rd-toc").getAttribute("class"))!.includes("open")) await page.getByRole("button", { name: "Contents" }).click();
+  await expect(page.locator("#rd-toc")).toHaveClass(/open/);
   const d = drawer(page, name);
   const b = d.locator(".ed-drawer-h button");
   if ((await b.getAttribute("aria-expanded")) !== "true") await b.click();
@@ -46,13 +51,36 @@ test("chapter navigation through all chapters", async ({ page }) => {
   await expect(page).toHaveURL("/works/didache/read/15");
 });
 
-test("Greek/English switching keeps the passage and the choice", async ({ page }) => {
+test("English / Greek switch in the top bar keeps the chapter, the selected verse and the choice", async ({ page }) => {
+  // The selected verse.
   await page.goto(`/works/didache/read/16/8?tr=${EN}`);
   await expect(page.locator(".psg.sel")).toHaveAttribute("data-seg", "16.1h");
-  await header(page).getByRole("button", { name: /Read this passage in Greek \(16\.8\)/ }).click();
+  await expect(lang(page)).toHaveAttribute("role", "group");
+  await expect(lang(page).getByRole("button", { name: "English" })).toHaveAttribute("aria-pressed", "true");
+  await expect(lang(page).getByRole("button", { name: "Greek" })).toHaveAttribute("aria-pressed", "false");
+  await lang(page).getByRole("button", { name: "Greek" }).click();
   await expect(page).toHaveURL("/works/didache/read/16/8");
   await expect(page.locator("#rd")).toHaveAttribute("data-tr", GRC);
   await expect(page.locator(".psg.sel")).toHaveAttribute("data-seg", "16.7");
+  await expect(lang(page).getByRole("button", { name: "Greek" })).toHaveAttribute("aria-pressed", "true");
+  // A verse selected in the text, then back by keyboard.
+  await page.locator(".rd-text .pn", { hasText: "3" }).click();
+  await expect(page.locator(".psg.sel")).toHaveAttribute("data-seg", "16.3");
+  await lang(page).getByRole("button", { name: "English" }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL("/works/didache/read/16/3");
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", EN);
+  await expect(page.locator(".psg.sel")).toHaveAttribute("data-ref", "didache.16.3");
+  // No selection: the chapter.
+  await page.goto(`/works/didache/read/5?tr=${GRC}`);
+  await lang(page).getByRole("button", { name: "English" }).click();
+  await expect(page).toHaveURL("/works/didache/read/5");
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", EN);
+  await expect(page.locator(".rd-num")).toHaveText("5");
+  await expect(page.locator(".psg.sel")).toHaveCount(0);
+  await lang(page).getByRole("button", { name: "Greek" }).press("Space");
+  await expect(page.locator("#rd")).toHaveAttribute("data-tr", GRC);
+  await expect(page.locator(".rd-num")).toHaveText("5");
   await page.reload();
   await expect(page.locator("#rd")).toHaveAttribute("data-tr", GRC);
   await page.getByRole("button", { name: "Contents" }).click();
@@ -112,7 +140,8 @@ test("English verse numbers are a provisional editorial alignment; elsewhere cha
 test("labels: internally checked, never verified; text release; provisional readings", async ({ page }) => {
   for (const tr of [GRC, EN]) {
     await page.goto(`/works/didache/read/3?tr=${tr}`);
-    await expect(header(page).locator("[data-status-line]")).toContainText("Internally checked transcription · not independently verified");
+    await expect(page.locator("#rd-toc [data-status-line]")).toHaveText("Internally checked transcription · not independently verified");
+    await expect(page.locator(".rd-colophon [data-status-cue]")).toContainText("Internally checked transcription · not independently verified.");
     await expect(page.locator("[data-preview]")).toHaveCount(0); // text release: no preview tag
     const body = (await page.locator("body").innerText()).toLowerCase();
     for (const m of body.matchAll(/verified/g)) expect(body.slice(Math.max(0, m.index! - 18), m.index)).toMatch(/(not independently |un)$/);
@@ -134,15 +163,16 @@ test("labels: internally checked, never verified; text release; provisional read
   await expect(notes.locator('[data-section="differences"]')).toContainText("ποιήσεις");
 });
 
-test("notices: status line, public domain, sources, CC0, factual data; no Wikisource notice", async ({ page }) => {
+test("notices: status, public domain, sources, CC0, factual data; no Wikisource notice", async ({ page }) => {
   await page.goto(`/works/didache/read/1?tr=${GRC}`);
   const about = await open(page, "about");
+  const licensing = await open(page, "licensing");
   await expect(about.locator('[data-notice="status"]')).toBeVisible();
   await expect(about.locator('[data-notice="status"]')).toHaveText(
     "Internally checked transcription · not independently verified. Readings and verse mappings marked Provisional are open questions, not established findings. Changes are listed in the correction history. Report a suspected error (requires a free GitHub account; reports are public).",
   );
   await expect(page.locator('[data-notice="public-domain"]')).toHaveCount(1);
-  await expect(about.locator('[data-notice="public-domain"]')).toHaveText(
+  await expect(licensing.locator('[data-notice="public-domain"]')).toHaveText(
     "Public domain. This is a transcription of J. B. Lightfoot and J. R. Harmer, The Apostolic Fathers (London: Macmillan, 1891), Greek text, pp. 217–225. It is in the public domain in the United States, where it was published in 1891, and in the United Kingdom and the European Union, where copyright ended 70 years after the death of its last author (J. B. Lightfoot died in 1889, J. R. Harmer in 1944). Its status in other countries has not been assessed. SCRIPTORIAS claims no copyright in this text.",
   );
   const prov = about.locator('[data-section="provenance"]');
@@ -152,12 +182,13 @@ test("notices: status line, public domain, sources, CC0, factual data; no Wikiso
   await expect(prov.getByRole("link", { name: "Cornell copy" })).toHaveAttribute("href", "https://archive.org/details/cu31924024254744");
   await expect(prov.getByRole("link", { name: "Toronto copy" })).toHaveAttribute("href", "https://archive.org/details/apostolicfathers00lighuoft");
   await expect(prov.getByRole("link", { name: "HathiTrust copy" })).toHaveAttribute("href", "https://hdl.handle.net/2027/uc2.ark:/13960/t7zk5j13p");
-  await expect(about.locator('[data-notice="factual"]')).toHaveText("Bibliographic details, page numbers, identifiers, checksums and reference correspondences are factual information. No rights are claimed in them.");
+  await expect(about.locator("[data-edition-name]")).toContainText("The Apostolic Fathers");
+  await expect(licensing.locator('[data-notice="factual"]')).toHaveText("Bibliographic details, page numbers, identifiers, checksums and reference correspondences are factual information. No rights are claimed in them.");
   await expect(prov.locator(".ed-hash")).toHaveCount(3);
   await expect(prov.locator(".ed-hash").first()).toHaveText(/^[0-9a-f]{64}$/);
-  await expect(about.locator('[data-notice="cc0"]')).toContainText("dedicated to the public domain under CC0 1.0 Universal");
+  await expect(licensing.locator('[data-notice="cc0"]')).toContainText("dedicated to the public domain under CC0 1.0 Universal");
+  await expect((await open(page, "history")).locator("[data-revisions]")).toContainText("1.0");
   const notes = await open(page, "notes");
-  await expect(notes.locator("[data-revisions]")).toContainText("1.0");
   await expect(notes.locator('[data-notice="cc0"]')).toContainText("dedicated to the public domain under CC0 1.0 Universal");
   // No page images: provenance links out only.
   await expect(page.locator(".rd img")).toHaveCount(0);
@@ -179,6 +210,11 @@ test("report a suspected error: chapter link and selection link with prefilled f
   expect(ch.searchParams.get("edition")).toBe("Lightfoot & Harmer · Greek, The Apostolic Fathers (1891), Greek text, pp. 217–225");
   expect(ch.searchParams.get("ref")).toMatch(/^16 http:\/\/localhost:\d+\/works\/didache\/read\/16\?tr=lightfoot-1891-grc$/);
   expect(chapterHref).toContain("edition=Lightfoot%20%26%20Harmer%20%C2%B7%20Greek"); // URL-encoded, spaces as %20
+  // The same chapter report in its own Contents section.
+  const report = await open(page, "report");
+  await expect(report.locator('[data-report="chapter"]')).toHaveText("Report a suspected error in chapter 16");
+  await expect(report.locator('[data-report="chapter"]')).toHaveAttribute("href", chapterHref!);
+  await expect(report).toContainText("(requires a free GitHub account; reports are public)");
   const link = page.locator(".rd-actions [data-report]");
   await expect(link).toContainText("Report a suspected error");
   await expect(link).toContainText("(requires a free GitHub account; reports are public)");
@@ -305,7 +341,7 @@ test("accessibility: Didache reader has no serious axe violations", async ({ pag
   }
 });
 
-test("first screen: title, edition, status line, language switch and the start of the text", async ({ page }) => {
+test("first screen: the top bar with the language switch, the chapter heading and the start of the text; no edition header", async ({ page }) => {
   for (const [width, height] of [[1280, 800], [390, 844]]) {
     await page.setViewportSize({ width, height });
     for (const tr of [GRC, EN]) {
@@ -313,9 +349,8 @@ test("first screen: title, edition, status line, language switch and the start o
       const where = `${tr} ${width}×${height}`;
       await expect(page.locator(".rd-run b"), where).toHaveText("The Didache");
       await expect(page.locator(".rd-run b"), where).toBeInViewport();
-      await expect(header(page).locator(".ed-name"), where).toBeInViewport();
-      await expect(header(page).locator("[data-status-line]"), where).toBeInViewport();
-      await expect(header(page).locator("[data-switch-to]"), where).toBeInViewport();
+      await expect(lang(page), where).toBeInViewport();
+      await expect(lang(page).locator('[aria-pressed="true"]'), where).toHaveText(tr === GRC ? "Greek" : "English");
       await expect(page.locator(".rd-num"), where).toBeInViewport();
       // The text starts on the first screen, above the mobile tool bar, with nothing to scroll past.
       const first = page.locator(".rd-text .psg").first();
@@ -323,17 +358,29 @@ test("first screen: title, edition, status line, language switch and the start o
       const box = (await first.boundingBox())!;
       expect(box.y + 20, where).toBeLessThan(height - 70);
       expect(await page.evaluate(() => window.scrollY), where).toBe(0);
+      // No bibliographic header, and nothing about the edition on the reading screen until Contents opens.
+      await expect(page.locator(".ed-head, [data-switch-to].ed-switch, .rd-page [data-open-about]"), where).toHaveCount(0);
+      await expect(page.locator(".rd-page > *").first(), where).toHaveClass("rd-head"); // the chapter heading comes first
+      await expect(page.locator(".rd-page .ed-sections, .rd-page [data-drawer]"), where).toHaveCount(0);
+      await expect(page.locator("#rd-toc"), where).toBeHidden();
       await expect(page.locator(".ed-table").first(), where).toBeHidden();
-      await expect(page.locator('[data-question]').first(), where).toBeHidden();
       await expect(page.locator('[data-notice="sources"]'), where).toBeHidden();
+      // The page break before the title is kept, small and muted.
+      await expect(page.locator(".rd-text .pb").first(), where).toBeInViewport();
     }
   }
 });
 
-test("References & textual notes and About this edition: closed by default, open on click and by keyboard", async ({ page }) => {
+test("Contents: chapter list and the edition sections, closed by default, with all the edition information", async ({ page }) => {
   await page.goto(`/works/didache/read/16?tr=${GRC}`);
-  for (const [name, title] of [["notes", "References & textual notes"], ["about", "About this edition"]] as const) {
-    const button = drawer(page, name).getByRole("button", { name: title });
+  await page.getByRole("button", { name: "Contents" }).click();
+  const toc = page.locator("#rd-toc");
+  await expect(toc.locator(".rd-toc a")).toHaveCount(16);
+  await expect(toc.locator("[data-status-line]")).toHaveText("Internally checked transcription · not independently verified");
+  const titles = { about: "About this edition", licensing: "Licensing & notices", notes: "References & textual notes", history: "Correction history", report: "Report a suspected error" } as const;
+  await expect(toc.locator(".ed-drawer-h button")).toHaveText(Object.values(titles));
+  for (const [name, title] of Object.entries(titles) as [Section, string][]) {
+    const button = drawer(page, name).getByRole("button", { name: title, exact: true });
     await expect(button).toHaveAttribute("aria-expanded", "false");
     await expect(drawer(page, name).locator(".ed-drawer-body")).toBeHidden();
     await button.click();
@@ -345,31 +392,38 @@ test("References & textual notes and About this edition: closed by default, open
     await page.keyboard.press("Enter");
     await expect(drawer(page, name).locator(".ed-drawer-body")).toBeVisible();
   }
-  // The previous panel content, now in the two sections.
+  // About this edition: status first, the edition, sources and provenance, copies, checksums.
+  const about = drawer(page, "about");
+  await expect(about.locator(".ed-drawer-body > *").first()).toHaveAttribute("data-notice", "status");
+  await expect(about.locator('[data-notice="status"]')).toContainText("Internally checked transcription · not independently verified.");
+  await expect(about.locator("[data-edition-name]")).toContainText("The Apostolic Fathers");
+  await expect(about.getByRole("link", { name: "HathiTrust copy" })).toHaveAttribute("href", "https://hdl.handle.net/2027/uc2.ark:/13960/t7zk5j13p");
+  await expect(about.getByRole("link", { name: "Cornell copy" })).toBeVisible();
+  await expect(about.getByRole("link", { name: "Toronto copy" })).toBeVisible();
+  await expect(about.locator("[data-copies] a")).toHaveCount(2);
+  await expect(about.locator(".ed-hash")).toHaveCount(3);
+  for (const n of ["status", "sources"]) await expect(about.locator(`[data-notice="${n}"]`)).toBeVisible();
+  const licensing = drawer(page, "licensing");
+  for (const n of ["public-domain", "cc0", "factual"]) await expect(licensing.locator(`[data-notice="${n}"]`)).toBeVisible();
+  // References & textual notes: the 16.8 explanation, open questions (chapter and general), all references.
   const notes = drawer(page, "notes");
   await expect(notes.locator("[data-mapping-callout] table")).toBeVisible();
   await expect(notes.locator('[data-mapping-callout] tr[data-segs="16.7"]')).toContainText("Lightfoot prints no verse 8");
   await expect(notes.locator('[data-question="chapter-16-numbering"]')).toBeVisible();
-  await expect(notes.locator('[data-question="display-reference-system"]')).toBeVisible(); // general questions too
+  await expect(notes.locator('[data-question="display-reference-system"]')).toBeVisible();
   await expect(notes.locator("[data-edition-ref]")).toContainText("SCRIPTORIAS reference: didache.16.");
   await notes.getByText(/All references in this chapter/).click();
   await expect(notes.locator('[data-section="refs"]')).toContainText("Numbering:");
-  await expect(notes.locator("#correction-history")).toBeVisible();
-  const about = drawer(page, "about");
-  await expect(about.locator('[data-notice="status"]')).toContainText("Internally checked transcription · not independently verified.");
-  await expect(about.getByRole("link", { name: "HathiTrust copy" })).toHaveAttribute("href", "https://hdl.handle.net/2027/uc2.ark:/13960/t7zk5j13p");
-  await expect(about.getByRole("link", { name: "Cornell copy" })).toBeVisible();
-  await expect(about.getByRole("link", { name: "Toronto copy" })).toBeVisible();
-  for (const n of ["status", "public-domain", "sources", "factual", "cc0"]) await expect(about.locator(`[data-notice="${n}"]`)).toBeVisible();
-  await expect(about.locator("[data-copies] a")).toHaveCount(2);
-  await expect(about.locator(".ed-hash")).toHaveCount(3);
-  // The status line's link opens About this edition.
+  await expect(notes.locator('[data-section="refs"] tr[data-segs="16.1"]')).toBeVisible();
+  await expect(drawer(page, "history").locator("[data-revisions] li").first()).toBeVisible();
+  await expect(drawer(page, "report").locator('[data-report="chapter"]')).toBeVisible();
+  // The colophon's link opens Contents at About this edition.
   await page.goto(`/works/didache/read/1?tr=${EN}`);
-  const link = header(page).locator("[data-open-about]");
-  await expect(link).toHaveAttribute("aria-expanded", "false");
-  await link.click();
-  await expect(link).toHaveAttribute("aria-expanded", "true");
-  await expect(drawer(page, "about").locator('[data-notice="sources"]')).toBeInViewport();
+  await expect(page.locator(".rd-colophon [data-status-cue]")).toContainText("Internally checked transcription · not independently verified.");
+  await page.locator(".rd-colophon").getByRole("button", { name: "About this edition" }).click();
+  await expect(page.locator("#rd-toc")).toHaveClass(/open/);
+  await expect(drawer(page, "about").locator(".ed-drawer-h button")).toBeFocused();
+  await expect(drawer(page, "about").locator('[data-notice="status"]')).toBeInViewport();
 });
 
 test("inline provisional markers open their explanation", async ({ page }) => {
@@ -385,6 +439,7 @@ test("inline provisional markers open their explanation", async ({ page }) => {
   await expect(unc.locator(".ed-pop")).toBeVisible();
   await expect(unc.locator(".ed-pop")).toContainText("Provisional");
   await expect(unc.locator('.ed-pop [data-question="greek-3-10-ater"]')).toContainText("Greek 3.10");
+  await expect(unc.locator(".ed-pop [data-more]")).toHaveText("References & textual notes (in Contents)");
   await page.keyboard.press("Escape");
   await expect(unc.locator(".ed-pop")).toBeHidden();
   await btn.focus();
@@ -398,8 +453,12 @@ test("inline provisional markers open their explanation", async ({ page }) => {
   await map.getByRole("button", { name: /Provisional mapping: Lightfoot Greek XVI\.7 = SCRIPTORIAS 16\.8/ }).click();
   await expect(map.locator(".ed-pop")).toContainText("Lightfoot prints no verse 8");
   await expect(map.locator('.ed-pop [data-question="chapter-16-numbering"]')).toBeVisible();
-  await map.getByRole("button", { name: "References & textual notes" }).click();
+  await map.getByRole("button", { name: "References & textual notes (in Contents)" }).click();
+  await expect(page.locator("#rd-toc")).toHaveClass(/open/);
   await expect(drawer(page, "notes").locator(".ed-drawer-body")).toBeVisible();
+  await expect(drawer(page, "notes").locator(".ed-drawer-h button")).toBeFocused();
+  await expect(drawer(page, "notes").locator('[data-mapping-callout] tr[data-segs="16.7"]')).toBeInViewport({ ratio: 0.1 });
+  await expect(map.locator(".ed-pop")).toBeHidden();
   // Editorial verse numbers in English chapters 1 and 16: one marker per chapter.
   for (const ch of [1, 16]) {
     await page.goto(`/works/didache/read/${ch}?tr=${EN}`);
@@ -408,14 +467,19 @@ test("inline provisional markers open their explanation", async ({ page }) => {
     await ed.getByRole("button", { name: "Editorial verse numbers: provisional" }).click();
     await expect(ed.locator(".ed-pop")).toContainText("Verse numbers in [brackets] are an editorial alignment, not Lightfoot's; they are provisional.");
     await expect(ed.locator('.ed-pop [data-question="english-verse-alignment"]')).toBeVisible();
+    await ed.locator(".ed-pop [data-more]").click();
+    await expect(drawer(page, "notes").locator("[data-edition-ref]")).toContainText("editorial alignment");
   }
   // Nothing provisional here: no markers.
   await page.goto(`/works/didache/read/4?tr=${EN}`);
   await expect(page.locator(".rd-text .ed-mark")).toHaveCount(0);
 });
 
-test("other works keep their own layout: no edition header or sections", async ({ page }) => {
+test("other works keep their own layout: no language switch, edition sections or markers", async ({ page }) => {
   await page.goto("/works/1-enoch/read/1");
   await expect(page.locator(".rd-sample")).toContainText("Unverified transcription");
-  await expect(page.locator(".ed-head, .ed-sections, .ed-mark")).toHaveCount(0);
+  await expect(page.locator("[data-lang-toggle], .ed-sections, [data-drawer], .ed-mark, [data-status-cue]")).toHaveCount(0);
+  await expect(page.locator(".rd-run span").first()).toBeVisible();
+  await page.getByRole("button", { name: "Contents" }).click();
+  await expect(page.locator("#rd-toc .rd-toc a").first()).toBeVisible();
 });

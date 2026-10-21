@@ -25,7 +25,7 @@ import { toast } from "../lib/toast";
 import { useAsync } from "../lib/useAsync";
 import { useTitle } from "../lib/useTitle";
 import { prototypeTranslation } from "../lib/migrate";
-import { EditionHeader, EditionSections, ProvisionalMark, SECTION_ID, provisionalMarks, switchTarget, type EditionData, type EditionSection, type MarkInfo } from "./EditionPanel";
+import { EditionSections, LanguageToggle, NO_SECTIONS, ProvisionalMark, SECTION_ID, provisionalMarks, switchTarget, type EditionData, type EditionSection, type MarkInfo } from "./EditionPanel";
 
 const SIZES = [16, 17, 18, 19, 20, 22, 24];
 const LEADING = { compact: 1.55, comfortable: 1.75, airy: 1.95 } as const;
@@ -174,8 +174,8 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
   const [panels, setPanels] = useState({ ...ui });
   const [, bump] = useState(0);
   const [sel, setSel] = useState<Selection | null>(null);
-  // Edition sections after the text (closed by default) and the open provisional marker, if any.
-  const [sections, setSections] = useState<Record<EditionSection, boolean>>({ notes: false, about: false });
+  // Edition sections in the Contents panel (closed by default) and the open provisional marker, if any.
+  const [sections, setSections] = useState<Record<EditionSection, boolean>>(NO_SECTIONS);
   const [openMark, setOpenMark] = useState<string | null>(null);
   const progress = useRef<HTMLSpanElement>(null);
   const textEl = useRef<HTMLElement>(null);
@@ -308,6 +308,7 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
   const map = edition?.refmap ?? null;
   const editor = map?.editionName.split(" ")[0] ?? tr.label;
   const preview = w.publication?.status === "preview";
+  const previewTag = preview && edition ? <span className="ed-preview" data-preview>Preview · not yet released</span> : null;
   const inline = sec.segments.every((s) => s.runs);
   const selSegs = new Set(sel?.segs ?? []);
   const anyUnaligned = sec.segments.some((s) => !idx.isAligned(s.id));
@@ -330,12 +331,27 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
     return nextRef === ref ? null : ref;
   };
 
-  // Edition sections: toggle, or open one and bring it into view.
+  // Edition sections: toggle, or open Contents at one and bring it into view.
   const toggleSection = (name: EditionSection) => setSections((cur) => ({ ...cur, [name]: !cur[name] }));
+  const [shown, setShown] = useState<{ name: EditionSection } | null>(null);
   const showSection = (name: EditionSection) => {
+    setPanel("toc", true);
     setSections((cur) => ({ ...cur, [name]: true }));
-    requestAnimationFrame(() => document.getElementById(SECTION_ID[name])?.parentElement?.scrollIntoView({ block: "start", behavior: "smooth" }));
+    setShown({ name });
   };
+  // Once Contents is open (it becomes focusable as its slide-in starts), focus the section and scroll to it.
+  useEffect(() => {
+    if (!shown) return;
+    const go = () => {
+      const h = document.getElementById(`${SECTION_ID[shown.name]}-h`);
+      if (!h || document.activeElement === h) return;
+      h.focus({ preventScroll: true });
+      h.scrollIntoView({ block: "start" });
+    };
+    // Again once the slide-in has finished, in case the panel was not yet focusable.
+    const ts = [30, 300].map((ms) => window.setTimeout(go, ms));
+    return () => ts.forEach((t) => window.clearTimeout(t));
+  }, [shown]);
   const marks = edition ? provisionalMarks(id, tr, edition, chn, sec.segments, (seg) => idx.refOf(seg)) : new Map<string, MarkInfo[]>();
   const markNode = (m: MarkInfo) => (
     <ProvisionalMark key={m.key} mark={m} open={openMark === m.key} onToggle={() => setOpenMark((cur) => (cur === m.key ? null : m.key))}
@@ -403,8 +419,19 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
       style={{ "--rd-size": `${prefs.size}px`, "--rd-leading": LEADING[prefs.leading] } as CSSProperties}>
       <div className="rd-progress"><span ref={progress} /></div>
       <header className="rd-bar">
-        <Link className="rd-back" to={workPath(id)} aria-label={`Back to ${w.title} overview`}><Icon name="left" /><span>{w.title}</span></Link>
-        <div className="rd-run"><b>{w.title}</b><span>{tr.label}{yearOf ? ` (${yearOf})` : ""} · {label} {chn}</span></div>
+        <div className="rd-start">
+          <Link className="rd-back" to={workPath(id)} aria-label={`Back to ${w.title} overview`}><Icon name="left" /><span>{w.title}</span></Link>
+          {edition && otherEdition && (
+            <LanguageToggle tr={tr} other={otherEdition} target={switchTarget(edition.refmap, sel?.segs ?? [], chRef)}
+              onSwitch={(t, ref) => { store.set(`rd.tr.${id}`, t); navigate(readPath(id, ref)); }} />
+          )}
+        </div>
+        <div className="rd-run">
+          <b>{w.title}</b>
+          <span>{tr.label}{yearOf ? ` (${yearOf})` : ""} · {label} {chn}</span>
+          {/* Narrow screens: the language switch names the language, so the edition name stays short. */}
+          {otherEdition && <span className="rd-run-short">{tr.label.split(" · ")[0]} · {label} {chn}</span>}
+        </div>
         <div className="rd-tools">
           <button className={`rd-tool${panels.toc ? " on" : ""}`} aria-label="Contents" onClick={() => setPanel("toc")}><Icon name="contents" /><span>Contents</span></button>
           <button className={`rd-tool${panels.settings ? " on" : ""}`} aria-label="Text settings" onClick={() => setPanel("settings")}><Icon name="type" /><span>Text</span></button>
@@ -454,6 +481,10 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
               </ul>
             ) : <p className="rd-hint">No bookmarks yet.</p>}
           </div>
+          {edition && (
+            <EditionSections work={id} tr={tr} data={edition} chapter={chn} selected={sel?.segs ?? []} reportHref={reportFor(null)}
+              open={sections} onToggle={toggleSection} />
+          )}
         </div>
       </aside>
 
@@ -498,12 +529,8 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
 
       <main className="rd-page">
         {banner && <p className="rd-sample">{banner} · {tr.label}{tr.detail ? `, ${tr.detail}` : ""}</p>}
-        {edition && (
-          <EditionHeader tr={tr} other={otherEdition} target={switchTarget(edition.refmap, sel?.segs ?? [], chRef)} preview={preview}
-            aboutOpen={sections.about} onAbout={() => (sections.about ? toggleSection("about") : showSection("about"))}
-            onSwitch={(t, ref) => { store.set(`rd.tr.${id}`, t); navigate(readPath(id, ref)); }} />
-        )}
         <header className="rd-head">
+          {previewTag}
           <p className="rd-kicker">{label}</p>
           <h1 className="rd-num">{chn}</h1>
           {(sec.title || group?.title) && <p className="rd-group">{sec.title || group!.title}</p>}
@@ -511,10 +538,6 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
         <article ref={textEl} className={`rd-text ${inline ? "prose-mode" : "verse-mode"}`}>
           {inline ? paragraphs.map((g, k) => <p key={k} className={sec.segments[g[0]].heading ? "rd-heading" : undefined}>{g.map((i) => segments[i])}</p>) : segments}
         </article>
-        {edition && (
-          <EditionSections work={id} tr={tr} data={edition} chapter={chn} selected={sel?.segs ?? []} reportHref={reportFor(null)}
-            open={sections} onToggle={toggleSection} />
-        )}
         <nav className="rd-pager" aria-label="Chapters">
           {prev ? <Link to={readSection(id, prev)} data-dir="prev"><Icon name="left" />{label} {prev}</Link> : <span />}
           {next ? <Link to={readSection(id, next)} data-dir="next" className="next">{label} {next}<Icon name="right" /></Link>
@@ -526,7 +549,11 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
             {tr.source && <> · <a href={tr.source.href} target="_blank" rel="noopener">{tr.source.label}</a></>}
           </p>
           {tr.notices?.publicDomain && !edition && <p data-notice="public-domain">{richText(tr.notices.publicDomain)}</p>}
-          {edition && <p>Licensing, sources and provenance: <button type="button" className="ed-linkbtn" onClick={() => showSection("about")}>About this edition</button>.</p>}
+          {edition && (
+            <p data-status-cue>
+              {status ? `${status}. ` : ""}Sources, licensing and notices: <button type="button" className="ed-linkbtn" onClick={() => showSection("about")}>About this edition</button> (in Contents).
+            </p>
+          )}
           {tr.attribution && <p>{tr.attribution}</p>}
           {tr.italics && <p>{tr.italics}</p>}
           <p>

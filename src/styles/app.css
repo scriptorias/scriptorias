@@ -377,12 +377,20 @@ body.reading-dark { background: #1a1917; }
   height: 58px; padding: 0 18px; background: color-mix(in srgb, var(--rd-bg) 90%, transparent);
   backdrop-filter: blur(10px); border-bottom: 1px solid var(--rd-line);
 }
+.rd-start { display: flex; align-items: center; gap: 14px; justify-self: start; min-width: 0; }
 .rd-back { display: inline-flex; align-items: center; gap: 6px; justify-self: start; font-size: 14.5px; color: var(--rd-muted); }
 .rd-back:hover { color: var(--rd-ink); }
 .rd-run { text-align: center; line-height: 1.25; }
 .rd-run b { display: block; font-weight: 500; font-size: 15px; }
 .rd-run span { font-size: 12.5px; color: var(--rd-muted); }
+.rd-run .rd-run-short { display: none; }
 .rd-tools { display: flex; justify-content: flex-end; gap: 2px; }
+/* English / Greek switch in the top bar */
+.rd-lang { display: inline-flex; flex: none; padding: 2px; border-radius: 8px; background: color-mix(in srgb, var(--rd-ink) 6%, transparent); }
+.rd-lang button { padding: 4px 10px; border-radius: 6px; font-size: 13px; line-height: 1.3; color: var(--rd-ink-2); cursor: pointer; }
+.rd-lang button:hover { color: var(--rd-ink); }
+.rd-lang button[aria-pressed="true"] { background: var(--rd-bg); color: var(--rd-ink); box-shadow: 0 1px 2px rgba(0, 0, 0, .1); cursor: default; }
+.rd-lang button:focus-visible { outline: 2px solid var(--rd-gold); outline-offset: 1px; }
 .rd-tool { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: 7px; font-size: 13.5px; color: var(--rd-ink-2); }
 .rd-tool:hover { background: color-mix(in srgb, var(--rd-ink) 6%, transparent); }
 .rd-tool.on { color: var(--rd-ink); background: color-mix(in srgb, var(--rd-ink) 8%, transparent); }
@@ -417,7 +425,7 @@ body.reading-dark { background: #1a1917; }
 .rd-text.verse-mode .ln { display: block; padding-left: 1em; text-indent: -1em; }
 .rd-text.verse-mode .ln.stanza { margin-top: .9em; }
 /* Page-image transcriptions: printed page breaks, uncial type, uncertain readings, headings. */
-.rd-text .pb { display: inline-block; margin: 0 .3em; font-size: .62em; font-style: normal; letter-spacing: .04em; color: var(--rd-muted); vertical-align: .2em; user-select: none; }
+.rd-text .pb { display: inline-block; margin: 0 .3em; font-size: .58em; font-style: normal; letter-spacing: .04em; color: var(--rd-muted); vertical-align: .2em; user-select: none; }
 .rd-text .uncial { letter-spacing: .05em; }
 .rd-text .unc { background: color-mix(in srgb, var(--rd-gold) 18%, transparent); border-bottom: 1px dotted var(--rd-gold-ink); }
 .rd-text.prose-mode p.rd-heading { text-align: center; letter-spacing: .06em; }
@@ -437,7 +445,7 @@ body.reading-dark { background: #1a1917; }
 
 /* Side panels */
 .rd-panel {
-  position: fixed; top: 58px; bottom: 0; z-index: 25; width: 330px; display: flex; flex-direction: column;
+  position: fixed; top: 58px; bottom: 0; z-index: 25; width: 360px; display: flex; flex-direction: column;
   background: var(--rd-panel); color: var(--rd-ink); transition: transform .25s ease, visibility .25s;
   visibility: hidden;
 }
@@ -515,41 +523,42 @@ a.rd-note:hover b { text-decoration: underline; }
 .rd-actions-ref { min-width: 180px; flex: 1 1 260px; overflow-wrap: anywhere; line-height: 1.3; }
 .rd-actions button, .rd-actions .rd-report { flex: none; }
 
-/* Edition panel: status, edition references, provisional questions, provenance. */
-/* Edition header above the text: edition name, a small status line, the language switch. */
-.ed-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; margin: -24px 0 36px; padding-bottom: 14px; border-bottom: 1px solid var(--rd-line); font-size: 14px; line-height: 1.45; color: var(--rd-ink-2); }
-.ed-id { flex: 1 1 320px; min-width: 0; }
-.ed-head p { margin: 0; }
-.ed-name b { font-weight: 600; color: var(--rd-ink); }
-.ed-name span { color: var(--rd-ink-2); }
-.ed-statusline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin-top: 3px !important; font-size: 12.5px; color: var(--rd-muted); }
-.ed-badge { color: var(--rd-muted); }
+/* Edition: status, edition references, provisional questions, provenance (Contents panel). */
 .ed-linkbtn { padding: 0; border: 0; background: none; color: var(--rd-ink-2); font: inherit; text-decoration: underline; text-decoration-color: var(--rd-line); text-underline-offset: 3px; cursor: pointer; }
 .ed-linkbtn:hover { color: var(--rd-ink); text-decoration-color: currentColor; }
-.ed-btn { padding: 6px 12px; border: 1px solid var(--rd-line); border-radius: 6px; background: var(--rd-bg); color: var(--rd-ink); font-size: 13.5px; cursor: pointer; }
-.ed-btn:hover { border-color: var(--rd-gold); }
-.ed-switch { flex: 0 0 auto; border-color: color-mix(in srgb, var(--rd-gold) 60%, var(--rd-line)); font-weight: 500; }
-.ed-preview { display: inline-block; padding: 2px 8px; border-radius: 5px; background: color-mix(in srgb, var(--rd-gold) 22%, transparent); color: var(--rd-ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.ed-preview { display: inline-block; margin-bottom: 14px; padding: 2px 8px; border-radius: 5px; background: color-mix(in srgb, var(--rd-gold) 22%, transparent); color: var(--rd-ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 
-/* "References & textual notes" and "About this edition": after the text, closed by default. */
-.ed-sections { margin-top: 48px; font-size: 14px; line-height: 1.5; color: var(--rd-ink-2); }
+/* Edition sections in the Contents panel: a status summary, then sections closed by default. */
+.ed-sections { font-size: 13.5px; line-height: 1.5; color: var(--rd-ink-2); }
+.ed-summary { margin: 0 0 8px; font-size: 12.5px; color: var(--rd-muted); }
 .ed-drawer { border-top: 1px solid var(--rd-line); }
 .ed-drawer:last-child { border-bottom: 1px solid var(--rd-line); }
-.ed-drawer-h { margin: 0; font-size: 15px; font-weight: 500; }
-.ed-drawer-h button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 2px; border: 0; background: none; color: var(--rd-ink); font: inherit; text-align: left; cursor: pointer; }
+.ed-sections .ed-drawer-h { margin: 0; font-size: 14px; font-weight: 500; font-style: normal; color: var(--rd-ink); }
+.ed-drawer-h button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 2px; border: 0; background: none; color: var(--rd-ink); font: inherit; text-align: left; cursor: pointer; }
 .ed-drawer-h button::after { content: ""; width: 7px; height: 7px; margin: 0 6px 4px 12px; border-right: 1.5px solid var(--rd-muted); border-bottom: 1.5px solid var(--rd-muted); transform: rotate(45deg); transition: transform .15s; }
 .ed-drawer.open .ed-drawer-h button::after { transform: rotate(-135deg); margin-bottom: -2px; }
-.ed-drawer-body { padding: 0 2px 18px; }
+.ed-drawer-body { padding: 0 2px 14px; overflow-wrap: break-word; }
+/* Reference tables in the narrow panel: one row per block, edition and SCRIPTORIAS refs on one line. */
+.ed-sections .ed-table, .ed-sections .ed-table tbody, .ed-sections .ed-table tr { display: block; }
+.ed-sections .ed-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.ed-sections .ed-table tr { padding: 6px 4px; border-bottom: 1px solid var(--rd-line); }
+.ed-sections .ed-table td { display: inline; padding: 0; border: 0; }
+.ed-sections .ed-table td:nth-child(2)::before { content: " → "; color: var(--rd-muted); }
+.ed-sections .ed-table td:nth-child(3) { display: block; margin-top: 2px; }
+.ed-sections .ed-table td:first-child small { display: inline; }
+.ed-sections .ed-table tr.uncertain { box-shadow: inset 3px 0 0 var(--rd-gold); padding-left: 9px; }
+.ed-sections .ed-table tr.uncertain td:first-child { box-shadow: none; }
+.ed-sections .ed-table tr.on { background: var(--rd-sel); }
 .ed-drawer-body p { margin: 0 0 8px; }
 .ed-drawer-body a { color: var(--rd-ink); text-decoration: underline; text-underline-offset: 2px; }
 .ed-status b { color: var(--rd-ink); }
 .ed-warn { padding: 8px 10px; border-radius: 6px; background: color-mix(in srgb, var(--rd-gold) 14%, transparent); }
 .ed-callout, .ed-block { margin: 12px 0; }
-.ed-callout h3, .ed-block h3 { margin: 14px 0 6px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rd-ink-2); }
+.ed-callout h5, .ed-block h5 { margin: 14px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rd-ink-2); }
 .ed-details { margin: 8px 0; }
 .ed-details summary { cursor: pointer; font-weight: 600; color: var(--rd-ink); }
-.ed-table { width: 100%; margin: 6px 0; border-collapse: collapse; font-size: 13px; }
-.ed-table th, .ed-table td { padding: 5px 6px; border-bottom: 1px solid var(--rd-line); text-align: left; vertical-align: top; }
+.ed-table { width: 100%; margin: 6px 0; border-collapse: collapse; font-size: 12px; }
+.ed-table th, .ed-table td { padding: 4px 4px; border-bottom: 1px solid var(--rd-line); text-align: left; vertical-align: top; }
 .ed-table tr.on td { background: var(--rd-sel); }
 .ed-table tr.uncertain td:first-child { box-shadow: inset 3px 0 0 var(--rd-gold); }
 .ed-table small { display: block; margin-top: 3px; }
@@ -564,8 +573,8 @@ a.rd-note:hover b { text-decoration: underline; }
 .ed-mark { font-style: normal; font-variant-numeric: lining-nums; user-select: none; }
 .ed-mark-btn {
   display: inline-flex; align-items: center; justify-content: center; width: 1.25em; height: 1.25em; margin: 0 .2em 0 .1em; padding: 0;
-  border: 1px solid var(--rd-gold); border-radius: 50%; background: var(--rd-bg); color: var(--rd-gold-ink);
-  position: relative; font: 600 .6em/1 system-ui, sans-serif; vertical-align: .55em; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--rd-muted) 55%, transparent); border-radius: 50%; background: transparent; color: var(--rd-muted);
+  position: relative; font: 500 .55em/1 system-ui, sans-serif; vertical-align: .6em; cursor: pointer;
 }
 .ed-mark-btn::after { content: ""; position: absolute; inset: -9px -2px; } /* taller touch target, clear of the verse number */
 .ed-mark-btn:hover, .ed-mark-btn[aria-expanded="true"] { background: color-mix(in srgb, var(--rd-gold) 22%, var(--rd-bg)); color: var(--rd-ink); }
@@ -580,14 +589,22 @@ a.rd-note:hover b { text-decoration: underline; }
 .ed-pop-q b { color: var(--rd-ink); font-weight: 600; }
 .rd-panel .notice { margin-top: 18px; font-size: 12px; }
 .rd-colophon [data-notice] a { text-decoration: underline; }
+.rd-colophon .ed-linkbtn { color: var(--rd-ink-2); }
 
 @media (max-width: 1199px) {
   .rd-scrim.show { background: rgba(20, 14, 6, .35); }
 }
 @media (max-width: 820px) {
-  .rd-bar { grid-template-columns: auto 1fr; height: 52px; padding: 0 12px; backdrop-filter: none; background: var(--rd-bg); }
+  .rd-bar { grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 8px; height: 52px; padding: 0 12px; backdrop-filter: none; background: var(--rd-bg); }
+  .rd-start { display: contents; }
+  .rd-back { grid-column: 1; grid-row: 1; }
   .rd-back span { display: none; }
-  .rd-run { text-align: left; }
+  .rd-run { grid-column: 2; grid-row: 1; min-width: 0; text-align: left; }
+  .rd-run b, .rd-run span { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .rd-run:has(.rd-run-short) span:not(.rd-run-short) { display: none; }
+  .rd-run .rd-run-short { display: block; }
+  .rd-lang { grid-column: 3; grid-row: 1; }
+  .rd-lang button { padding: 4px 8px; font-size: 12.5px; }
   .rd-tools {
     position: fixed; inset: auto 0 0 0; z-index: 30; display: grid; grid-template-columns: repeat(4, 1fr);
     padding: 6px 6px calc(6px + env(safe-area-inset-bottom)); background: var(--rd-panel); border-top: 1px solid var(--rd-line);
@@ -603,12 +620,12 @@ a.rd-note:hover b { text-decoration: underline; }
     border: 0; border-top: 1px solid var(--rd-line); transform: translateY(100%);
   }
   .rd-panel.open { transform: none; }
+  .rd-panel-body { padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
   .rd-pop { padding-bottom: calc(20px + env(safe-area-inset-bottom)); box-shadow: 0 -10px 30px rgba(20, 14, 6, .15); }
   .rd-pop.open { transform: none; }
   .rd-actions { bottom: calc(70px + env(safe-area-inset-bottom)); max-width: calc(100vw - 20px); padding-left: 12px; }
   .rd-actions button span, .rd-report span, .rd-report small { display: none; }
   .rd-actions-ref { font-size: 13px; }
-  .ed-head { margin-top: -12px; margin-bottom: 28px; }
   .ed-table { font-size: 12px; }
 }
 body.reading .toast { bottom: 92px; }

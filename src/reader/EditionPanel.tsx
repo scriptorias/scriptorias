@@ -1,12 +1,15 @@
 /**
  * Edition and editorial status for page-image transcriptions with an edition-aware reference map
- * (refmap.json). The text comes first: above it only a compact edition header (edition name, a
- * small status line, the language switch); everything else sits in two sections after the text,
- * closed by default, and in small inline markers on provisional readings and mappings:
+ * (refmap.json). The reading screen shows only the chapter and its text: the language switch sits
+ * in the reader's top bar, and everything about the edition lives in the Contents panel, in
+ * sections closed by default under a one-line status summary:
+ * - About this edition: status, the edition, sources and provenance (external source links only;
+ *   no page images), the copies and the working-file checksums;
+ * - Licensing & notices: public domain, CC0, factual data;
  * - References & textual notes: edition references next to SCRIPTORIAS refs, provisional mappings,
- *   open questions, edition differences, OCR-assisted pages and the correction history;
- * - About this edition: status and error reports, public notices, provenance (external source
- *   links only; no page images) and the working-file checksums.
+ *   open questions, edition differences and OCR-assisted pages;
+ * - Correction history; Report a suspected error.
+ * Provisional readings and mappings carry small inline markers whose explanation links there.
  */
 import type { ReactNode } from "react";
 import { Link } from "react-router";
@@ -20,9 +23,13 @@ import { readPath } from "../lib/paths";
 
 export interface EditionData { refmap: RefMap; questions: EditorialQuestion[]; differences: EditionDifference[]; revisions: Revision[] }
 
-/** The two closed-by-default sections after the text. */
-export type EditionSection = "notes" | "about";
-export const SECTION_ID: Record<EditionSection, string> = { notes: "ed-notes", about: "ed-about" };
+/** The edition sections in the Contents panel, all closed by default. */
+export type EditionSection = "about" | "licensing" | "notes" | "history" | "report";
+export const SECTION_ID: Record<EditionSection, string> = { about: "ed-about", licensing: "ed-licensing", notes: "ed-notes", history: "correction-history", report: "ed-report" };
+export const SECTION_TITLE: Record<EditionSection, string> = {
+  about: "About this edition", licensing: "Licensing & notices", notes: "References & textual notes", history: "Correction history", report: "Report a suspected error",
+};
+export const NO_SECTIONS: Record<EditionSection, boolean> = { about: false, licensing: false, notes: false, history: false, report: false };
 
 /** "Lightfoot" from "Lightfoot Greek": whose numbering the edition prints. */
 const editorOf = (map: RefMap) => map.editionName.split(" ")[0];
@@ -39,49 +46,42 @@ export function switchTarget(map: RefMap, selected: string[], chRef: string) {
   return mappingsFor(map, selected).flatMap((m) => m.refs).find((r) => r.split(".").length === 3) ?? chRef;
 }
 
-// ----- Header above the text -----
+// ----- Language switch in the top bar -----
 
-interface HeaderProps {
+const languageName = (t: Translation) => (t.language === "grc" ? "Greek" : t.language === "en" ? "English" : t.label);
+
+interface ToggleProps {
   tr: Translation;
-  other?: Translation;
-  /** SCRIPTORIAS ref the language switch opens. */
+  other: Translation;
+  /** SCRIPTORIAS ref the switch opens: the selected verse, else the chapter. */
   target: string;
-  preview: boolean;
-  aboutOpen: boolean;
   onSwitch: (tr: string, ref: string) => void;
-  onAbout: () => void;
 }
 
-export function EditionHeader({ tr, other, target, preview, aboutOpen, onSwitch, onAbout }: HeaderProps) {
-  const status = transcriptionLabel(tr.editorial);
+/** A compact English / Greek switch (toggle buttons; Tab, Enter and Space). */
+export function LanguageToggle({ tr, other, target, onSwitch }: ToggleProps) {
+  const both = [tr, other].sort((a, b) => (a.language === "en" ? -1 : b.language === "en" ? 1 : 0));
   return (
-    <section className="ed-head" aria-label="Edition" data-tr={tr.id}>
-      <div className="ed-id">
-        <p className="ed-name"><b>{tr.label}</b>{tr.detail && <span> · {tr.detail}</span>}</p>
-        <p className="ed-statusline" data-status-line>
-          {preview && <span className="ed-preview" data-preview>Preview · not yet released</span>}
-          {status && <span className="ed-badge">{status}</span>}
-          <button type="button" className="ed-linkbtn" aria-expanded={aboutOpen} aria-controls={SECTION_ID.about} onClick={onAbout} data-open-about>About this edition</button>
-        </p>
-      </div>
-      {other && (
-        <button type="button" className="ed-btn ed-switch" onClick={() => onSwitch(other.id, target)} data-switch-to={other.id}>
-          {other.language === "grc" ? "Read this passage in Greek" : "Read this passage in English"} ({shortRef(target)})
-        </button>
-      )}
-    </section>
+    <div className="rd-lang" role="group" aria-label="Text language" data-lang-toggle>
+      {both.map((t) => t.id === tr.id ? (
+        <button key={t.id} type="button" aria-pressed="true" data-lang={t.language}>{languageName(t)}</button>
+      ) : (
+        <button key={t.id} type="button" aria-pressed="false" data-lang={t.language} data-switch-to={t.id}
+          title={`Read ${shortRef(target)} in ${languageName(t)}`} onClick={() => onSwitch(t.id, target)}>{languageName(t)}</button>
+      ))}
+    </div>
   );
 }
 
-// ----- Collapsible sections after the text -----
+// ----- Collapsible sections in the Contents panel -----
 
-function Drawer({ name, title, open, onToggle, children }: { name: EditionSection; title: string; open: boolean; onToggle: () => void; children: ReactNode }) {
+function Drawer({ name, open, onToggle, children }: { name: EditionSection; open: boolean; onToggle: () => void; children: ReactNode }) {
   const id = SECTION_ID[name];
   return (
     <section className={`ed-drawer${open ? " open" : ""}`} aria-labelledby={`${id}-h`} data-drawer={name}>
-      <h2 id={`${id}-h`} className="ed-drawer-h">
-        <button type="button" aria-expanded={open} aria-controls={id} onClick={onToggle}>{title}</button>
-      </h2>
+      <h4 className="ed-drawer-h">
+        <button type="button" id={`${id}-h`} aria-expanded={open} aria-controls={id} onClick={onToggle}>{SECTION_TITLE[name]}</button>
+      </h4>
       <div id={id} className="ed-drawer-body" hidden={!open}>{children}</div>
     </section>
   );
@@ -130,7 +130,7 @@ interface SectionsProps {
   onToggle: (s: EditionSection) => void;
 }
 
-/** "References & textual notes" and "About this edition", both closed by default. */
+/** The edition block of the Contents panel: a one-line status summary and five closed sections. */
 export function EditionSections({ work, tr, data, chapter, selected, reportHref, open, onToggle }: SectionsProps) {
   const { refmap: map, differences, revisions } = data;
   const greek = map.printsVerses;
@@ -150,65 +150,22 @@ export function EditionSections({ work, tr, data, chapter, selected, reportHref,
   const editor = editorOf(map);
   const status = transcriptionLabel(tr.editorial);
   const prov = tr.provenance;
+  const section = (name: EditionSection, children: ReactNode) => <Drawer name={name} open={open[name]} onToggle={() => onToggle(name)}>{children}</Drawer>;
 
   return (
-    <div className="ed-sections" data-tr={tr.id}>
-      <Drawer name="notes" title="References & textual notes" open={open.notes} onToggle={() => onToggle("notes")}>
-        {ocr.map((o) => <p key={o.page} className="ed-warn" data-ocr-page={o.page}><b>OCR-assisted page {o.page}.</b> {o.note}</p>)}
-        <p className="ed-edition" data-edition-ref>
-          {greek
-            ? <>{tr.label}, chapter {roman}, printed verses {printedVerses[0]}–{printedVerses[printedVerses.length - 1]}, {pagesText(pages)}.</>
-            : <>{tr.label}, chapter {chapter} ({editor} prints no verse numbers), {pagesText(pages)}.</>}
-          {" "}SCRIPTORIAS reference: <code>{chRef}</code>.
-          {editorial && <> Verse numbers in [brackets] are an <b>editorial alignment</b>, not {editor}'s; they are provisional.</>}
-        </p>
-        {special.length > 0 && (
-          <div className="ed-callout" data-mapping-callout>
-            <h3>Edition references and SCRIPTORIAS references differ here</h3>
-            <MappingRows map={map} mappings={special} selected={selected} />
-          </div>
-        )}
-        <div className="ed-block" data-section="questions">
-          <h3>Open questions ({PROVISIONAL.toLowerCase()}): {questions.length} in this chapter, {general.length} general</h3>
-          <ul className="ed-list">
-            {[...questions, ...general].map((q) => (
-              <li key={q.id} data-question={q.id}><Provisional /> <b>{q.title}</b> <span>{q.detail}</span></li>
-            ))}
-          </ul>
-        </div>
-        <details className="ed-details" data-section="refs">
-          <summary>All references in this chapter ({inCh.length})</summary>
-          <MappingRows map={map} mappings={inCh} selected={selected} />
-          <p className="ed-small">Numbering: {map.numbering}</p>
-        </details>
-        {diffs.length > 0 && (
-          <details className="ed-details" data-section="differences">
-            <summary>Edition differences in this chapter ({diffs.length})</summary>
-            <ul className="ed-list">
-              {diffs.map((d, i) => <li key={i}><b>{d.refs.map(shortRef).join(", ")}</b> {d.kind}: {editor} {d.reading}; {citationText(d.witness).split(",")[0]}: {d.other}</li>)}
-            </ul>
-            <p className="ed-small">Recorded, not harmonized: the text stays as {editor} printed it.</p>
-          </details>
-        )}
-        <div className="ed-block" data-section="corrections">
-          <h3 id="correction-history">Correction history</h3>
-          <ul className="ed-list" data-revisions>
-            {revisions.map((r) => <li key={r.version}><b>{r.version}</b> ({r.date}): {r.description}</li>)}
-          </ul>
-        </div>
-        <Notice kind="cc0" className="ed-small" text={CC0_NOTICE} />
-      </Drawer>
+    <div className="rd-block ed-sections" data-tr={tr.id}>
+      <h3>This edition</h3>
+      {status && <p className="ed-summary" data-status-line>{status}</p>}
 
-      <Drawer name="about" title="About this edition" open={open.about} onToggle={() => onToggle("about")}>
+      {section("about", <>
         <p className="ed-status" data-notice="status">
           {status && <b>{status}.</b>} {richText(STATUS_DETAIL)}{" "}
           <a href={reportHref} target="_blank" rel="noopener" data-report>Report a suspected error</a> {REPORT_NOTE}.
         </p>
-        {tr.notices?.publicDomain && <Notice kind="public-domain" className="ed-small" text={tr.notices.publicDomain} />}
+        {tr.edition && <p className="ed-small" data-edition-name>Edition: {citationText({ source: tr.edition.source, locator: `pp. ${tr.edition.pages}` })}</p>}
         <div className="ed-block" data-section="provenance">
-          <h3>Sources and provenance</h3>
+          <h5>Sources and provenance</h5>
           {tr.notices?.sources && <Notice kind="sources" className="ed-small" text={tr.notices.sources} />}
-          {tr.edition && <p className="ed-small">Edition: {citationText({ source: tr.edition.source, locator: `pp. ${tr.edition.pages}` })}</p>}
           {prov && (
             <ul className="ed-list" data-copies>
               {prov.copies.map((c) => {
@@ -231,9 +188,64 @@ export function EditionSections({ work, tr, data, chapter, selected, reportHref,
             </>
           )}
         </div>
-        <Notice kind="factual" className="ed-small" text={FACTUAL_NOTICE} />
+      </>)}
+
+      {section("licensing", <>
+        {tr.notices?.publicDomain && <Notice kind="public-domain" className="ed-small" text={tr.notices.publicDomain} />}
         <Notice kind="cc0" className="ed-small" text={CC0_NOTICE} />
-      </Drawer>
+        <Notice kind="factual" className="ed-small" text={FACTUAL_NOTICE} />
+      </>)}
+
+      {section("notes", <>
+        {ocr.map((o) => <p key={o.page} className="ed-warn" data-ocr-page={o.page}><b>OCR-assisted page {o.page}.</b> {o.note}</p>)}
+        <p className="ed-edition" data-edition-ref>
+          {greek
+            ? <>{tr.label}, chapter {roman}, printed verses {printedVerses[0]}–{printedVerses[printedVerses.length - 1]}, {pagesText(pages)}.</>
+            : <>{tr.label}, chapter {chapter} ({editor} prints no verse numbers), {pagesText(pages)}.</>}
+          {" "}SCRIPTORIAS reference: <code>{chRef}</code>.
+          {editorial && <> Verse numbers in [brackets] are an <b>editorial alignment</b>, not {editor}'s; they are provisional.</>}
+        </p>
+        {special.length > 0 && (
+          <div className="ed-callout" data-mapping-callout>
+            <h5>Edition references and SCRIPTORIAS references differ here</h5>
+            <MappingRows map={map} mappings={special} selected={selected} />
+          </div>
+        )}
+        <div className="ed-block" data-section="questions">
+          <h5>Open questions ({PROVISIONAL.toLowerCase()}): {questions.length} in this chapter, {general.length} general</h5>
+          <ul className="ed-list">
+            {[...questions, ...general].map((q) => (
+              <li key={q.id} data-question={q.id}><Provisional /> <b>{q.title}</b> <span>{q.detail}</span></li>
+            ))}
+          </ul>
+        </div>
+        <details className="ed-details" data-section="refs">
+          <summary>All references in this chapter ({inCh.length})</summary>
+          <MappingRows map={map} mappings={inCh} selected={selected} />
+          <p className="ed-small">Numbering: {map.numbering}</p>
+        </details>
+        {diffs.length > 0 && (
+          <details className="ed-details" data-section="differences">
+            <summary>Edition differences in this chapter ({diffs.length})</summary>
+            <ul className="ed-list">
+              {diffs.map((d, i) => <li key={i}><b>{d.refs.map(shortRef).join(", ")}</b> {d.kind}: {editor} {d.reading}; {citationText(d.witness).split(",")[0]}: {d.other}</li>)}
+            </ul>
+            <p className="ed-small">Recorded, not harmonized: the text stays as {editor} printed it.</p>
+          </details>
+        )}
+        <Notice kind="cc0" className="ed-small" text={CC0_NOTICE} />
+      </>)}
+
+      {section("history",
+        <ul className="ed-list" data-revisions>
+          {revisions.map((r) => <li key={r.version}><b>{r.version}</b> ({r.date}): {r.description}</li>)}
+        </ul>,
+      )}
+
+      {section("report", <>
+        <p><a href={reportHref} target="_blank" rel="noopener" data-report="chapter">Report a suspected error in chapter {chapter}</a> {REPORT_NOTE}.</p>
+        <p className="ed-small">To report a single passage, select its number in the text and choose Report a suspected error.</p>
+      </>)}
     </div>
   );
 }
@@ -309,7 +321,7 @@ export function ProvisionalMark({ mark, open, onToggle, onMore }: { mark: MarkIn
       <span id={id} className="ed-pop" role="note" data-pop={mark.key} hidden={!open}>
         <Provisional />
         {mark.body}
-        <button type="button" className="ed-linkbtn" onClick={onMore}>References &amp; textual notes</button>
+        <button type="button" className="ed-linkbtn" onClick={onMore} data-more>References &amp; textual notes (in Contents)</button>
       </span>
     </span>
   );
