@@ -104,8 +104,8 @@
       ]
     },
     "siteTerms": {
-      "status": "unknown",
-      "basis": "The Internet Archive's terms of use give access to its collections for scholarship and research. Whether publishing a text-only transcription made from the page images rests on an acceptable reuse basis has not yet been decided by the publisher.",
+      "status": "licensed",
+      "basis": "Documented basis (publisher decision, 2026-10-21): the whole text was verified against HathiTrust copy uc2.ark:/13960/t7zk5j13p (Lightfoot & Harmer, 1898 printing), whose public-domain statement says users are free to copy, use and redistribute the work in part or in whole. The text was first transcribed from Internet Archive page images (Cornell 1907 reprint; Toronto 1891); the Internet Archive's earlier access terms (\"scholarship and research purposes\") have not been independently resolved. Basis covers a free text release in the United States, the United Kingdom and the European Union only; no worldwide or commercial clearance is claimed.",
       "obligations": [],
       "legalReview": "not-needed",
       "evidence": []
@@ -114,8 +114,10 @@
       "license": "CC0 1.0 for original SCRIPTORIAS material, to the extent rights exist; no copyright claimed in the historical text",
       "status": "decided"
     },
-    "decision": "open",
-    "note": "Not cleared. The source-reuse basis for the page images is open and the publisher has not signed off this work. Release steps: docs/releases/didache-release-steps.md."
+    "decision": "cleared",
+    "note": "Cleared by the publisher on 2026-10-21 for a free text release in the US, UK and EU, on the HathiTrust basis above. Internet Archive provenance kept and disclosed; its access terms not independently resolved. Not cleared worldwide or for commercial use.",
+    "decidedBy": "publisher",
+    "date": "2026-10-21"
   },
   "provenance": {
     "method": "Transcribed with AI assistance from the page images of the Cornell copy (a 1907 reprint of the second edition) and internally checked against the page images of that copy and of the Toronto copy (1891).",
@@ -172,7 +174,7 @@
   "editorial": {
     "content": "authentic",
     "transcription": "proofread",
-    "provenance": "recorded",
+    "provenance": "confirmed",
     "note": "Internally checked transcription (docs/EDITORIAL.md §6), not independently verified. Open questions are shown with the text as provisional.",
     "reviews": [
       {

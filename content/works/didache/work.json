@@ -40,8 +40,9 @@
     }
   },
   "publication": {
-    "status": "preview",
-    "note": "Lightfoot & Harmer 1891 Greek and English prepared for release; not released. Rights not cleared and no publisher approval yet (docs/releases/didache-release-steps.md). A production build fails while this work is in preview."
+    "status": "draft",
+    "date": "2026-10-21",
+    "note": "Text release (publisher approval 2026-10-21): Lightfoot & Harmer Greek and English. Overview, notes, connections and manuscript records are incomplete and labelled as such."
   },
   "retiredTranslations": {
     "lightfoot": {

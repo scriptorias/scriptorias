@@ -82,3 +82,13 @@ records the new commit and checksums), then add a `revisions.json` entry for the
 
 Follow `docs/RELEASING.md` (Vercel Instant Rollback, or restore the previous release on a branch).
 Setting `publication.status` back to `preview` is not a rollback: it makes production builds fail.
+
+## Applied: text release data change (2026-10-21)
+
+Publisher approval 2026-10-21 (items 1–2 of the release request): both editions `rights.decision:
+"cleared"` (publisher, 2026-10-21) for a free text release in the US, UK and EU on the documented
+HathiTrust basis (uc2.ark:/13960/t7zk5j13p, 1898 printing); `siteTerms.status: "licensed"`; Internet
+Archive provenance kept, its access terms recorded as not independently resolved; no worldwide or
+commercial clearance. `editorial.provenance: "confirmed"`. `work.publication.status: "draft"` (text
+release; incomplete overview, notes, connections and manuscript records stay labelled). Production
+release still requires the publisher's separate approval.

@@ -76,7 +76,7 @@ test("rights cannot be cleared while legal review is outstanding", () =>
   rejects((d) => edit(d, LF, (t) => { t.rights.decision = "cleared"; t.rights.decidedBy = "publisher"; t.rights.edition.legalReview = "recommended"; }), /rights cleared but edition still has legal review/));
 
 test("rights cannot be cleared while the source-reuse basis (site terms) is unknown", () =>
-  rejects((d) => edit(d, LF, (t) => { t.rights.decision = "cleared"; t.rights.decidedBy = "publisher"; }), /rights cleared but siteTerms is "unknown"/));
+  rejects((d) => edit(d, LF, (t) => { t.rights.siteTerms.status = "unknown"; t.rights.decision = "cleared"; t.rights.decidedBy = "publisher"; }), /rights cleared but siteTerms is "unknown"/));
 
 test("only the publisher clears rights", () =>
   rejects((d) => edit(d, LF, (t) => {
@@ -153,6 +153,8 @@ test("only a qualified reviewer can settle an open question", () =>
 test("a work in preview cannot be built for production", () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "sc-content-"));
   fs.cpSync(path.join(ROOT, "content"), dir, { recursive: true });
+  const wf = path.join(dir, "works/didache/work.json");
+  const w = JSON.parse(fs.readFileSync(wf, "utf8")); w.publication = { status: "preview" }; fs.writeFileSync(wf, JSON.stringify(w, null, 2));
   const run = (env: Record<string, string>) => spawnSync(process.execPath, ["--import", "tsx", VALIDATE], { env: { ...process.env, CONTENT_DIR: dir, ...env }, encoding: "utf8" });
   const prod = run({ VERCEL_ENV: "production" });
   const preview = run({ VERCEL_ENV: "preview" });

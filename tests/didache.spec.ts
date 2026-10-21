@@ -95,11 +95,11 @@ test("English verse numbers are a provisional editorial alignment; elsewhere cha
   await expect(panel(page).locator("[data-mapping-callout]")).toContainText("many to one");
 });
 
-test("labels: internally checked, never verified; preview; provisional readings", async ({ page }) => {
+test("labels: internally checked, never verified; text release; provisional readings", async ({ page }) => {
   for (const tr of [GRC, EN]) {
     await page.goto(`/works/didache/read/3?tr=${tr}`);
     await expect(panel(page).locator(".ed-status")).toContainText("Internally checked transcription · not independently verified.");
-    await expect(panel(page).locator("[data-preview]")).toHaveText("Preview · not yet released");
+    await expect(panel(page).locator("[data-preview]")).toHaveCount(0); // text release: no preview tag
     const body = (await page.locator("body").innerText()).toLowerCase();
     for (const m of body.matchAll(/verified/g)) expect(body.slice(Math.max(0, m.index! - 18), m.index)).toMatch(/(not independently |un)$/);
     expect(body).not.toMatch(/\bapproved\b|\bcleared\b|independently verified(?!\.)/);
