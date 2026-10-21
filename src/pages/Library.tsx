@@ -7,7 +7,7 @@ import { NotFound } from "./Misc";
 import { collectionPath } from "../lib/paths";
 import { useTitle } from "../lib/useTitle";
 
-const TABS: [string, string][] = [["collections", "Collections"], ["paths", "Pathways"], ["timeline", "Timeline"], ["figures", "Key Figures"], ["topics", "Topics"]];
+const TABS: [string, string][] = [["collections", "Collections"], ["paths", "Pathways"], ["timeline", "Timeline"], ["figures", "Key Figures"]];
 
 export function Library({ id: fixedId }: { id?: string }) {
   const params = useParams();
