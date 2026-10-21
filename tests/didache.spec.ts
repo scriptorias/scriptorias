@@ -488,7 +488,8 @@ test("English is always the default edition; a switch lasts only while reading t
   await page.locator('.rd-pager [data-dir="next"]').click();
   await expect(page.locator("#rd")).toHaveAttribute("data-ch", "2");
   await expect(page.locator("#rd")).toHaveAttribute("data-tr", GRC); // stays Greek inside the book
-  await page.goto("/works/didache");
-  await page.goto("/works/didache/read/1");
+  await page.goto("/works/didache", { waitUntil: "networkidle" });
+  await expect(page.locator("h1").first()).toBeVisible(); // left the reader
+  await page.goto("/works/didache/read/1", { waitUntil: "networkidle" });
   await expect(page.locator("#rd")).toHaveAttribute("data-tr", EN); // reopened: English again
 });
