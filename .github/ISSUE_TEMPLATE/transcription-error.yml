@@ -1,0 +1,52 @@
+name: Report a suspected error
+description: Tell us about a possible transcription error in a text on SCRIPTORIAS.
+title: "[Suspected error] "
+labels: ["suspected-error", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve SCRIPTORIAS. We check every report against the printed edition and record confirmed corrections in the text's public correction history.
+
+        **Please note:**
+        - Submitting this form needs a free GitHub account. Issues on this repository are **public**.
+        - We don't need any personal information. Please don't include your name, email address or other personal details unless you want them to be public.
+        - If the reader link brought you here, the work, edition and passage are already filled in.
+  - type: input
+    id: work
+    attributes:
+      label: Work
+      description: The work's short name or reader address, e.g. "didache".
+      placeholder: didache
+    validations:
+      required: true
+  - type: input
+    id: edition
+    attributes:
+      label: Edition
+      description: The edition or translation you were reading, as shown in the reader.
+      placeholder: e.g. Lightfoot & Harmer (1891), English
+    validations:
+      required: true
+  - type: input
+    id: ref
+    attributes:
+      label: Passage reference
+      description: The passage as shown in the reader (chapter.verse), or the passage URL.
+      placeholder: e.g. 16.8 or https://…/works/didache/read/16/8
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: Suspected issue
+      description: What looks wrong? Quote the words as shown on SCRIPTORIAS.
+    validations:
+      required: true
+  - type: textarea
+    id: explanation
+    attributes:
+      label: Explanation (optional)
+      description: What you think the printed edition has, and how you know (e.g. the page of the scan you checked). Links to page images are welcome.
+    validations:
+      required: false
