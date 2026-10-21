@@ -132,6 +132,7 @@ test("notices: status line, public domain, sources, CC0, factual data; no Wikiso
   await expect(prov.locator('[data-notice="sources"]')).toContainText("The transcription was prepared with AI assistance and internally checked against the page images.");
   await expect(prov.getByRole("link", { name: "Cornell copy" })).toHaveAttribute("href", "https://archive.org/details/cu31924024254744");
   await expect(prov.getByRole("link", { name: "Toronto copy" })).toHaveAttribute("href", "https://archive.org/details/apostolicfathers00lighuoft");
+  await expect(prov.getByRole("link", { name: "HathiTrust copy" })).toHaveAttribute("href", "https://hdl.handle.net/2027/uc2.ark:/13960/t7zk5j13p");
   await expect(prov.locator('[data-notice="factual"]')).toHaveText("Bibliographic details, page numbers, identifiers, checksums and reference correspondences are factual information. No rights are claimed in them.");
   await expect(prov.locator(".ed-hash")).toHaveCount(3);
   await expect(prov.locator(".ed-hash").first()).toHaveText(/^[0-9a-f]{64}$/);
