@@ -118,7 +118,7 @@
     "note": "Not cleared. The source-reuse basis for the page images is open and the publisher has not signed off this work. Release steps: docs/releases/didache-release-steps.md."
   },
   "provenance": {
-    "method": "Transcribed with AI assistance from the page images of the Cornell copy (1907 reprint) and checked by SCRIPTORIAS against the page images of that copy and of the Toronto copy (1891 printing).",
+    "method": "Transcribed with AI assistance from the page images of the Cornell copy (a 1907 reprint of the second edition) and internally checked against the page images of that copy and of the Toronto copy (1891).",
     "copies": [
       {
         "source": "lightfoot-harmer-1891",
@@ -144,7 +144,7 @@
       }
     ],
     "workingFiles": {
-      "commit": "bb5251e66ed185ad8b2f24bcd57fbd95cf7c5dac",
+      "commit": "fabac113b07a55a76e3fc3e00843d218667bb9dd",
       "date": "2026-10-21",
       "files": [
         {
@@ -166,8 +166,8 @@
     }
   },
   "notices": {
-    "publicDomain": "**Public domain.** This is a transcription of J. B. Lightfoot and J. R. Harmer, *The Apostolic Fathers* (London: Macmillan, 1891), English translation, pp. 229–235. The work is in the public domain in the United States, the United Kingdom and the European Union: it was published in 1891, and its authors died in 1889 and 1944. Its status in other countries has not been assessed. SCRIPTORIAS claims no copyright in this text.",
-    "sources": "Transcribed from page images of the Cornell University Library copy (1907 reprint) and checked against the University of Toronto copy (1891 printing), both digitized by the Internet Archive: [Cornell copy](https://archive.org/details/cu31924024254744) · [Toronto copy](https://archive.org/details/apostolicfathers00lighuoft). SCRIPTORIAS does not reproduce the page images. The transcription was prepared with AI assistance and checked by SCRIPTORIAS against the page images. Page 235 was drafted from the Internet Archive's machine-read text and then corrected against both copies."
+    "publicDomain": "**Public domain.** This is a transcription of J. B. Lightfoot and J. R. Harmer, *The Apostolic Fathers* (London: Macmillan, 1891), English translation, pp. 229–235. It is in the public domain in the United States, where it was published in 1891, and in the United Kingdom and the European Union, where copyright ended 70 years after the death of its last author (J. B. Lightfoot died in 1889, J. R. Harmer in 1944). Its status in other countries has not been assessed. SCRIPTORIAS claims no copyright in this text.",
+    "sources": "Transcribed from page images of the Cornell University Library copy (a 1907 reprint of the second edition) and checked page by page against the University of Toronto copy (1891); no differences were found on these pages. Both copies were digitized by the Internet Archive: [Cornell copy](https://archive.org/details/cu31924024254744) · [Toronto copy](https://archive.org/details/apostolicfathers00lighuoft). SCRIPTORIAS does not reproduce the page images. The transcription was prepared with AI assistance and internally checked against the page images. Page 235 was drafted from the Internet Archive's machine-read text and then corrected against both copies."
   },
   "editorial": {
     "content": "authentic",

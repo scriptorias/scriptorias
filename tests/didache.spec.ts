@@ -124,11 +124,12 @@ test("notices: status line, public domain, sources, CC0, factual data; no Wikiso
     "Internally checked transcription · not independently verified. Readings and verse mappings marked Provisional are open questions, not established findings. Changes are listed in the correction history. Report a suspected error (requires a free GitHub account; reports are public).",
   );
   await expect(page.locator('[data-notice="public-domain"]')).toHaveText(
-    "Public domain. This is a transcription of J. B. Lightfoot and J. R. Harmer, The Apostolic Fathers (London: Macmillan, 1891), Greek text, pp. 217–225. The work is in the public domain in the United States, the United Kingdom and the European Union: it was published in 1891, and its authors died in 1889 and 1944. Its status in other countries has not been assessed. SCRIPTORIAS claims no copyright in this text.",
+    "Public domain. This is a transcription of J. B. Lightfoot and J. R. Harmer, The Apostolic Fathers (London: Macmillan, 1891), Greek text, pp. 217–225. It is in the public domain in the United States, where it was published in 1891, and in the United Kingdom and the European Union, where copyright ended 70 years after the death of its last author (J. B. Lightfoot died in 1889, J. R. Harmer in 1944). Its status in other countries has not been assessed. SCRIPTORIAS claims no copyright in this text.",
   );
   await panel(page).getByText("Sources, provenance and correction history").click();
   const prov = panel(page).locator('[data-section="provenance"]');
-  await expect(prov.locator('[data-notice="sources"]')).toContainText("Transcribed from page images of the Cornell University Library copy (1907 reprint) and checked against the University of Toronto copy (1891 printing)");
+  await expect(prov.locator('[data-notice="sources"]')).toContainText("Transcribed from page images of the Cornell University Library copy (a 1907 reprint of the second edition) and checked page by page against the University of Toronto copy (1891); no differences were found on these pages.");
+  await expect(prov.locator('[data-notice="sources"]')).toContainText("The transcription was prepared with AI assistance and internally checked against the page images.");
   await expect(prov.getByRole("link", { name: "Cornell copy" })).toHaveAttribute("href", "https://archive.org/details/cu31924024254744");
   await expect(prov.getByRole("link", { name: "Toronto copy" })).toHaveAttribute("href", "https://archive.org/details/apostolicfathers00lighuoft");
   await expect(prov.locator('[data-notice="factual"]')).toHaveText("Bibliographic details, page numbers, identifiers, checksums and reference correspondences are factual information. No rights are claimed in them.");
