@@ -95,6 +95,9 @@ attribution and retrieval date **(enforced)**.
 
 ## 6. Transcription policy
 
+The step-by-step workflow, and where unpublished transcriptions are kept, is in
+`docs/editorial/TRANSCRIPTION.md`.
+
 Transcriptions are made independently from cleared page scans of the named edition:
 - Preserve the printed wording, spelling, punctuation and editorial features (brackets, italics,
   the editor's paragraphing).
@@ -107,7 +110,10 @@ Transcriptions are made independently from cleared page scans of the named editi
 
 - Canonical refs never change meaning. If a division is corrected, the old ref becomes an alias in
   `work.refAliases` (`{ "didache.2.4": "didache.2.3" }`). Aliases must belong to the work, point at
-  an aligned ref, and never chain **(enforced)**. Reader URLs and bookmarks follow aliases.
+  an aligned ref, never chain, and never replace a ref that is still live **(enforced)**. Reader
+  URLs, bookmarks and links follow aliases; stored bookmarks are moved to the current ref.
+  Browser tests use invented aliases from `tests/fixtures/ref-aliases.json`, compiled only into a
+  separate test build (`npm run build:alias-fixture`); production content has no aliases.
 - Each translation has a `version`. Published changes are logged in `revisions.json` (version,
   date, type, refs, description, tier, by), validated if present, and listed in `CHANGELOG.md`
   under *Content*.

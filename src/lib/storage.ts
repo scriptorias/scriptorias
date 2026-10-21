@@ -3,6 +3,9 @@
  * existing readers keep their data). Kept behind this module so a native store (e.g. Capacitor
  * Preferences or SQLite) can replace localStorage without touching callers.
  */
+import { resolveRef } from "../content/catalog";
+import { sectionOf } from "../content/aliases";
+
 const PREFIX = "sc.";
 
 export const store = {
@@ -36,10 +39,15 @@ export interface Bookmark {
   at: number;
 }
 export const bookmarkKey = (b: Pick<Bookmark, "ref" | "anchor">) => (b.anchor ? `${b.ref}@${b.anchor}` : b.ref);
-export const getBookmarks = () => store.get<Bookmark[]>("bookmarks", []);
+/** Stored bookmarks, with refs moved to their current form if a division was corrected. */
+export const getBookmarks = () =>
+  store.get<Bookmark[]>("bookmarks", []).map((b) => {
+    const ref = resolveRef(b.ref);
+    return ref === b.ref ? b : { ...b, ref, ch: sectionOf(ref) };
+  });
 export function toggleBookmark(b: Omit<Bookmark, "at">): boolean {
   const all = getBookmarks();
-  const key = bookmarkKey(b);
+  const key = bookmarkKey({ ...b, ref: resolveRef(b.ref) });
   const had = all.some((x) => bookmarkKey(x) === key);
   store.set("bookmarks", had ? all.filter((x) => bookmarkKey(x) !== key) : [...all, { ...b, at: Date.now() }]);
   return !had;

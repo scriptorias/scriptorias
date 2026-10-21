@@ -187,6 +187,8 @@ for (const [id, b] of works) {
     if (to.split(".")[2] && !b.translations.some((t) => t.alignment && Object.values(t.alignment.segments).some((refs) => refs.includes(to))))
       err(w, `ref alias "${from}" → "${to}": target is not aligned in any translation`);
     if (b.work.refAliases?.[to]) err(w, `ref alias "${from}" → "${to}" points to another alias (no chains)`);
+    if (b.translations.some((t) => t.alignment && Object.values(t.alignment.segments).some((refs) => refs.includes(from))))
+      err(w, `ref alias "${from}" is still a live ref in an alignment; an alias may only replace a retired ref`);
   }
   for (const c of b.work.canonicalStatus ?? []) checkSources(w, c.sources);
   if (b.overview) {

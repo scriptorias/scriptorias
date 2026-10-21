@@ -20,6 +20,8 @@ last release are listed under **Unreleased**.
   reference aliases, corrections, revisions and a publication gate, with rule tests
   (`npm run test:content`).
 - Reference aliases (`work.refAliases`): reader URLs and bookmarks follow corrected divisions.
+  Tested with invented aliases in a separate test-only build; no aliases in published content.
+- Transcription workflow (docs/editorial/TRANSCRIPTION.md).
 - CC BY-SA 4.0 attribution notices for the Wikisource snapshots.
 
 ### Changed

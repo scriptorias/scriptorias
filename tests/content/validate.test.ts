@@ -98,3 +98,11 @@ test("corrections keep the printed reading and need review before adoption", () 
 
 test("publication gate blocks a published work without approval and clearance", () =>
   rejects((d) => edit(d, "works/didache/work.json", (w) => (w.publication = { status: "published" })), /approved by the publisher[\s\S]*placeholder|approved by the publisher/));
+
+test("an alias cannot replace a live ref", () =>
+  rejects((d) => edit(d, "works/didache/work.json", (w) => (w.refAliases = { "didache.1.5": "didache.1.6" })), /still a live ref/));
+
+test("a valid alias for a retired ref passes", () => {
+  const r = withContent((d) => edit(d, "works/didache/work.json", (w) => (w.refAliases = { "didache.1.7": "didache.1.6" })));
+  assert.equal(r.ok, true, r.out);
+});

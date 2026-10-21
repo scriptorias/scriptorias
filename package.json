@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "npm run content:check && vite build",
     "preview": "vite preview",
+    "build:alias-fixture": "VITE_REF_ALIAS_FIXTURE=1 vite build --outDir dist-alias-fixture",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:e2e": "npm run build && playwright test",

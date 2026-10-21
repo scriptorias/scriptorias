@@ -1,0 +1,7 @@
+{
+  "_comment": "Test-only aliases. Compiled in only when VITE_REF_ALIAS_FIXTURE=1 (npm run build:alias-fixture). Never used by the production build or published content. The refs are invented: no edition numbers Didache 1 this way.",
+  "didache": {
+    "didache.1.7": "didache.1.6",
+    "didache.1.8": "didache.1.3"
+  }
+}

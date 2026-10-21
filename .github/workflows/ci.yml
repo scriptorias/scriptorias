@@ -23,6 +23,8 @@ jobs:
         run: npm run typecheck
       - name: Build
         run: npx vite build
+      - name: Build alias test fixture (test-only aliases; not deployed)
+        run: npm run build:alias-fixture
       - name: Install browsers
         run: npx playwright install --with-deps chromium webkit
       - name: End-to-end tests

@@ -6,6 +6,7 @@
  * Defaults declared in the schema are applied defensively where they matter.
  */
 import { citationLocator, citationSource, type Citation, type Collection, type Connection, type Pathway, type Source, type Target, type Tradition, type Translation, type Work } from "./schema";
+import { resolveAlias } from "./aliases";
 import traditionsJson from "../../content/traditions.json";
 import sourcesJson from "../../content/sources.json";
 
@@ -31,10 +32,16 @@ export const citationText = (c: Citation) => {
   return `${s?.citation ?? citationSource(c)}${loc ? `, ${loc}` : ""}`;
 };
 
+// Test builds only (VITE_REF_ALIAS_FIXTURE=1): invented aliases for the browser tests. Vite
+// replaces the env check at build time, so production bundles contain neither branch's data.
+const FIXTURE_ALIASES: Record<string, Record<string, string>> = import.meta.env.VITE_REF_ALIAS_FIXTURE
+  ? Object.fromEntries(Object.entries(Object.values(import.meta.glob("/tests/fixtures/ref-aliases.json", { eager: true, import: "default" }))[0] as object).filter(([k]) => !k.startsWith("_"))) as Record<string, Record<string, string>>
+  : {};
+
 /** Resolve a ref through the work's aliases (e.g. a superseded verse division), one step only. */
 export const resolveRef = (ref: string) => {
-  const w = workById.get(ref.split(".")[0]);
-  return w?.refAliases?.[ref] ?? ref;
+  const id = ref.split(".")[0];
+  return resolveAlias({ ...workById.get(id)?.refAliases, ...FIXTURE_ALIASES[id] }, ref);
 };
 
 export const traditions = () => TRADITIONS;

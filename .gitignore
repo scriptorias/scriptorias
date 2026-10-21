@@ -4,3 +4,4 @@ dist/
 test-results/
 playwright-report/
 visual-diff/
+dist-alias-fixture/
