@@ -9,6 +9,16 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-21
+
+### Changed
+- Library page: the facets line under the tradition title is replaced by the Home-style divider,
+  and the section bar by separate buttons shaped like the Home library buttons (Collections,
+  Pathways, Timeline, Key Figures). The Topics section is removed.
+
+### Fixed
+- An end-to-end test now waits for the work page before reopening the reader (WebKit flake).
+
 ## [0.2.0] - 2026-10-21
 
 ### Added
@@ -143,7 +153,8 @@ Chrome desktop and Safari iPhone.
 
 Static HTML/CSS/JS prototype, preserved at tag `prototype-v1` (commit `02c831d`).
 
-[Unreleased]: https://github.com/scriptorias/scriptorias/compare/v0.2.0...dev
+[Unreleased]: https://github.com/scriptorias/scriptorias/compare/v0.2.1...dev
+[0.2.1]: https://github.com/scriptorias/scriptorias/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/scriptorias/scriptorias/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/scriptorias/scriptorias/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/scriptorias/scriptorias/compare/prototype-v1...v0.1.0
