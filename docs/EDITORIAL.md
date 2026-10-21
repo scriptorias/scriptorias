@@ -115,6 +115,32 @@ Transcriptions are made independently from cleared page scans of the named editi
   The printed text stays as printed. A correction is adopted only after a tier A review by a
   qualified reviewer **(enforced)**. Bryennios is preserved as printed on this basis.
 
+### Internal quality checks (required before publication)
+
+Policy (publisher, 2026-10-21): independent or professional proofreading is **not** a
+prepublication requirement. Every work must instead pass SCRIPTORIAS's internal checks, recorded
+as review entries:
+
+| Check | What it means |
+|---|---|
+| Transcription | Text read from the page images of the named edition; every page compared word by word and mark by mark with the images (and a second copy where available); OCR used only as a draft, disclosed, and corrected against the images |
+| Provenance | Edition, printing actually read, copies, page/image indexes and checksums recorded; source links external (no hosted scan images) |
+| Completeness | Every chapter/section of the work present; page joins continuous; nothing silently omitted |
+| Technical validation | Markup balanced; structure, references and alignment validate (`npm run content:check`); the build contains only approved content |
+| Rights | Per-work public-domain and source-reuse checklist completed and signed off by the publisher |
+
+Internally checked texts are labelled as such (section 9). They are faithfully transcribed
+historical editions, not certified critical editions. Unresolved scholarly questions stay visible
+as provisional readings or mappings and are never presented as established. A future
+proofreader or textual editor will review the published library systematically against the
+original editions; their work is recorded as independent verification.
+
+### Reader error reports
+
+Readers can report a suspected transcription error from any passage. Reports are triaged by the
+maintainer, checked against the page images, and, if confirmed, corrected and logged in
+`revisions.json` with credit to the reporter if they wish.
+
 ## 7. References, corrections, revisions
 
 - Canonical refs never change meaning. If a division is corrected, the old ref becomes an alias in
@@ -125,14 +151,15 @@ Transcriptions are made independently from cleared page scans of the named editi
   separate test build (`npm run build:alias-fixture`); production content has no aliases.
 - Each translation has a `version`. Published changes are logged in `revisions.json` (version,
   date, type, refs, description, tier, by), validated if present, and listed in `CHANGELOG.md`
-  under *Content*.
+  under *Content*. The correction history is public, so improvements after publication are
+  documented, including those that come from reader error reports.
 
 ## 8. Publication gate
 
 A work is published only when `work.publication.status` is `published` and `approvedBy` is the
 publisher. The gate then requires **(enforced)**: an authentic overview, no placeholder notes,
 connections or manuscript records, cited locators on every claim, a default translation that is at
-least proofread with provenance confirmed and rights cleared, and an authentic reference scheme.
+least proofread (internally checked, see section 6) with provenance confirmed and rights cleared, and an authentic reference scheme.
 Works in `draft` or `preview` are not gated; they show their status labels instead.
 
 ## 9. Reader-facing labels
@@ -144,8 +171,9 @@ Wording only; the existing badge styles are unchanged.
 | placeholder overview / notes / metadata / record | "Placeholder content", "Placeholder notes", "Placeholder metadata", "Placeholder record" |
 | authentic record not yet reviewed | "Draft record · not yet reviewed" |
 | text `unchecked` | "Unverified transcription" |
-| text `proofread` | "Provisionally reviewed" |
-| text `editor-reviewed` | "Editor reviewed" |
+| text `proofread` | "Internally checked transcription · not independently verified" |
+| text `editor-reviewed` | "Independently verified" (by a qualified reviewer or professional proofreader) |
+| provisional reading or mapping | "Provisional" with the open question shown |
 | partial text | "Sample passage · Chapters 1–3 of 16"; missing chapters "not yet available" |
 
 Nothing is labelled "verified" without a qualified tier A review and the publisher's approval.
