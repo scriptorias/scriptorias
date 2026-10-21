@@ -49,6 +49,15 @@ Evidence rules **(enforced)**:
 
 The merged pull request is the approval record; the JSON holds a summary.
 
+### Decision classes (S / T / P)
+
+Every editorial decision is classed **S** (needs qualified scholarly judgement; only a qualified
+editor may decide), **T** (technical or mechanical; staff carry it out once the policy or ruling
+exists), or **P** (publisher policy; decided by the publisher). Decision registers and review
+packets record the class of each item. A decision can carry a secondary class when one part of it
+belongs elsewhere, e.g. **S (→T)**: the editor rules, then staff apply the ruling. Classes say who
+decides; tiers (above) say how a resulting change is approved. S decisions lead to tier A changes.
+
 ## 4. Sources and citations
 
 `content/sources.json` is the bibliography. Each source records `role`
