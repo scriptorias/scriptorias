@@ -516,17 +516,37 @@ a.rd-note:hover b { text-decoration: underline; }
 .rd-actions button, .rd-actions .rd-report { flex: none; }
 
 /* Edition panel: status, edition references, provisional questions, provenance. */
-.ed-panel { margin: -24px 0 40px; padding: 16px 18px; border: 1px solid var(--rd-line); border-left: 3px solid var(--rd-gold); border-radius: 8px; background: var(--rd-panel); font-size: 14px; line-height: 1.5; color: var(--rd-ink-2); }
-.ed-panel p { margin: 0 0 8px; }
-.ed-panel a { color: var(--rd-ink); text-decoration: underline; text-underline-offset: 2px; }
-.ed-status b { color: var(--rd-ink); }
-.ed-preview { display: inline-block; padding: 2px 8px; border-radius: 5px; background: color-mix(in srgb, var(--rd-gold) 22%, transparent); color: var(--rd-ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-.ed-warn { padding: 8px 10px; border-radius: 6px; background: color-mix(in srgb, var(--rd-gold) 14%, transparent); }
+/* Edition header above the text: edition name, a small status line, the language switch. */
+.ed-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; margin: -24px 0 36px; padding-bottom: 14px; border-bottom: 1px solid var(--rd-line); font-size: 14px; line-height: 1.45; color: var(--rd-ink-2); }
+.ed-id { flex: 1 1 320px; min-width: 0; }
+.ed-head p { margin: 0; }
+.ed-name b { font-weight: 600; color: var(--rd-ink); }
+.ed-name span { color: var(--rd-ink-2); }
+.ed-statusline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin-top: 3px !important; font-size: 12.5px; color: var(--rd-muted); }
+.ed-badge { color: var(--rd-muted); }
+.ed-linkbtn { padding: 0; border: 0; background: none; color: var(--rd-ink-2); font: inherit; text-decoration: underline; text-decoration-color: var(--rd-line); text-underline-offset: 3px; cursor: pointer; }
+.ed-linkbtn:hover { color: var(--rd-ink); text-decoration-color: currentColor; }
 .ed-btn { padding: 6px 12px; border: 1px solid var(--rd-line); border-radius: 6px; background: var(--rd-bg); color: var(--rd-ink); font-size: 13.5px; cursor: pointer; }
 .ed-btn:hover { border-color: var(--rd-gold); }
-.ed-callout { margin: 10px 0; }
-.ed-callout h2, .ed-panel h3 { margin: 10px 0 6px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--rd-ink-2); }
-.ed-details { margin: 6px 0; }
+.ed-switch { flex: 0 0 auto; border-color: color-mix(in srgb, var(--rd-gold) 60%, var(--rd-line)); font-weight: 500; }
+.ed-preview { display: inline-block; padding: 2px 8px; border-radius: 5px; background: color-mix(in srgb, var(--rd-gold) 22%, transparent); color: var(--rd-ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+
+/* "References & textual notes" and "About this edition": after the text, closed by default. */
+.ed-sections { margin-top: 48px; font-size: 14px; line-height: 1.5; color: var(--rd-ink-2); }
+.ed-drawer { border-top: 1px solid var(--rd-line); }
+.ed-drawer:last-child { border-bottom: 1px solid var(--rd-line); }
+.ed-drawer-h { margin: 0; font-size: 15px; font-weight: 500; }
+.ed-drawer-h button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 2px; border: 0; background: none; color: var(--rd-ink); font: inherit; text-align: left; cursor: pointer; }
+.ed-drawer-h button::after { content: ""; width: 7px; height: 7px; margin: 0 6px 4px 12px; border-right: 1.5px solid var(--rd-muted); border-bottom: 1.5px solid var(--rd-muted); transform: rotate(45deg); transition: transform .15s; }
+.ed-drawer.open .ed-drawer-h button::after { transform: rotate(-135deg); margin-bottom: -2px; }
+.ed-drawer-body { padding: 0 2px 18px; }
+.ed-drawer-body p { margin: 0 0 8px; }
+.ed-drawer-body a { color: var(--rd-ink); text-decoration: underline; text-underline-offset: 2px; }
+.ed-status b { color: var(--rd-ink); }
+.ed-warn { padding: 8px 10px; border-radius: 6px; background: color-mix(in srgb, var(--rd-gold) 14%, transparent); }
+.ed-callout, .ed-block { margin: 12px 0; }
+.ed-callout h3, .ed-block h3 { margin: 14px 0 6px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rd-ink-2); }
+.ed-details { margin: 8px 0; }
 .ed-details summary { cursor: pointer; font-weight: 600; color: var(--rd-ink); }
 .ed-table { width: 100%; margin: 6px 0; border-collapse: collapse; font-size: 13px; }
 .ed-table th, .ed-table td { padding: 5px 6px; border-bottom: 1px solid var(--rd-line); text-align: left; vertical-align: top; }
@@ -539,6 +559,25 @@ a.rd-note:hover b { text-decoration: underline; }
 .ed-list li { margin: 4px 0; }
 .ed-files code, .ed-hash { font-size: 11px; word-break: break-all; }
 .ed-small { font-size: 12.5px; color: var(--rd-muted); }
+
+/* Inline provisional markers in the text and their explanations. */
+.ed-mark { font-style: normal; font-variant-numeric: lining-nums; user-select: none; }
+.ed-mark-btn {
+  display: inline-flex; align-items: center; justify-content: center; width: 1.25em; height: 1.25em; margin: 0 .2em 0 .1em; padding: 0;
+  border: 1px solid var(--rd-gold); border-radius: 50%; background: var(--rd-bg); color: var(--rd-gold-ink);
+  position: relative; font: 600 .6em/1 system-ui, sans-serif; vertical-align: .55em; cursor: pointer;
+}
+.ed-mark-btn::after { content: ""; position: absolute; inset: -9px -2px; } /* taller touch target, clear of the verse number */
+.ed-mark-btn:hover, .ed-mark-btn[aria-expanded="true"] { background: color-mix(in srgb, var(--rd-gold) 22%, var(--rd-bg)); color: var(--rd-ink); }
+.ed-pop {
+  display: block; margin: .4em 0 .7em; padding: 10px 12px; border: 1px solid var(--rd-line); border-left: 3px solid var(--rd-gold); border-radius: 6px;
+  background: var(--rd-panel); color: var(--rd-ink-2); font-size: 13.5px; line-height: 1.5; text-align: left; hyphens: manual; user-select: text;
+}
+.ed-pop[hidden] { display: none; }
+.ed-pop > span, .ed-pop > button { display: block; margin-top: 5px; }
+.ed-pop > .ed-prov { display: inline-block; margin: 0; }
+.ed-pop-t { color: var(--rd-ink); }
+.ed-pop-q b { color: var(--rd-ink); font-weight: 600; }
 .rd-panel .notice { margin-top: 18px; font-size: 12px; }
 .rd-colophon [data-notice] a { text-decoration: underline; }
 
@@ -569,7 +608,7 @@ a.rd-note:hover b { text-decoration: underline; }
   .rd-actions { bottom: calc(70px + env(safe-area-inset-bottom)); max-width: calc(100vw - 20px); padding-left: 12px; }
   .rd-actions button span, .rd-report span, .rd-report small { display: none; }
   .rd-actions-ref { font-size: 13px; }
-  .ed-panel { margin-top: -12px; padding: 12px; }
+  .ed-head { margin-top: -12px; margin-bottom: 28px; }
   .ed-table { font-size: 12px; }
 }
 body.reading .toast { bottom: 92px; }

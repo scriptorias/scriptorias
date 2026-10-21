@@ -36,6 +36,13 @@ last release are listed under **Unreleased**.
 - CC BY-SA 4.0 attribution notices for the Wikisource snapshots.
 
 ### Changed
+- Didache reader layout: the text comes first. Above it only the edition name, a small status
+  line with a link to "About this edition", and the Greek/English switch. Reference mappings, open
+  questions, edition differences, OCR notes and the correction history moved to "References &
+  textual notes"; status, notices, sources, provenance and checksums to "About this edition"; both
+  sit after the text, closed by default. Provisional readings and mappings (3.10 ⟦?ἄτερ⟧, 16.8 ↔
+  XVI.7, editorial verse numbers in English chapters 1 and 16) carry small inline markers that
+  open their explanation. Presentation only: no text, rights or notice wording changed.
 - Status labels: "Internally checked transcription · not independently verified" (proofread) and
   "Independently verified" (editor-reviewed), per docs/EDITORIAL.md §9.
 - The Didache's Wikisource English (chapters 1–3) is replaced by the new edition; old links and

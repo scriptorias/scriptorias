@@ -25,7 +25,7 @@ import { toast } from "../lib/toast";
 import { useAsync } from "../lib/useAsync";
 import { useTitle } from "../lib/useTitle";
 import { prototypeTranslation } from "../lib/migrate";
-import { EditionPanel, type EditionData } from "./EditionPanel";
+import { EditionHeader, EditionSections, ProvisionalMark, SECTION_ID, provisionalMarks, switchTarget, type EditionData, type EditionSection, type MarkInfo } from "./EditionPanel";
 
 const SIZES = [16, 17, 18, 19, 20, 22, 24];
 const LEADING = { compact: 1.55, comfortable: 1.75, airy: 1.95 } as const;
@@ -36,17 +36,20 @@ const narrow = () => window.innerWidth < 1200;
 
 interface Selection { ref: string; segs: string[]; anchor?: string }
 
-/** One run: italics, uncial type, an uncertain reading (shown as ⟦?…⟧), or a printed page break. */
-function runNode(r: Run, i: number): ReactNode {
+/**
+ * One run: italics, uncial type, an uncertain reading (shown as ⟦?…⟧, followed by its provisional
+ * marker if any), or a printed page break.
+ */
+function runNode(r: Run, i: number, after?: ReactNode): ReactNode {
   if (r.pb !== undefined) return r.restated ? null : <span key={i} className="pb" data-page={r.pb} title={`Page ${r.pb} of the printed edition begins here`}>[p. {r.pb}]</span>;
   let n: ReactNode = r.t;
   if (r.uncertain) n = <span className="unc" title="Uncertain reading (provisional): see the open questions">⟦?{n}⟧</span>;
   if (r.uncial) n = <span className="uncial" title="Set in uncial type in the printed edition">{n}</span>;
-  return r.em ? <em key={i}>{n}</em> : <span key={i}>{n}</span>;
+  return r.em ? <em key={i}>{n}{after}</em> : <span key={i}>{n}{after}</span>;
 }
 
-function runsOf(seg: Segment): ReactNode {
-  if (seg.runs) return seg.runs.map(runNode);
+function runsOf(seg: Segment, markFor?: (i: number) => ReactNode): ReactNode {
+  if (seg.runs) return seg.runs.map((r, i) => runNode(r, i, r.uncertain ? markFor?.(i) : undefined));
   return (seg.lines ?? []).map((l, i) =>
     typeof l === "string" ? <span key={i} className="ln">{l}</span> : <span key={i} className="ln stanza">{l.t}</span>,
   );
@@ -171,6 +174,9 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
   const [panels, setPanels] = useState({ ...ui });
   const [, bump] = useState(0);
   const [sel, setSel] = useState<Selection | null>(null);
+  // Edition sections after the text (closed by default) and the open provisional marker, if any.
+  const [sections, setSections] = useState<Record<EditionSection, boolean>>({ notes: false, about: false });
+  const [openMark, setOpenMark] = useState<string | null>(null);
   const progress = useRef<HTMLSpanElement>(null);
   const textEl = useRef<HTMLElement>(null);
   const done = store.get<number[]>(`rd.done.${id}`, []);
@@ -262,7 +268,7 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
     const h = (e: KeyboardEvent) => {
       if (/INPUT|TEXTAREA|SELECT/.test((document.activeElement as HTMLElement)?.tagName)) return;
       const { prev: p, next: n } = neighbours.current;
-      if (e.key === "Escape") { setSel(null); for (const k of ["toc", "notes", "settings"] as Panel[]) ui[k] = false; setPanels({ ...ui }); }
+      if (e.key === "Escape") { setSel(null); setOpenMark(null); for (const k of ["toc", "notes", "settings"] as Panel[]) ui[k] = false; setPanels({ ...ui }); }
       if (e.key === "ArrowRight" && n) navigate(readSection(id, n));
       if (e.key === "ArrowLeft" && p) navigate(readSection(id, p));
     };
@@ -297,7 +303,7 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
   const sampleRange = availSections.length < total ? `${label}s ${availSections[0]}–${availSections[availSections.length - 1]} of ${total}` : null;
   const status = transcriptionLabel(tr.editorial);
   // The text's own status only: a checked verse alignment says nothing about the transcription.
-  // Editions with an edition panel show their status line there instead.
+  // Editions with an edition header show their status line there instead.
   const banner = edition ? "" : [sampleRange && `Sample passage · ${sampleRange}`, status].filter(Boolean).join(" · ");
   const map = edition?.refmap ?? null;
   const editor = map?.editionName.split(" ")[0] ?? tr.label;
@@ -324,6 +330,18 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
     return nextRef === ref ? null : ref;
   };
 
+  // Edition sections: toggle, or open one and bring it into view.
+  const toggleSection = (name: EditionSection) => setSections((cur) => ({ ...cur, [name]: !cur[name] }));
+  const showSection = (name: EditionSection) => {
+    setSections((cur) => ({ ...cur, [name]: true }));
+    requestAnimationFrame(() => document.getElementById(SECTION_ID[name])?.parentElement?.scrollIntoView({ block: "start", behavior: "smooth" }));
+  };
+  const marks = edition ? provisionalMarks(id, tr, edition, chn, sec.segments, (seg) => idx.refOf(seg)) : new Map<string, MarkInfo[]>();
+  const markNode = (m: MarkInfo) => (
+    <ProvisionalMark key={m.key} mark={m} open={openMark === m.key} onToggle={() => setOpenMark((cur) => (cur === m.key ? null : m.key))}
+      onMore={() => { setOpenMark(null); showSection("notes"); }} />
+  );
+
   const segments = sec.segments.map((s, i) => {
     const num = numberFor(s, i);
     const noteRef = noteAfter(s, i);
@@ -336,11 +354,15 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
         ? <sup className={pnClass} title={info?.title} onClick={() => selectSeg(s.id, true)}>{num}</sup>
         : <span className={pnClass} title={info?.title} onClick={() => selectSeg(s.id, true)}>{num}</span>
     );
+    const segMarks = marks.get(s.id) ?? [];
+    // Reading markers follow their reading; mapping and editorial-number markers follow the number.
+    const numMarks = segMarks.filter((m) => !m.key.startsWith("unc-")).map(markNode);
+    const markFor = (k: number) => segMarks.filter((m) => m.key === `unc-${s.id}-${k}`).map(markNode);
     const mark = noteRef && <button className="nmark" aria-label={`Notes on ${formatRef(w.title, noteRef)}`} onClick={() => { selectSeg(s.id); openNotes(noteRef); }} />;
     return inline ? (
-      <span key={s.id} className={cls} id={`s-${s.id}`} data-seg={s.id} data-ref={ref}>{pn}{runsOf(s)}{mark}{" "}</span>
+      <span key={s.id} className={cls} id={`s-${s.id}`} data-seg={s.id} data-ref={ref}>{pn}{numMarks}{runsOf(s, markFor)}{mark}{" "}</span>
     ) : (
-      <div key={s.id} className={cls} id={`s-${s.id}`} data-seg={s.id} data-ref={ref}>{pn || <span className="pn" />}<div>{runsOf(s)}{mark}</div></div>
+      <div key={s.id} className={cls} id={`s-${s.id}`} data-seg={s.id} data-ref={ref}>{pn || <span className="pn" />}<div>{numMarks}{runsOf(s, markFor)}{mark}</div></div>
     );
   });
 
@@ -477,8 +499,9 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
       <main className="rd-page">
         {banner && <p className="rd-sample">{banner} · {tr.label}{tr.detail ? `, ${tr.detail}` : ""}</p>}
         {edition && (
-          <EditionPanel work={id} tr={tr} data={edition} chapter={chn} selected={sel?.segs ?? []} other={otherEdition} preview={preview}
-            reportHref={reportFor(null)} onSwitch={(t, ref) => { store.set(`rd.tr.${id}`, t); navigate(readPath(id, ref)); }} />
+          <EditionHeader tr={tr} other={otherEdition} target={switchTarget(edition.refmap, sel?.segs ?? [], chRef)} preview={preview}
+            aboutOpen={sections.about} onAbout={() => (sections.about ? toggleSection("about") : showSection("about"))}
+            onSwitch={(t, ref) => { store.set(`rd.tr.${id}`, t); navigate(readPath(id, ref)); }} />
         )}
         <header className="rd-head">
           <p className="rd-kicker">{label}</p>
@@ -488,6 +511,10 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
         <article ref={textEl} className={`rd-text ${inline ? "prose-mode" : "verse-mode"}`}>
           {inline ? paragraphs.map((g, k) => <p key={k} className={sec.segments[g[0]].heading ? "rd-heading" : undefined}>{g.map((i) => segments[i])}</p>) : segments}
         </article>
+        {edition && (
+          <EditionSections work={id} tr={tr} data={edition} chapter={chn} selected={sel?.segs ?? []} reportHref={reportFor(null)}
+            open={sections} onToggle={toggleSection} />
+        )}
         <nav className="rd-pager" aria-label="Chapters">
           {prev ? <Link to={readSection(id, prev)} data-dir="prev"><Icon name="left" />{label} {prev}</Link> : <span />}
           {next ? <Link to={readSection(id, next)} data-dir="next" className="next">{label} {next}<Icon name="right" /></Link>
@@ -498,7 +525,8 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
             <b>{tr.label}</b>{tr.detail ? `, ${tr.detail}` : ""} · {tr.license.name}
             {tr.source && <> · <a href={tr.source.href} target="_blank" rel="noopener">{tr.source.label}</a></>}
           </p>
-          {tr.notices?.publicDomain && <p data-notice="public-domain">{richText(tr.notices.publicDomain)}</p>}
+          {tr.notices?.publicDomain && !edition && <p data-notice="public-domain">{richText(tr.notices.publicDomain)}</p>}
+          {edition && <p>Licensing, sources and provenance: <button type="button" className="ed-linkbtn" onClick={() => showSection("about")}>About this edition</button>.</p>}
           {tr.attribution && <p>{tr.attribution}</p>}
           {tr.italics && <p>{tr.italics}</p>}
           <p>
