@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router";
 import { countLabel, listedCollections, tradition } from "../content/catalog";
 import { Icon } from "../components/Icon";
-import { Page } from "../components/Shell";
+import { Hero, Page } from "../components/Shell";
 import { PathwayCards } from "./Pathways";
 import { NotFound } from "./Misc";
 import { collectionPath } from "../lib/paths";
@@ -23,13 +23,10 @@ export function Library({ id: fixedId }: { id?: string }) {
   }
   return (
     <Page>
-      <div>
-        <h1>{t.name}</h1>
-        <p className="facets">{(t.facets ?? []).map((f) => <span key={f}>{f}</span>)}</p>
-      </div>
-      <div className="seg">
-        {TABS.map(([k, n]) => <Link key={k} to={`/library/${id}/${k}`} className={tab === k ? "on" : ""}>{n}</Link>)}
-      </div>
+      <Hero title={t.name} />
+      <nav className="tab-buttons" aria-label={`${t.name} library`}>
+        {TABS.map(([k, n]) => <Link key={k} to={`/library/${id}/${k}`} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined}>{n}</Link>)}
+      </nav>
       {tab === "collections" ? (
         <div className="cards">
           {listedCollections(id).map((c) => (
