@@ -13,7 +13,7 @@ export const ICONS: Record<string, string> = {
   search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
   settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
   about: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
-  cross: '<path d="M12 3v18M6 9h12"/>',
+  cross: '<path d="M12 2v20M9.5 5.5h5M7 9.5h10M8.5 15.5l7 3"/>',
   star: '<path d="M12 3 20 17H4z"/><path d="M12 21 4 7h16z"/>',
   moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
   rune: '<path d="M6 21V3l12 12M18 21V3L6 15"/>',

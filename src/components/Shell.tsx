@@ -102,10 +102,10 @@ export function Page({ back, className = "page", children }: { back?: Back; clas
   );
 }
 
-export function Hero({ title, tm = false }: { title: string; tm?: boolean }) {
+export function Hero({ title, tm = false, icon }: { title: string; tm?: boolean; icon?: string }) {
   return (
     <div className="hero">
-      <h1>{title}{tm && <sup className="tm">™</sup>}</h1>
+      <h1>{icon && <Icon name={icon} />}{title}{tm && <sup className="tm">™</sup>}</h1>
       <hr className="hero-rule" />
     </div>
   );

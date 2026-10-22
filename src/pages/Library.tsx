@@ -23,7 +23,7 @@ export function Library({ id: fixedId }: { id?: string }) {
   }
   return (
     <Page>
-      <Hero title={t.name} />
+      <Hero title={t.name} icon={t.icon} />
       <nav className="tab-buttons" aria-label={`${t.name} library`}>
         {TABS.map(([k, n, icon]) => <Link key={k} to={`/library/${id}/${k}`} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined}><Icon name={icon} />{n}</Link>)}
       </nav>

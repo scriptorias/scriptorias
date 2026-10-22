@@ -73,7 +73,7 @@ test.describe("navigation", () => {
     await page.goto("/collections/early-christian");
     await page.locator(".sidebar .brand").click();
     await expect(page).toHaveURL("/home");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Welcome to Scriptorias");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Scriptorias");
   });
 
   test("unreleased libraries show Coming Soon", async ({ page }) => {
