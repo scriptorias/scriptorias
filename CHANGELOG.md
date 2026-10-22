@@ -9,6 +9,13 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-10-22
+
+### Changed
+- Home: the title is now "My Scriptorias".
+- Christianity uses the Orthodox cross icon (sidebar, Home library button), and the icon also
+  appears before the title on the Christianity library page.
+
 ## [0.2.2] - 2026-10-22
 
 ### Changed

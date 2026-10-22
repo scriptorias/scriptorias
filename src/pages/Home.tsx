@@ -14,7 +14,7 @@ export function Home() {
   const col = lw ? primaryCollection(lw) : undefined;
   return (
     <Page>
-      <Hero title="Scriptorias" tm />
+      <Hero title="My Scriptorias" tm />
       {last && lw && (
         <>
           <h2 className="section-label">Continue reading</h2>
