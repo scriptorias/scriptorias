@@ -623,6 +623,14 @@ a.rd-note:hover b { text-decoration: underline; }
   }
   .rd-tool { flex-direction: column; gap: 3px; font-size: 11px; justify-content: center; }
   .rd-tool svg { width: 20px; height: 20px; }
+  /* Phone tool bar contrasts with the page: charcoal (like the app's tab bar) on light pages, cream on dark. */
+  .rd { --rd-tb-bg: var(--side); --rd-tb-ink: var(--side-ink); --rd-tb-on: #f3ecdf; --rd-tb-gold: var(--gold); --rd-tb-line: #2d2a26; }
+  .rd[data-theme="dark"] { --rd-tb-bg: var(--paper); --rd-tb-ink: var(--ink-2); --rd-tb-on: var(--ink); --rd-tb-gold: var(--gold-ink); --rd-tb-line: var(--line); }
+  .rd-tools { background: var(--rd-tb-bg); border-top-color: var(--rd-tb-line); }
+  .rd-tools .rd-tool { color: var(--rd-tb-ink); }
+  .rd-tools .rd-tool:hover { background: color-mix(in srgb, var(--rd-tb-on) 8%, transparent); }
+  .rd-tools .rd-tool.on { color: var(--rd-tb-on); background: color-mix(in srgb, var(--rd-tb-on) 12%, transparent); }
+  .rd-tools .rd-tool.marked svg { fill: var(--rd-tb-gold); color: var(--rd-tb-gold); }
   .rd-page { padding: 36px 22px 140px; }
   .rd-sample { margin-bottom: 32px; font-size: 10.5px; }
   .rd-num { font-size: 52px; }
