@@ -7,7 +7,7 @@ import { NotFound } from "./Misc";
 import { collectionPath } from "../lib/paths";
 import { useTitle } from "../lib/useTitle";
 
-const TABS: [string, string][] = [["collections", "Collections"], ["paths", "Pathways"], ["timeline", "Timeline"], ["figures", "Key Figures"]];
+const TABS: [string, string, string][] = [["collections", "Collections", "collections"], ["paths", "Pathways", "paths"], ["timeline", "Timeline", "timeline"], ["figures", "Key Figures", "people"]];
 
 export function Library({ id: fixedId }: { id?: string }) {
   const params = useParams();
@@ -25,7 +25,7 @@ export function Library({ id: fixedId }: { id?: string }) {
     <Page>
       <Hero title={t.name} />
       <nav className="tab-buttons" aria-label={`${t.name} library`}>
-        {TABS.map(([k, n]) => <Link key={k} to={`/library/${id}/${k}`} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined}>{n}</Link>)}
+        {TABS.map(([k, n, icon]) => <Link key={k} to={`/library/${id}/${k}`} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined}><Icon name={icon} />{n}</Link>)}
       </nav>
       {tab === "collections" ? (
         <div className="cards">
