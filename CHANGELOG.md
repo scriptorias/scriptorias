@@ -9,6 +9,12 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-10-22
+
+### Changed
+- Mobile reader: the bottom tool bar contrasts with the page, charcoal in light mode (like the
+  app's tab bar) and cream in dark mode.
+
 ## [0.2.4] - 2026-10-22
 
 ### Changed
