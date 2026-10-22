@@ -9,6 +9,13 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-22
+
+### Changed
+- Mobile: the header bar and the bottom tab bar use the sidebar's charcoal; the current tab is
+  shown in light text with a gold icon.
+- Library page: the Collections, Pathways, Timeline and Key Figures buttons have icons.
+
 ## [0.2.1] - 2026-10-21
 
 ### Changed
