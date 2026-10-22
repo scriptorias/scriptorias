@@ -219,7 +219,9 @@ function ReaderView({ id, tr, text, alignment, edition, notes, overview, chParam
     selectSeg(target);
     requestAnimationFrame(() => {
       const resume = !chParam && saved?.ch === chn && saved.anchor ? parseAnchor(saved.anchor) : null;
-      const el = target ? document.getElementById(`s-${target}`) : resume && resume.tr === tr.id ? document.getElementById(`s-${resume.seg}`) : null;
+      // Resuming at the chapter's first segment opens at the top of the page (heading included).
+      const resumeEl = resume && resume.tr === tr.id && resume.seg !== sec.segments[0]?.id ? document.getElementById(`s-${resume.seg}`) : null;
+      const el = target ? document.getElementById(`s-${target}`) : resumeEl;
       if (el) el.scrollIntoView({ block: target ? "center" : "start" });
       else window.scrollTo(0, 0);
       onScroll();

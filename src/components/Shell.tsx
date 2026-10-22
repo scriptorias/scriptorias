@@ -5,7 +5,7 @@ import { Icon } from "./Icon";
 
 const NAV: [string, string, string][] = [["home", "Home", "/home"], ["paths", "Pathways", "/pathways"], ["search", "Search", "/search"]];
 const FOOT: [string, string, string][] = [["settings", "Settings", "/settings"], ["about", "About", "/about"]];
-const TABBAR: [string, string, string | null][] = [["home", "Home", "/home"], ["library", "Library", "/"], ["paths", "Pathways", "/pathways"], ["search", "Search", "/search"], ["more", "More", null]];
+const TABBAR: [string, string, string | null][] = [["home", "Home", "/home"], ["paths", "Pathways", "/pathways"], ["search", "Search", "/search"], ["more", "More", null]];
 
 const DrawerContext = createContext<{ toggle: () => void }>({ toggle: () => {} });
 

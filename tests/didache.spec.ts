@@ -493,3 +493,14 @@ test("English is always the default edition; a switch lasts only while reading t
   await page.goto("/works/didache/read/1", { waitUntil: "networkidle" });
   await expect(page.locator("#rd")).toHaveAttribute("data-tr", EN); // reopened: English again
 });
+
+test("reopening a chapter not yet scrolled starts at the top of the page", async ({ page }) => {
+  await page.goto("/works/didache", { waitUntil: "networkidle" });
+  await page.locator("a[href*='/read']").first().click();
+  await expect(page.locator(".rd-num").first()).toBeVisible();
+  await page.goBack();
+  await page.locator("a[href*='/read']").first().click();
+  await expect(page.locator(".rd-num").first()).toBeVisible();
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+});

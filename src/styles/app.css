@@ -225,7 +225,7 @@ h1 { margin: 0; font: 500 46px/1.08 var(--serif); letter-spacing: -.01em; }
   .chapter { --read-size-m: calc(var(--read-size) - 1px); font-size: var(--read-size-m); }
 
   .tabbar {
-    position: fixed; inset: auto 0 0 0; z-index: 15; display: grid; grid-template-columns: repeat(5, 1fr);
+    position: fixed; inset: auto 0 0 0; z-index: 15; display: grid; grid-template-columns: repeat(4, 1fr);
     padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); background: var(--side); border-top: 1px solid #2d2a26;
   }
   .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--side-muted); }
