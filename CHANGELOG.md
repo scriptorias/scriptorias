@@ -9,6 +9,15 @@ last release are listed under **Unreleased**.
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-10-22
+
+### Changed
+- Mobile tab bar: the Library tab is removed (Home, Pathways, Search, More).
+
+### Fixed
+- Reader: reopening a chapter you had not scrolled into now starts at the top of the page, with
+  the chapter heading, instead of at the first verse.
+
 ## [0.2.3] - 2026-10-22
 
 ### Changed
